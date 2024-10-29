@@ -14,6 +14,7 @@
 - [Business Requirements](#business-requirements)
 - [Requirements](#requirements)
 - [Mandatory Features](#mandatory-features)
+- [Optional Features](#optional-features)
 
 ---
 
