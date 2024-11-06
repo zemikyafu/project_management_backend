@@ -1,25 +1,28 @@
 package org.project_management.application.dto;
 
+import org.project_management.domain.entities.user.Status;
+
+import java.util.UUID;
+
 public class UserDto {
 
-    private int id;
+    private UUID id;
     private String name;
     private String email;
-    private String role;
-    private String status;
+    private Status status;
 
-    public UserDto(int id, String name, String email, String status) {
+    public UserDto(UUID id, String name, String email, Status status) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.status = status;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -39,15 +42,11 @@ public class UserDto {
         this.email = email;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

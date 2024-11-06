@@ -1,41 +1,44 @@
 package org.project_management.infrastructure.repositories.jpa_entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.project_management.domain.entities.user.Status;
+
+import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "app_user")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", nullable = false, length = 320)
     private String email;
 
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", nullable = false, length = 128)
     private String password;
 
-    @Column(name = "status", nullable = false, length = 50)
-    private String status;
+   @Column(name = "status", nullable = false, length = 10)
+    private Status status;
 
     public UserEntity() {
     }
-
-    public UserEntity(String name, String email, String password, String status) {
+    public UserEntity( String name, String email, String password, Status status) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.status = status;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -63,11 +66,11 @@ public class UserEntity {
         this.password = password;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

@@ -1,24 +1,31 @@
 package org.project_management.domain.entities.user;
 
+import java.util.UUID;
+
 public class User {
 
-    private  int id;
+    private UUID id;
     private String name;
     private String email;
     private String password;
+    private Status status;
 
-    private String status;
-
-    public User(int id, String name, String email, String password, String status) {
-        this.id = id;
+    public User(String name, String email, String password, Status status) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.status = status;
     }
 
-    public int getId() {
+    public User() {
+    }
+
+    public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -45,11 +52,10 @@ public class User {
         this.password = password;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
-
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

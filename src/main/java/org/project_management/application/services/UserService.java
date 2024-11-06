@@ -4,17 +4,18 @@ import org.project_management.domain.entities.user.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserService {
-    void save(User user);
+    User save(User user);
 
-    Optional<User> findById(int id);
+    Optional<User> findById(UUID id);
 
     Optional<User> findByEmail(String email);
 
     void updateUser(User user);
 
-    void deleteUser(int id);
+    void deleteUser(UUID id);
 
     List<User> findAll();
 
