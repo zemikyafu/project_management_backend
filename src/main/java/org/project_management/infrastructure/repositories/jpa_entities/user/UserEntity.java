@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.project_management.domain.entities.user.Status;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -22,16 +23,21 @@ public class UserEntity {
     @Column(name = "password", nullable = false, length = 128)
     private String password;
 
-   @Column(name = "status", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 10)
     private Status status;
+
+    @Column(name ="created_at", nullable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
     public UserEntity() {
     }
-    public UserEntity( String name, String email, String password, Status status) {
+
+    public UserEntity(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.status = status;
+        this.status = Status.ACTIVE;
     }
 
     public UUID getId() {
