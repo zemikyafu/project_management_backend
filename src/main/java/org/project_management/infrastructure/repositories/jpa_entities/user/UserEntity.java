@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.repositories.jpa_entities;
+package org.project_management.infrastructure.repositories.jpa_entities.user;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -27,7 +27,7 @@ public class UserEntity {
     @Column(name = "status", nullable = false, length = 10)
     private Status status;
 
-    @Column(name ="created_at", nullable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name ="created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     public UserEntity() {

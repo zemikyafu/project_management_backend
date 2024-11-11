@@ -5,21 +5,19 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "role")
-
-public class RoleEntity {
-
+@Table(name = "permission")
+public class PermissionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name", nullable = false, length = 50,unique = true)
+    @Column(name = "name", nullable = false, length = 100,unique = true)
     private String name;
 
-    public RoleEntity() {
+    public PermissionEntity() {
     }
 
-    public RoleEntity(String name) {
+    public PermissionEntity(String name) {
         this.name = name;
     }
 
