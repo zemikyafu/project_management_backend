@@ -27,10 +27,12 @@ public class UserEntity {
     @Column(name = "status", nullable = false, length = 10)
     private Status status;
 
-    @Column(name ="created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name ="created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     public UserEntity() {
+        this.status = Status.ACTIVE;
+        this.createdAt = LocalDateTime.now();
     }
 
     public UserEntity(String name, String email, String password) {
@@ -38,6 +40,7 @@ public class UserEntity {
         this.email = email;
         this.password = password;
         this.status = Status.ACTIVE;
+        this.createdAt = LocalDateTime.now();
     }
 
     public UUID getId() {

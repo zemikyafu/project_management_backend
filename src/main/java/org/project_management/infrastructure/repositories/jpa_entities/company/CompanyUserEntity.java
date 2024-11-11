@@ -23,7 +23,7 @@ public class CompanyUserEntity {
     private CompanyEntity company;
 
     @Column(name = "isOwner", nullable = false)
-    private boolean isOwner;
+    private boolean isOwner=false;
 
 
     public CompanyUserEntity() {
