@@ -1,6 +1,7 @@
 package org.project_management.presentation.controllers;
 
 import org.project_management.application.dto.UserDto;
+import org.project_management.application.services.AuthService;
 import org.project_management.application.services.UserService;
 import org.project_management.domain.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,18 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private UserService userService;
+    private AuthService authService;
 
-    @Autowired
-    public UserController(UserService userService) {
+   @Autowired
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @PostMapping
     public ResponseEntity<UserDto> save(@RequestBody User user) {
-        User savedUser= userService.save(user);
+        user.setPassword(authService.generateHash((user.getPassword())));
+        User savedUser = userService.save(user);
         return ResponseEntity.ok(new UserDto(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getStatus()));
     }
 
@@ -41,22 +45,16 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @PutMapping
-    public  ResponseEntity<UserDto> updateUser(@RequestBody User user) {
-            userService.updateUser(user);
-            return ResponseEntity.ok(new UserDto(user.getId(), user.getName(), user.getEmail(), user.getStatus()));
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable UUID id, @RequestBody User user) {
+        user.setId(id);
+        User updatedUser = userService.updateUser(user);
+        return ResponseEntity.ok(new UserDto(updatedUser.getId(), user.getName(), user.getEmail(), user.getStatus()));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
-        try
-        {
-            userService.deleteUser(id);
-            return ResponseEntity.ok("User deleted successfully");
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.badRequest().body("Unable to delete user");
-        }
-
+        userService.deleteUser(id);
+        return ResponseEntity.ok("User deleted successfully");
     }
 }
