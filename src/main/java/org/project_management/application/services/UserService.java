@@ -13,7 +13,7 @@ public interface UserService {
 
     Optional<User> findByEmail(String email);
 
-    void updateUser(User user);
+    User updateUser(User user);
 
     void deleteUser(UUID id);
 
