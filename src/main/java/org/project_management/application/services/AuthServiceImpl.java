@@ -20,14 +20,10 @@ public class AuthServiceImpl implements AuthService {
             return null;
         }
     }
-
     @Override
     public boolean verifyPassword(String password, String hash) {
         return generateHash(password).equals(hash);
     }
 
-    @Override
-    public String generateToken(String email) {
-        return generateHash(email);
-    }
+
 }

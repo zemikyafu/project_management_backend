@@ -11,7 +11,7 @@ import org.project_management.application.exceptions.UnableToDeleteResourceExcep
 import org.project_management.application.exceptions.UnableToSaveResourceException;
 import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.user.User;
-import org.project_management.infrastructure.repositories.jpa_entities.user.UserEntity;
+import org.project_management.infrastructure.jpa_entities.user.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
             UserEntity userEntity = new UserEntity(user.getName(), user.getEmail(), user.getPassword());
             entityManager.persist(userEntity);
 
-            User newUser = new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
+            User newUser = new User(userEntity.getId(),userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
             newUser.setId(userEntity.getId());
 
             return newUser;
@@ -52,8 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
             throw new ResourceNotFoundException("User not found with id: " + id.toString());
         }
 
-        User user = new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
-        user.setId(userEntity.getId());
+        User user = new User(userEntity.getId(), userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
 
         return Optional.of(user);
 
@@ -65,8 +64,7 @@ public class UserRepositoryImpl implements UserRepository {
         List<UserEntity> userEntities = query.getResultList();
 
         return userEntities.stream().map((userEntity) -> {
-            User user = new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
-            user.setId(userEntity.getId());
+            User user = new User(userEntity.getId(), userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
             return user;
         }).collect(Collectors.toList());
     }
@@ -86,13 +84,12 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         UserEntity userEntity = userEntities.get(0);
-        User user = new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
-        user.setId(userEntity.getId());
+        User user = new User(userEntity.getId(), userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
 
         return Optional.of(user);
     }
 
-   @Transactional
+    @Transactional
     @Override
     public User updateUser(User user) {
         UserEntity userEntity = entityManager.find(UserEntity.class, user.getId());
@@ -101,23 +98,48 @@ public class UserRepositoryImpl implements UserRepository {
             throw new ResourceNotFoundException("User not found");
         }
 
-        if (user.getName() == null || user.getEmail() == null || user.getPassword() == null || user.getStatus() == null){
-            throw new BadRequestException("Name, email, password and status are required");
+        if (user.getName() == null || user.getEmail() == null || user.getPassword() == null || user.getStatus() == null) {
+            throw new BadRequestException("Name, email, password, and status are required");
         }
-
         userEntity.setName(user.getName());
         userEntity.setEmail(user.getEmail());
         userEntity.setPassword(user.getPassword());
         userEntity.setStatus(user.getStatus());
+
         try {
             entityManager.merge(userEntity);
-
         } catch (Exception e) {
             e.printStackTrace();
-            throw new UnableToSaveResourceException("Unable to update user");
+            throw new UnableToSaveResourceException("Unable to fully update user");
         }
         return user;
     }
+
+     @Transactional
+     public User updateNameOrEmail(User user) {
+         UserEntity userEntity = entityManager.find(UserEntity.class, user.getId());
+
+         if (userEntity == null) {
+             throw new ResourceNotFoundException("User not found");
+         }
+
+         // Only update fields that are not null (for partial updates)
+         if (user.getName() != null) {
+             userEntity.setName(user.getName());
+         }
+         if (user.getEmail() != null) {
+             userEntity.setEmail(user.getEmail());
+         }
+
+         try {
+             entityManager.merge(userEntity);
+         } catch (Exception e) {
+             e.printStackTrace();
+             throw new UnableToSaveResourceException("Unable to partially update user");
+         }
+         user.setStatus(userEntity.getStatus());
+         return user;
+        }
 
     @Transactional
     @Override

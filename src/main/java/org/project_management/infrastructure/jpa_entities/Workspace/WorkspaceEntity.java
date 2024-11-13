@@ -1,7 +1,7 @@
-package org.project_management.infrastructure.repositories.jpa_entities.Workspace;
+package org.project_management.infrastructure.jpa_entities.Workspace;
 
 import jakarta.persistence.*;
-import org.project_management.infrastructure.repositories.jpa_entities.company.CompanyEntity;
+import org.project_management.infrastructure.jpa_entities.company.CompanyEntity;
 
 import java.util.UUID;
 

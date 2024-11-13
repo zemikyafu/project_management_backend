@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.repositories.jpa_entities.role;
+package org.project_management.infrastructure.jpa_entities.role;
 
 import java.io.Serializable;
 import java.util.UUID;

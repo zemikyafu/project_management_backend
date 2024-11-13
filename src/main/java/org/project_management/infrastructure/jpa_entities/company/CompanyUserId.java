@@ -1,36 +1,21 @@
-package org.project_management.infrastructure.repositories.jpa_entities.company;
+package org.project_management.infrastructure.jpa_entities.company;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class CompanyUserId  implements Serializable {
     private UUID userId;
     private UUID companyId;
-
-    public CompanyUserId() {
-    }
-
-    public CompanyUserId(UUID userId, UUID companyId) {
-        this.userId = userId;
-        this.companyId = companyId;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
-    public UUID getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(UUID companyId) {
-        this.companyId = companyId;
-    }
 
     @Override
     public boolean equals(Object o) {

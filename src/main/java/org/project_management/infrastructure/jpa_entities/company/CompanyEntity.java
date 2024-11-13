@@ -1,14 +1,23 @@
-package org.project_management.infrastructure.repositories.jpa_entities.company;
+package org.project_management.infrastructure.jpa_entities.company;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "company")
 public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(updatable = false)
     private UUID id;
 
     @Column(name = "name", nullable = false, columnDefinition = "Text")
@@ -19,43 +28,12 @@ public class CompanyEntity {
 
     @Column(name="address",columnDefinition = "Text")
     private String address;
-    public CompanyEntity() {
-    }
+
     public CompanyEntity(String name, String email, String address) {
         this.name = name;
         this.email = email;
         this.address = address;
     }
 
-    public UUID getId() {
-        return id;
-    }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 }

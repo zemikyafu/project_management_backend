@@ -41,6 +41,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateNameOrEmail(User user) {
+        return userRepository.updateNameOrEmail(user);
+    }
+
+    @Override
     public void deleteUser(UUID id) {
         userRepository.deleteUser(id);
     }

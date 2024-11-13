@@ -15,6 +15,8 @@ public interface UserRepository {
 
     User updateUser(User user);
 
+    User updateNameOrEmail(User user);
+
     void deleteUser(UUID id);
 
     List<User> findAll();

@@ -1,15 +1,23 @@
-package org.project_management.infrastructure.repositories.jpa_entities.company;
+package org.project_management.infrastructure.jpa_entities.company;
 
 import jakarta.persistence.*;
-import org.project_management.infrastructure.repositories.jpa_entities.role.RoleEntity;
-import org.project_management.infrastructure.repositories.jpa_entities.user.UserEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.project_management.infrastructure.jpa_entities.user.UserEntity;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "company_user",uniqueConstraints = {
         @UniqueConstraint(columnNames = {"company_id", "isOwner"},name="unique_owner_per_company")})
 
 public class CompanyUserEntity {
     @EmbeddedId
+    @Column(updatable = false)
     private CompanyUserId id;
 
     @ManyToOne
@@ -25,9 +33,6 @@ public class CompanyUserEntity {
     @Column(name = "isOwner", nullable = false)
     private boolean isOwner=false;
 
-
-    public CompanyUserEntity() {
-    }
     public CompanyUserEntity(UserEntity user, CompanyEntity company, boolean isOwner) {
         this.user = user;
         this.company = company;
@@ -35,35 +40,4 @@ public class CompanyUserEntity {
         this.id = new CompanyUserId(user.getId(),company.getId());
     }
 
-    public CompanyUserId getId() {
-        return id;
-    }
-
-    public void setId(CompanyUserId id) {
-        this.id = id;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
-    public CompanyEntity getCompany() {
-        return company;
-    }
-
-    public void setCompany(CompanyEntity company) {
-        this.company = company;
-    }
-
-    public boolean isOwner() {
-        return isOwner;
-    }
-
-    public void setOwner(boolean owner) {
-        isOwner = owner;
-    }
 }

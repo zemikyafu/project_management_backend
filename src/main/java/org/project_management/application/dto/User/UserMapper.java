@@ -18,6 +18,14 @@ public class UserMapper {
         User user = new User();
         user.setName(userUpdate.getName());
         user.setEmail(userUpdate.getEmail());
+        user.setPassword(userUpdate.getPassword());
+        user.setStatus(userUpdate.getStatus());
+        return user;
+    }
+    public static User toUser(UserPartialUpdate userUpdate) {
+        User user = new User();
+        user.setName(userUpdate.getName());
+        user.setEmail(userUpdate.getEmail());
         return user;
     }
 }

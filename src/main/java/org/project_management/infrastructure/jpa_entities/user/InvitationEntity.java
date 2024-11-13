@@ -1,18 +1,26 @@
-package org.project_management.infrastructure.repositories.jpa_entities.user;
+package org.project_management.infrastructure.jpa_entities.user;
 
 import jakarta.persistence.*;
-import org.project_management.infrastructure.repositories.jpa_entities.Workspace.WorkspaceEntity;
-import org.project_management.infrastructure.repositories.jpa_entities.role.RoleEntity;
-import org.springframework.boot.autoconfigure.web.WebProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.project_management.infrastructure.jpa_entities.Workspace.WorkspaceEntity;
+import org.project_management.infrastructure.jpa_entities.role.RoleEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "invitation")
 public class InvitationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(updatable = false)
     private UUID id;
 
     @Column(name = "email", nullable = false, length = 320)
@@ -31,10 +39,6 @@ public class InvitationEntity {
     @ManyToOne
     @JoinColumn(name="role_id", nullable = false)
     private RoleEntity role;
-
-    public InvitationEntity() {
-        expiredAt = LocalDateTime.now().plusHours(24);
-    }
     public InvitationEntity(String email, WorkspaceEntity workspace, RoleEntity role) {
         this.email = email;
         this.workspace = workspace;
@@ -43,43 +47,4 @@ public class InvitationEntity {
         expiredAt = LocalDateTime.now().plusHours(24);
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public WorkspaceEntity getWorkspace() {
-        return workspace;
-    }
-
-    public void setWorkspace(WorkspaceEntity workspace) {
-        this.workspace = workspace;
-    }
-
-    public boolean isAccepted() {
-        return isAccepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        isAccepted = accepted;
-    }
-
-    public LocalDateTime getExpiredAt() {
-        return expiredAt;
-    }
-
-    public void setExpiredAt(LocalDateTime expiredAt) {
-        this.expiredAt = expiredAt;
-    }
 }

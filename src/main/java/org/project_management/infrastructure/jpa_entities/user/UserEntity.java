@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.repositories.jpa_entities.user;
+package org.project_management.infrastructure.jpa_entities.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
