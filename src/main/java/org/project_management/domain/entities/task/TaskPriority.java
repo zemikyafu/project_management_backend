@@ -1,6 +1,6 @@
 package org.project_management.domain.entities.task;
 
-public enum Priority {
+public enum TaskPriority {
     CRITICAL,
     HIGH,
     MEDIUM,
