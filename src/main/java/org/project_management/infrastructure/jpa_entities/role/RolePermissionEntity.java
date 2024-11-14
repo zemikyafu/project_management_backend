@@ -32,5 +32,4 @@ public class RolePermissionEntity {
         this.permission = permission;
         this.id = new RolePermissionId(role.getId(),permission.getId());
     }
-
 }

@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-
     private final UserService userService;
     private final AuthService authService;
 
@@ -66,7 +65,6 @@ public class UserController {
 
         User updatedUser = userService.updateNameOrEmail(user);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), UserMapper.toUserRead(updatedUser)));
-
     }
 
     @DeleteMapping("/{id}")

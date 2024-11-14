@@ -77,5 +77,4 @@ public class GlobalExceptionHandler {
         GlobalResponse globalResponse = new GlobalResponse(HttpStatus.BAD_REQUEST.value(), errors);
         return new ResponseEntity<>(globalResponse, null, HttpStatus.BAD_REQUEST);
     }
-
 }

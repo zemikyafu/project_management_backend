@@ -8,5 +8,4 @@ public class Fs19JavaBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(Fs19JavaBackendApplication.class, args);
     }
-
 }
