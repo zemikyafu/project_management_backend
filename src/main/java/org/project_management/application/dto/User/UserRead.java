@@ -1,21 +1,21 @@
-package org.project_management.domain.entities.user;
+package org.project_management.application.dto.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project_management.domain.entities.user.Status;
 
 import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
-public class User {
+public class UserRead {
+
     private UUID id;
     private String name;
     private String email;
-    private String password;
-    private Status status;
+    private Status Status;
 
 }

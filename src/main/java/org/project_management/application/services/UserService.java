@@ -13,10 +13,12 @@ public interface UserService {
 
     Optional<User> findByEmail(String email);
 
-    void updateUser(User user);
+    User updateUser(User user);
 
+    User updateNameOrEmail(User user);
     void deleteUser(UUID id);
 
     List<User> findAll();
+
 
 }
