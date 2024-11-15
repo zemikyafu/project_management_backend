@@ -26,5 +26,4 @@ public class PermissionEntity {
     public PermissionEntity(String name) {
         this.name = name;
     }
-
 }

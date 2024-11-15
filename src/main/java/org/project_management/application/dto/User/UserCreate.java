@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.project_management.domain.entities.user.Status;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +24,4 @@ public class UserCreate {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
             message = "Password must contain at least one uppercase letter and one special character")
     private String password;
-
-
 }

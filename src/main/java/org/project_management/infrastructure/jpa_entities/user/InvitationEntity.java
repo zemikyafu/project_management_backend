@@ -46,5 +46,4 @@ public class InvitationEntity {
         this.isAccepted = false;
         expiredAt = LocalDateTime.now().plusHours(24);
     }
-
 }

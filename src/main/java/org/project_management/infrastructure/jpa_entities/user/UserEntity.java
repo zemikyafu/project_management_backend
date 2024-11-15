@@ -1,12 +1,8 @@
 package org.project_management.infrastructure.jpa_entities.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 import org.project_management.domain.entities.user.Status;
 
 import java.time.LocalDateTime;
@@ -48,5 +44,4 @@ public class UserEntity {
         this.status = Status.ACTIVE;
         this.createdAt = LocalDateTime.now();
     }
-
 }

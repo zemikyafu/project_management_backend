@@ -25,8 +25,8 @@ public class CompanyUserId  implements Serializable {
         CompanyUserId that = (CompanyUserId) o;
 
         return Objects.equals(userId, that.userId) && Objects.equals(companyId, that.companyId);
-
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(userId, companyId);

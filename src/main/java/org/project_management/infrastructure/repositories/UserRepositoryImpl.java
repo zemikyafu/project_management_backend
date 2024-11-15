@@ -27,7 +27,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
-
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
             throw new BadRequestException("Name, email and password are required");
         }
@@ -55,7 +54,6 @@ public class UserRepositoryImpl implements UserRepository {
         User user = new User(userEntity.getId(), userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getStatus());
 
         return Optional.of(user);
-
     }
 
     @Override
@@ -144,7 +142,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     @Override
     public void deleteUser(UUID id) {
-
         try {
             UserEntity userEntity = entityManager.find(UserEntity.class, id);
             if (userEntity == null) {
@@ -158,8 +155,5 @@ public class UserRepositoryImpl implements UserRepository {
             e.printStackTrace();
             throw new UnableToDeleteResourceException("Unable to delete user");
         }
-
     }
-
-
 }

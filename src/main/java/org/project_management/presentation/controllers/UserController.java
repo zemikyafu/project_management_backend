@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-
     private final UserService userService;
     private final AuthService authService;
 
@@ -56,7 +55,7 @@ public class UserController {
         user.setId(id);
 
         User updatedUser = userService.updateUser(user);
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.CREATED.value(), UserMapper.toUserRead(updatedUser)));
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), UserMapper.toUserRead(updatedUser)));
     }
 
     @PatchMapping("/{id}")
@@ -65,8 +64,7 @@ public class UserController {
         user.setId(id);
 
         User updatedUser = userService.updateNameOrEmail(user);
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.CREATED.value(), UserMapper.toUserRead(updatedUser)));
-
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), UserMapper.toUserRead(updatedUser)));
     }
 
     @DeleteMapping("/{id}")

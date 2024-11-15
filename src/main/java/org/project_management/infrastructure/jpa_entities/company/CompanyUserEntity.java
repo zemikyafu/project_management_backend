@@ -14,7 +14,6 @@ import org.project_management.infrastructure.jpa_entities.user.UserEntity;
 @Entity
 @Table(name = "company_user",uniqueConstraints = {
         @UniqueConstraint(columnNames = {"company_id", "isOwner"},name="unique_owner_per_company")})
-
 public class CompanyUserEntity {
     @EmbeddedId
     @Column(updatable = false)
@@ -39,5 +38,4 @@ public class CompanyUserEntity {
         this.isOwner = isOwner;
         this.id = new CompanyUserId(user.getId(),company.getId());
     }
-
 }
