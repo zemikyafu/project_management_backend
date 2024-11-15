@@ -1,7 +1,6 @@
 package org.project_management;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +17,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -41,10 +39,10 @@ public class UserControllerIT {
     UserRepository userRepository;
 
     User user;
+    UserCreate userCreate = new UserCreate("Ted Tester", "testing@email.com", "Password123#");
 
     @BeforeEach
     public void addUser() {
-        UserCreate userCreate = new UserCreate("Ted Tester", "testing@email.com", "Password123#");
         user = userRepository.save(UserMapper.toUser(userCreate));
     }
 
@@ -75,7 +73,10 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.status").value("success"))
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.errors").value((Object) null))
-                .andExpect(jsonPath("$.data").isArray());
+                .andExpect(jsonPath("$.data").isArray())
+                .andExpect(jsonPath("$.data[0].name").value(user.getName()))
+                .andExpect(jsonPath("$.data[0].email").value(user.getEmail()))
+                .andExpect(jsonPath("$.data[0].password").doesNotExist());
     }
 
     @Test
@@ -101,19 +102,21 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.errors").value((Object) null))
                 .andExpect(jsonPath("$.data").value("User deleted successfully"));
 
-        // check that users path is empty
-        mockMvc.perform(get("/api/v1/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", hasSize(0)))
-                .andExpect(jsonPath("$.status").value("success"))
-                .andExpect(jsonPath("$.code").value("200"))
-                .andExpect(jsonPath("$.errors").value((Object) null))
-                .andExpect(jsonPath("$.data").isArray());
+        // check that user not found
+        mockMvc.perform(get("/api/v1/users/" + user.getId()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value("error"))
+                .andExpect(jsonPath("$.code").value("404"))
+                .andExpect(jsonPath("$.errors").isArray())
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0].message").value("User not found with id: " + user.getId()))
+                .andExpect(jsonPath("$.data").value((Object) null));
     }
 
     @Test
     void shouldFullyUpdateExistingUser() throws Exception {
         user.setEmail("new_email@email.com");
+        user.setName("New Name");
 
         mockMvc.perform(put("/api/v1/users/" + user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -123,7 +126,7 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.status").value("success"))
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.errors").value((Object) null))
-                .andExpect(jsonPath("$.data.name").value(user.getName()))
+                .andExpect(jsonPath("$.data.name").value("New Name"))
                 .andExpect(jsonPath("$.data.email").value("new_email@email.com"))
                 .andExpect(jsonPath("$.data.password").doesNotExist())
                 .andExpect(jsonPath("$.data.status").value(user.getStatus().toString()))
@@ -131,7 +134,7 @@ public class UserControllerIT {
     }
 
     @Test
-    void shouldFailFullyUpdateNonExistentUser() throws Exception {
+    void shouldFailToUpdateNonExistentUser() throws Exception {
         mockMvc.perform(put("/api/v1/users/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))
