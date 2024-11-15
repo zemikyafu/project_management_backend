@@ -1,10 +1,7 @@
 package org.project_management.infrastructure.jpa_entities.Workspace;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.project_management.infrastructure.jpa_entities.project.ProjectEntity;
 import org.project_management.infrastructure.jpa_entities.role.RoleEntity;
 import org.project_management.infrastructure.jpa_entities.user.UserEntity;
@@ -21,6 +18,7 @@ public class WorkspaceUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @ManyToOne
@@ -35,4 +33,10 @@ public class WorkspaceUserEntity {
     @JoinColumn(name = "workspace_id", nullable = false)
     private WorkspaceEntity workspace;
 
+
+    public WorkspaceUserEntity(UserEntity user, RoleEntity role, WorkspaceEntity workspace) {
+        this.user = user;
+        this.role = role;
+        this.workspace = workspace;
+    }
 }

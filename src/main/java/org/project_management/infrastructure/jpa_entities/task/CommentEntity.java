@@ -1,10 +1,7 @@
 package org.project_management.infrastructure.jpa_entities.task;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.project_management.infrastructure.jpa_entities.company.CompanyEntity;
 import org.project_management.infrastructure.jpa_entities.user.UserEntity;
 
@@ -21,6 +18,7 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @Column(columnDefinition = "TEXT", name = "content", nullable = false)
@@ -41,5 +39,14 @@ public class CommentEntity {
     @Temporal(TemporalType.DATE)
     @Column(name = "edited_at")
     private Date editedAt;
+
+
+    public CommentEntity(String content, TaskEntity task, UserEntity user, Date createdAt, Date editedAt) {
+        this.content = content;
+        this.task = task;
+        this.user = user;
+        this.createdAt = createdAt;
+        this.editedAt = editedAt;
+    }
 
 }

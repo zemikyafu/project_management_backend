@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AccessLevel;
 import org.project_management.domain.entities.task.TaskPriority;
 import org.project_management.domain.entities.task.TaskStatus;
 import org.project_management.infrastructure.jpa_entities.project.ProjectEntity;
@@ -24,6 +25,7 @@ public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @Column(columnDefinition = "TEXT", name = "title", nullable = false, length = 255)
@@ -63,5 +65,20 @@ public class TaskEntity {
     @Temporal(TemporalType.DATE)
     @Column(name = "deadline_at")
     private Date deadlineAt;
+
+    public TaskEntity(String title, String content, TaskPriority priority, TaskStatus status,
+                      ProjectEntity project, UserEntity assignee, Date createdAt,
+                      Date editedAt, Date closedAt, Date deadlineAt) {
+        this.title = title;
+        this.content = content;
+        this.priority = priority;
+        this.status = status;
+        this.project = project;
+        this.assignee = assignee;
+        this.createdAt = createdAt;
+        this.editedAt = editedAt;
+        this.closedAt = closedAt;
+        this.deadlineAt = deadlineAt;
+    }
 
 }

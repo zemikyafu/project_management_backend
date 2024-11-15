@@ -2,10 +2,7 @@ package org.project_management.infrastructure.jpa_entities.project;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.project_management.domain.entities.project.ProjectStatus;
 import org.project_management.infrastructure.jpa_entities.Workspace.WorkspaceEntity;
 
@@ -22,6 +19,7 @@ public class ProjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     @Column(columnDefinition = "TEXT", name = "name", nullable = false, length = 255)
@@ -38,8 +36,21 @@ public class ProjectEntity {
     @JoinColumn(name = "workspace_id", nullable = false)
     private WorkspaceEntity workspace;
 
-    private Date start_date;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "start_date")
+    private Date startDate;
 
-    private Date end_date;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "end_date")
+    private Date endDate;
+
+    public ProjectEntity(String name, String description, ProjectStatus status, WorkspaceEntity workspace, Date startDate, Date endDate) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.workspace = workspace;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
 }
