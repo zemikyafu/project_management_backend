@@ -17,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -134,6 +135,20 @@ public class UserControllerIT {
     }
 
     @Test
+    void shouldFailFullyUpdateNonExistentUser() throws Exception {
+        mockMvc.perform(put("/api/v1/users/" + UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user))
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value("error"))
+                .andExpect(jsonPath("$.code").value("404"))
+                .andExpect(jsonPath("$.errors").isArray())
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0].message").value("User not found"));
+    }
+
+    @Test
     void shouldPartiallyUpdateExistingUser() throws Exception {
         UserPartialUpdate userPartialUpdate = new UserPartialUpdate("New Name", "new_email@email.com");
 
@@ -147,5 +162,21 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.errors").value((Object) null))
                 .andExpect(jsonPath("$.data.name").value(userPartialUpdate.getName()))
                 .andExpect(jsonPath("$.data.email").value(userPartialUpdate.getEmail()));
+    }
+
+    @Test
+    void shouldFailPartiallyUpdateNonExistentUser() throws Exception {
+        UserPartialUpdate userPartialUpdate = new UserPartialUpdate("New Name", "new_email@mail.com");
+
+        mockMvc.perform(patch("/api/v1/users/" + UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userPartialUpdate))
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value("error"))
+                .andExpect(jsonPath("$.code").value("404"))
+                .andExpect(jsonPath("$.errors").isArray())
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0].message").value("User not found"));
     }
 }
