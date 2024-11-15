@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class RolePermissionId implements Serializable {
-  private UUID roleId;
-  private UUID permissionId;
+    private UUID roleId;
+    private UUID permissionId;
 
     public RolePermissionId(UUID roleId, UUID permissionId) {
         this.roleId = roleId;
@@ -27,7 +27,6 @@ public class RolePermissionId implements Serializable {
     public void setPermissionId(UUID permissionId) {
         this.permissionId = permissionId;
     }
-
 
     @Override
     public boolean equals(Object o) {

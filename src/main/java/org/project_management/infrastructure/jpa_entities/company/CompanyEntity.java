@@ -34,6 +34,4 @@ public class CompanyEntity {
         this.email = email;
         this.address = address;
     }
-
-
 }

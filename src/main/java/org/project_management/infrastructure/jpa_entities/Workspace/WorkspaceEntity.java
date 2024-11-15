@@ -22,8 +22,8 @@ public class WorkspaceEntity {
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyEntity company;
 
-    public WorkspaceEntity() {
-    }
+    public WorkspaceEntity() {}
+
     public WorkspaceEntity(String name, String description, CompanyEntity company) {
         this.name = name;
         this.description = description;

@@ -14,9 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "role")
-
 public class RoleEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
@@ -28,5 +26,4 @@ public class RoleEntity {
     public RoleEntity(String name) {
         this.name = name;
     }
-
 }

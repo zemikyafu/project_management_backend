@@ -8,12 +8,10 @@ import java.util.List;
 public class GlobalResponse<T> {
     public final static String SUCCESS = "success";
     public final static String ERROR = "error";
-
     private final String status;
     private final int code;
     public final T data;
     private final List<GlobalResponse.ErrorItem> errors;
-
 
     public GlobalResponse(int code, List<GlobalResponse.ErrorItem> errors) {
         this.status = ERROR;
