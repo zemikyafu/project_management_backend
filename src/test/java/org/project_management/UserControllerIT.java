@@ -1,6 +1,7 @@
 package org.project_management;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserControllerIT {
     @Autowired
     MockMvc mockMvc;
@@ -40,14 +43,7 @@ public class UserControllerIT {
     User user;
 
     @BeforeEach
-    public void initTest() {
-        List<User> users = userRepository.findAll();
-
-        // delete all users created during tests
-        for (User user : users) {
-            userRepository.deleteUser(user.getId());
-        }
-
+    public void addUser() {
         UserCreate userCreate = new UserCreate("Ted Tester", "testing@email.com", "Password123#");
         user = userRepository.save(UserMapper.toUser(userCreate));
     }
@@ -72,7 +68,7 @@ public class UserControllerIT {
     }
 
     @Test
-    void shouldReturnAllUsers() throws Exception {
+    void shouldGetAllUsers() throws Exception {
         mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(1)))
