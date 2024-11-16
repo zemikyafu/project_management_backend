@@ -78,7 +78,7 @@ public class UserRepositoryImpl implements UserRepository {
         List<UserEntity> userEntities = query.getResultList();
 
         if (userEntities.isEmpty()) {
-            throw new ResourceNotFoundException("User not found with email: " + email);
+            return Optional.empty();
         }
 
         UserEntity userEntity = userEntities.get(0);

@@ -1,28 +1,49 @@
 package org.project_management.application.services;
 
+import org.project_management.application.exceptions.ResourceNotFoundException;
+import org.project_management.application.exceptions.UserAlreadyExistException;
+import org.project_management.domain.abstractions.UserRepository;
+import org.project_management.domain.entities.user.User;
+import org.project_management.presentation.config.JwtHelper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-    @Override
-    public String generateHash(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(hash);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private  PasswordEncoder passwordEncoder;
+    private final JwtHelper jwtHelper;
+    public AuthServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtHelper jwtHelper) {
+        this.userRepository = userRepository;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtHelper = jwtHelper;
     }
 
     @Override
-    public boolean verifyPassword(String password, String hash) {
-        return generateHash(password).equals(hash);
+    public User signUp(User user) {
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
+            throw new UserAlreadyExistException("User already exists with email: " + user.getEmail());
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+    @Override
+    public User signIn(String email, String password) {
+        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+
+//        Optional<User> existingUser = userRepository.findByEmail(email);
+//        if (!existingUser.isPresent()) {
+//            throw new ResourceNotFoundException("User not found with email: " + email);
+//        }
+//        return (User) authentication.getPrincipal();
+
     }
 }

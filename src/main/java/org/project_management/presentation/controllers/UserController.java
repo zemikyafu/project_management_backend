@@ -27,15 +27,15 @@ public class UserController {
         this.authService = authService;
     }
 
-    @PostMapping
-    public ResponseEntity<GlobalResponse<UserRead>> save(@RequestBody @Valid UserCreate userCreate) {
-        User user = UserMapper.toUser(userCreate);
-        user.setPassword(authService.generateHash(userCreate.getPassword()));
-
-        User savedUser = userService.save(user);
-
-        return new ResponseEntity<>(new GlobalResponse<>(HttpStatus.CREATED.value(), UserMapper.toUserRead(savedUser)), HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<GlobalResponse<UserRead>> save(@RequestBody @Valid SignupRequest signupRequest) {
+//        User user = UserMapper.toUser(signupRequest);
+//        user.setPassword(authService.generateHash(signupRequest.getPassword()));
+//
+//        User savedUser = userService.save(user);
+//
+//        return new ResponseEntity<>(new GlobalResponse<>(HttpStatus.CREATED.value(), UserMapper.toUserRead(savedUser)), HttpStatus.CREATED);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GlobalResponse<UserRead>> findById(@PathVariable UUID id) {
