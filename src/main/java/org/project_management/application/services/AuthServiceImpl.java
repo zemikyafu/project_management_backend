@@ -1,13 +1,16 @@
 package org.project_management.application.services;
 
+import org.project_management.application.dto.User.SigninResponse;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.UserAlreadyExistException;
 import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.JwtHelper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +39,17 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.save(user);
     }
     @Override
-    public User signIn(String email, String password) {
-        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-
-//        Optional<User> existingUser = userRepository.findByEmail(email);
-//        if (!existingUser.isPresent()) {
-//            throw new ResourceNotFoundException("User not found with email: " + email);
-//        }
-//        return (User) authentication.getPrincipal();
+    public SigninResponse signIn(String email, String password) {
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+            if(authentication.isAuthenticated()){
+                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                String token = jwtHelper.generateToken(userDetails);
+                return new  SigninResponse(token, user.getId(), user.getEmail());
+            }
+            else {
+                throw new BadCredentialsException("Invalid credentials");
+            }
 
     }
 }
