@@ -1,6 +1,7 @@
 package org.project_management.presentation.config;
 
 import org.project_management.application.services.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,8 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint authenticationHandler;
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
+    @Value("${api.base.url}")
+    private String baseUrl;
     public SecurityConfig(UserDetailsServiceImpl userDetailService, JwtAuthFilter jwtAuthFilter,
                           CustomAuthenticationEntryPoint authenticationHandler, CustomAccessDeniedHandler accessDeniedHandler) {
         this.userDetailService = userDetailService;
@@ -34,7 +37,7 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers("${api.base.url}/auth/**").permitAll()
+                .requestMatchers(baseUrl+"/auth/**").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationHandler)
