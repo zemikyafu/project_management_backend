@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -24,7 +24,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(userFound.get().getEmail())
                 .password(userFound.get().getPassword()).build();
-
     }
-
 }
