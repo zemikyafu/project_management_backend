@@ -20,7 +20,7 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-    private  PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final JwtHelper jwtHelper;
     public AuthServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtHelper jwtHelper) {
         this.userRepository = userRepository;
@@ -38,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
     @Override
     public SigninResponse signIn(String email, String password) {
             User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -50,6 +51,5 @@ public class AuthServiceImpl implements AuthService {
             else {
                 throw new BadCredentialsException("Invalid credentials");
             }
-
     }
 }
