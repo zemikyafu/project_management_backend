@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
             if(authentication.isAuthenticated()){
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 String token = jwtHelper.generateToken(userDetails);
-                return new  SigninResponse(token, user.getId(), user.getEmail());
+                return new  SigninResponse(token, user.getId(), user.getName());
             }
             else {
                 throw new BadCredentialsException("Invalid credentials");
