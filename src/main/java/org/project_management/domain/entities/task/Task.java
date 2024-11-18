@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AccessLevel;
 import org.project_management.domain.entities.project.Project;
-import org.project_management.domain.entities.user.UserEntity;
+import org.project_management.domain.entities.user.User;
 
 import java.util.Date;
 import java.util.UUID;
@@ -46,7 +46,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity assignee;
+    private User assignee;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "created_at")
@@ -65,7 +65,7 @@ public class Task {
     private Date deadlineAt;
 
     public Task(String title, String content, TaskPriority priority, TaskStatus status,
-                Project project, UserEntity assignee, Date createdAt,
+                Project project, User assignee, Date createdAt,
                 Date editedAt, Date closedAt, Date deadlineAt) {
         this.title = title;
         this.content = content;
@@ -78,5 +78,4 @@ public class Task {
         this.closedAt = closedAt;
         this.deadlineAt = deadlineAt;
     }
-
 }

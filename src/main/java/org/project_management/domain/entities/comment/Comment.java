@@ -3,7 +3,7 @@ package org.project_management.domain.entities.comment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.project_management.domain.entities.task.Task;
-import org.project_management.domain.entities.user.UserEntity;
+import org.project_management.domain.entities.user.User;
 
 import java.util.Date;
 import java.util.UUID;
@@ -30,7 +30,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "commenter_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "created_at")
@@ -40,13 +40,11 @@ public class Comment {
     @Column(name = "edited_at")
     private Date editedAt;
 
-
-    public Comment(String content, Task task, UserEntity user, Date createdAt, Date editedAt) {
+    public Comment(String content, Task task, User user, Date createdAt, Date editedAt) {
         this.content = content;
         this.task = task;
         this.user = user;
         this.createdAt = createdAt;
         this.editedAt = editedAt;
     }
-
 }

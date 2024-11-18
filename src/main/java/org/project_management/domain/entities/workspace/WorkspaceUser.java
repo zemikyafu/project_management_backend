@@ -3,7 +3,7 @@ package org.project_management.domain.entities.workspace;
 import jakarta.persistence.*;
 import lombok.*;
 import org.project_management.domain.entities.role.Role;
-import org.project_management.domain.entities.user.UserEntity;
+import org.project_management.domain.entities.user.User;
 
 import java.util.UUID;
 
@@ -22,7 +22,7 @@ public class WorkspaceUser {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
@@ -32,8 +32,7 @@ public class WorkspaceUser {
     @JoinColumn(name = "workspace_id", nullable = false)
     private Workspace workspace;
 
-
-    public WorkspaceUser(UserEntity user, Role role, Workspace workspace) {
+    public WorkspaceUser(User user, Role role, Workspace workspace) {
         this.user = user;
         this.role = role;
         this.workspace = workspace;

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.project_management.domain.entities.user.UserEntity;
+import org.project_management.domain.entities.user.User;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +22,7 @@ public class CompanyUser {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id",nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @MapsId("companyId")
@@ -32,7 +32,7 @@ public class CompanyUser {
     @Column(name = "isOwner", nullable = false)
     private boolean isOwner=false;
 
-    public CompanyUser(UserEntity user, Company company, boolean isOwner) {
+    public CompanyUser(User user, Company company, boolean isOwner) {
         this.user = user;
         this.company = company;
         this.isOwner = isOwner;
