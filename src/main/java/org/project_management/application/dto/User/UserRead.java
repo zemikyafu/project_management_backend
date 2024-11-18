@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 public class UserRead {
-    private UUID id;
+    private UUID userId;
     private String name;
     private String email;
     private Status Status;

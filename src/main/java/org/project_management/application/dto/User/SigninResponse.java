@@ -13,6 +13,6 @@ import java.util.UUID;
 @Setter
 public class SigninResponse {
     private String token;
-    private UUID id;
+    private UUID userId;
     private String name;
 }
