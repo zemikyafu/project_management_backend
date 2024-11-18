@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.jpa_entities.role;
+package org.project_management.domain.entities.permission;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "permission")
-public class PermissionEntity {
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
@@ -23,7 +23,7 @@ public class PermissionEntity {
     @Column(name = "name", nullable = false, length = 100,unique = true)
     private String name;
 
-    public PermissionEntity(String name) {
+    public Permission(String name) {
         this.name = name;
     }
 }

@@ -1,10 +1,9 @@
-package org.project_management.infrastructure.jpa_entities.project;
+package org.project_management.domain.entities.project;
 
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.project_management.domain.entities.project.ProjectStatus;
-import org.project_management.infrastructure.jpa_entities.Workspace.WorkspaceEntity;
+import org.project_management.domain.entities.workspace.Workspace;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name="project")
-public class ProjectEntity {
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
@@ -34,7 +33,7 @@ public class ProjectEntity {
 
     @ManyToOne
     @JoinColumn(name = "workspace_id", nullable = false)
-    private WorkspaceEntity workspace;
+    private Workspace workspace;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "start_date")
@@ -44,7 +43,7 @@ public class ProjectEntity {
     @Column(name = "end_date")
     private Date endDate;
 
-    public ProjectEntity(String name, String description, ProjectStatus status, WorkspaceEntity workspace, Date startDate, Date endDate) {
+    public Project(String name, String description, ProjectStatus status, Workspace workspace, Date startDate, Date endDate) {
         this.name = name;
         this.description = description;
         this.status = status;

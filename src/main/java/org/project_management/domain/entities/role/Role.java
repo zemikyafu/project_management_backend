@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.jpa_entities.role;
+package org.project_management.domain.entities.role;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "role")
-public class RoleEntity {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
@@ -23,7 +23,7 @@ public class RoleEntity {
     @Column(name = "name", nullable = false, length = 50,unique = true)
     private String name;
 
-    public RoleEntity(String name) {
+    public Role(String name) {
         this.name = name;
     }
 }

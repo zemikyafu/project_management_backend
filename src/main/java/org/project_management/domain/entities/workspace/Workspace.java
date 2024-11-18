@@ -1,13 +1,13 @@
-package org.project_management.infrastructure.jpa_entities.Workspace;
+package org.project_management.domain.entities.workspace;
 
 import jakarta.persistence.*;
-import org.project_management.infrastructure.jpa_entities.company.CompanyEntity;
+import org.project_management.domain.entities.company.Company;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "workspace")
-public class WorkspaceEntity {
+public class Workspace {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -20,11 +20,11 @@ public class WorkspaceEntity {
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
-    private CompanyEntity company;
+    private Company company;
 
-    public WorkspaceEntity() {}
+    public Workspace() {}
 
-    public WorkspaceEntity(String name, String description, CompanyEntity company) {
+    public Workspace(String name, String description, Company company) {
         this.name = name;
         this.description = description;
         this.company = company;
@@ -54,11 +54,11 @@ public class WorkspaceEntity {
         this.description = description;
     }
 
-    public CompanyEntity getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(CompanyEntity company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 }

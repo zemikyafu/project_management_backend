@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.jpa_entities.task;
+package org.project_management.domain.entities.task;
 
 
 import jakarta.persistence.*;
@@ -7,10 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AccessLevel;
-import org.project_management.domain.entities.task.TaskPriority;
-import org.project_management.domain.entities.task.TaskStatus;
-import org.project_management.infrastructure.jpa_entities.project.ProjectEntity;
-import org.project_management.infrastructure.jpa_entities.user.UserEntity;
+import org.project_management.domain.entities.project.Project;
+import org.project_management.domain.entities.user.User;
 
 import java.util.Date;
 import java.util.UUID;
@@ -21,7 +19,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "task")
-public class TaskEntity {
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
@@ -44,11 +42,11 @@ public class TaskEntity {
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
-    private ProjectEntity project;
+    private Project project;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity assignee;
+    private User assignee;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "created_at")
@@ -66,9 +64,9 @@ public class TaskEntity {
     @Column(name = "deadline_at")
     private Date deadlineAt;
 
-    public TaskEntity(String title, String content, TaskPriority priority, TaskStatus status,
-                      ProjectEntity project, UserEntity assignee, Date createdAt,
-                      Date editedAt, Date closedAt, Date deadlineAt) {
+    public Task(String title, String content, TaskPriority priority, TaskStatus status,
+                Project project, User assignee, Date createdAt,
+                Date editedAt, Date closedAt, Date deadlineAt) {
         this.title = title;
         this.content = content;
         this.priority = priority;
@@ -80,5 +78,4 @@ public class TaskEntity {
         this.closedAt = closedAt;
         this.deadlineAt = deadlineAt;
     }
-
 }

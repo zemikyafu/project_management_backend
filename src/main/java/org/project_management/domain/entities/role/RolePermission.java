@@ -1,10 +1,11 @@
-package org.project_management.infrastructure.jpa_entities.role;
+package org.project_management.domain.entities.role;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.project_management.domain.entities.permission.Permission;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "role_permission")
-public class RolePermissionEntity {
+public class RolePermission {
     @EmbeddedId
     @Column(updatable = false)
     private RolePermissionId id;
@@ -20,14 +21,14 @@ public class RolePermissionEntity {
     @ManyToOne
     @MapsId("roleId")
     @JoinColumn(name = "role_id",nullable = false)
-    private RoleEntity role;
+    private Role role;
 
     @ManyToOne
     @MapsId("permissionId")
     @JoinColumn(name = "permission_id",nullable = false)
-    private PermissionEntity permission;
+    private Permission permission;
 
-    public RolePermissionEntity(RoleEntity role, PermissionEntity permission) {
+    public RolePermission(Role role, Permission permission) {
         this.role = role;
         this.permission = permission;
         this.id = new RolePermissionId(role.getId(),permission.getId());

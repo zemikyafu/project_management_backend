@@ -1,9 +1,9 @@
-package org.project_management.infrastructure.jpa_entities.task;
+package org.project_management.domain.entities.comment;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.project_management.infrastructure.jpa_entities.company.CompanyEntity;
-import org.project_management.infrastructure.jpa_entities.user.UserEntity;
+import org.project_management.domain.entities.task.Task;
+import org.project_management.domain.entities.user.User;
 
 import java.util.Date;
 import java.util.UUID;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "comment")
-public class CommentEntity {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
@@ -26,11 +26,11 @@ public class CommentEntity {
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
-    private TaskEntity task;
+    private Task task;
 
     @ManyToOne
     @JoinColumn(name = "commenter_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "created_at")
@@ -40,13 +40,11 @@ public class CommentEntity {
     @Column(name = "edited_at")
     private Date editedAt;
 
-
-    public CommentEntity(String content, TaskEntity task, UserEntity user, Date createdAt, Date editedAt) {
+    public Comment(String content, Task task, User user, Date createdAt, Date editedAt) {
         this.content = content;
         this.task = task;
         this.user = user;
         this.createdAt = createdAt;
         this.editedAt = editedAt;
     }
-
 }
