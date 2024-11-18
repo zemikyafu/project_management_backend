@@ -11,10 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class UserCreate {
-    @NotNull
-    private String name;
-
+public class SigninRequest {
     @NotNull
     @Email
     private String email;
@@ -24,4 +21,5 @@ public class UserCreate {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
             message = "Password must contain at least one uppercase letter and one special character")
     private String password;
+
 }
