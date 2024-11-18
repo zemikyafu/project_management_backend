@@ -11,7 +11,7 @@ import org.project_management.application.exceptions.UnableToDeleteResourceExcep
 import org.project_management.application.exceptions.UnableToSaveResourceException;
 import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.user.User;
-import org.project_management.infrastructure.jpa_entities.user.UserEntity;
+import org.project_management.domain.entities.user.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

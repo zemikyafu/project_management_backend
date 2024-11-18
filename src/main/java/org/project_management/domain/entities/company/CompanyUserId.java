@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.jpa_entities.company;
+package org.project_management.domain.entities.company;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

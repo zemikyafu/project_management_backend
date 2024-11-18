@@ -1,13 +1,14 @@
-package org.project_management.infrastructure.jpa_entities.user;
+package org.project_management.domain.entities.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.project_management.domain.entities.user.Status;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -16,6 +17,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 

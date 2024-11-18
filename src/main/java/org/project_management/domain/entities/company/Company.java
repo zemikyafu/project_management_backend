@@ -1,4 +1,4 @@
-package org.project_management.infrastructure.jpa_entities.company;
+package org.project_management.domain.entities.company;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "company")
-public class CompanyEntity {
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false)
@@ -29,7 +29,7 @@ public class CompanyEntity {
     @Column(name="address",columnDefinition = "Text")
     private String address;
 
-    public CompanyEntity(String name, String email, String address) {
+    public Company(String name, String email, String address) {
         this.name = name;
         this.email = email;
         this.address = address;
