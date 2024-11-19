@@ -37,7 +37,7 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers(baseUrl + "/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                .requestMatchers(baseUrl + "/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/v3/api-docs.yaml").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationHandler)
