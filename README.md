@@ -1,6 +1,29 @@
+# Backend application for project management system
 
+Table of Contents
+=================
+   * [API Documentation](#api-documentation)
+      * [Swagger UI](#swagger-ui)
+      * [JSON and YAML files](#json-and-yaml-files)
 
-# Teamwork
+## API Documentation
+
+### Swagger UI
+
+After running the application, the API documentation can be accessed
+from following url: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+### JSON and YAML files
+
+The API documentation can also be accessed in JSON and YAML formats:
+- [JSON](http://localhost:8080/v3/api-docs)
+- [YAML](http://localhost:8080/v3/api-docs.yaml)
+
+---
+
+# Integrify project details
+
+## Teamwork
 
 - Designing REST API endpoints
 - Database schema
