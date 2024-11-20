@@ -34,10 +34,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String[] apiDocPaths = new String[]{"/v3/api-docs/**", "/swagger-ui/**", "/v3/api-docs.yaml"};
+
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers(baseUrl+"/auth/**").permitAll()
+                .requestMatchers(baseUrl + "/auth/**").permitAll()
+                .requestMatchers(apiDocPaths).permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationHandler)
