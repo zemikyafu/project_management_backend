@@ -7,12 +7,14 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<GlobalResponse> handleBadRequestException(BadRequestException e) {
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
 
@@ -20,7 +22,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(globalResponse, null, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<GlobalResponse> handleUserAlreadyExistException(UserAlreadyExistException e) {
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
+
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.CONFLICT.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(UnableToSaveResourceException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<GlobalResponse> handleUnableToSaveResourceException(UnableToSaveResourceException e) {
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
 
@@ -29,6 +41,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnableToUpdateResourceException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<GlobalResponse> handleUnableToUpdateResourceException(UnableToUpdateResourceException e) {
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
 
@@ -37,6 +50,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnableToDeleteResourceException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<GlobalResponse> handleUnableToDeleteResourceException(UnableToDeleteResourceException e) {
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
 
@@ -45,6 +59,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<GlobalResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
 
@@ -53,6 +68,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<GlobalResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
 
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem("Invalid data format"));
@@ -61,6 +77,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<GlobalResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<GlobalResponse.ErrorItem> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(err -> new GlobalResponse.ErrorItem(err.getField() + " " + err.getDefaultMessage()))
@@ -71,6 +88,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<GlobalResponse> handleValidationExceptions(HttpMessageNotReadableException ex) {
 
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem("Invalid JSON"));
