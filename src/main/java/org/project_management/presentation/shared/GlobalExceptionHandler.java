@@ -77,4 +77,19 @@ public class GlobalExceptionHandler {
         GlobalResponse globalResponse = new GlobalResponse(HttpStatus.BAD_REQUEST.value(), errors);
         return new ResponseEntity<>(globalResponse, null, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<GlobalResponse> handleUserAlreadyExistException(UserAlreadyExistException e) {
+
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.CONFLICT.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.CONFLICT.value());
+    }
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<GlobalResponse> handleEmailException(EmailException e) {
+
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
