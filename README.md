@@ -37,13 +37,15 @@ cp src/main/resources/.env.example src/main/resources/.env
 
 Below are the environment variables required for the application:
 
-| Environment Variable         | Description                          |
-|-------------------------------|--------------------------------------|
-| `SPRING_DATASOURCE_URL`      | The URL for the database connection.|
-| `SPRING_DATASOURCE_USERNAME` | The username for the database.       |
-| `SPRING_DATASOURCE_PASSWORD` | The password for the database.       |
-| `JWT_SECRET`                 | Secret key for JWT authentication.  |
-
+| Environment Variable         | Description                                                        |
+|------------------------------|--------------------------------------------------------------------|
+| `SPRING_DATASOURCE_URL`      | The URL for the database connection.                               |
+| `SPRING_DATASOURCE_USERNAME` | The username for the database.                                     |
+| `SPRING_DATASOURCE_PASSWORD` | The password for the database.                                     |
+| `JWT_SECRET`                 | Secret key for JWT authentication.                                 |
+| `SPRING_MAIL_USERNAME`       | The Email address used  to authenticate with the SMTP mail server. |
+| `SPRING_MAIL_PASSWORD`       | The Password  used  to authenticate with the SMTP mail server.     |
+| `DOMAIN_URL`                 | The base URL of the application domain.                            |
 ---
 
 # Integrify project details
