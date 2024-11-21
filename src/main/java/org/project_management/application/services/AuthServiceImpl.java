@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public SigninResponse signIn(String email, String password) {
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with the provided email"));
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
             if(authentication.isAuthenticated()){
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();

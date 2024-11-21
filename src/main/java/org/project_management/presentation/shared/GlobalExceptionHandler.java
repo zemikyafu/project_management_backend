@@ -22,6 +22,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(globalResponse, null, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<GlobalResponse> handleUserAlreadyExistException(UserAlreadyExistException e) {
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
+
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.CONFLICT.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(UnableToSaveResourceException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<GlobalResponse> handleUnableToSaveResourceException(UnableToSaveResourceException e) {
