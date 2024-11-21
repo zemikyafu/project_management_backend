@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.project_management.application.dto.User.UserCreate;
+import org.project_management.application.dto.User.SignupRequest;
 import org.project_management.application.dto.User.UserMapper;
 import org.project_management.application.dto.User.UserPartialUpdate;
 import org.project_management.domain.abstractions.UserRepository;
@@ -39,7 +39,7 @@ public class UserControllerIT {
     UserRepository userRepository;
 
     User user;
-    UserCreate userCreate = new UserCreate("Ted Tester", "testing@email.com", "Password123#");
+    SignupRequest userCreate = new SignupRequest("Ted Tester", "testing@email.com", "Password123#");
 
     @BeforeEach
     public void addUser() {
@@ -48,9 +48,9 @@ public class UserControllerIT {
 
     @Test
     void shouldCreateUserSuccessfully() throws Exception {
-        UserCreate userCreate = new UserCreate("New User", "new@email.com", "Password123#");
+        SignupRequest userCreate = new SignupRequest("New User", "new@email.com", "Password123#");
 
-        mockMvc.perform(post("/api/v1/users")
+        mockMvc.perform(post("/api/v1/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userCreate))
                 )

@@ -2,19 +2,18 @@ package org.project_management.application.dto.User;
 
 import org.project_management.domain.entities.user.User;
 
+
 public class UserMapper {
     public static UserRead toUserRead(User user) {
         return new UserRead(user.getId(), user.getName(), user.getEmail(), user.getStatus());
     }
-
-    public static User toUser(UserCreate userCreate) {
+    public static User toUser(SignupRequest signupRequest) {
         User user = new User();
-        user.setName(userCreate.getName());
-        user.setEmail(userCreate.getEmail());
-        user.setPassword(userCreate.getPassword());
+        user.setName(signupRequest.getName());
+        user.setEmail(signupRequest.getEmail());
+        user.setPassword(signupRequest.getPassword());
         return user;
     }
-
     public static User toUser(UserUpdate userUpdate) {
         User user = new User();
         user.setName(userUpdate.getName());
@@ -23,7 +22,6 @@ public class UserMapper {
         user.setStatus(userUpdate.getStatus());
         return user;
     }
-
     public static User toUser(UserPartialUpdate userUpdate) {
         User user = new User();
         user.setName(userUpdate.getName());

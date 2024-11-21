@@ -26,17 +26,6 @@ public class UserController {
         this.userService = userService;
         this.authService = authService;
     }
-
-    @PostMapping
-    public ResponseEntity<GlobalResponse<UserRead>> save(@RequestBody @Valid UserCreate userCreate) {
-        User user = UserMapper.toUser(userCreate);
-        user.setPassword(authService.generateHash(userCreate.getPassword()));
-
-        User savedUser = userService.save(user);
-
-        return new ResponseEntity<>(new GlobalResponse<>(HttpStatus.CREATED.value(), UserMapper.toUserRead(savedUser)), HttpStatus.CREATED);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<GlobalResponse<UserRead>> findById(@PathVariable UUID id) {
         User user = userService.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));

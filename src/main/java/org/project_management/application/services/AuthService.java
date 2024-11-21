@@ -1,6 +1,9 @@
 package org.project_management.application.services;
 
+import org.project_management.application.dto.User.SigninResponse;
+import org.project_management.domain.entities.user.User;
+
 public interface AuthService {
-    public String generateHash(String password);
-    public boolean verifyPassword(String password, String hash);
+    User signUp(User user);
+    SigninResponse signIn(String email, String password);
 }
