@@ -5,6 +5,9 @@ Table of Contents
    * [API Documentation](#api-documentation)
       * [Swagger UI](#swagger-ui)
       * [JSON and YAML files](#json-and-yaml-files)
+   * [Running the application](#running-the-application)
+     * [Environment variables](#environment-variables)
+   * [Integrify project details](#integrify-project-details)
 
 ## API Documentation
 
@@ -18,6 +21,28 @@ from following url: [http://localhost:8080/swagger-ui/index.html](http://localho
 The API documentation can also be accessed in JSON and YAML formats:
 - [JSON](http://localhost:8080/v3/api-docs)
 - [YAML](http://localhost:8080/v3/api-docs.yaml)
+
+## Running the application
+
+### Environment variables
+
+To run the app, configure the required environment variables for this project.
+The repository includes an example `.env` file in `src/main/resources/.env.example`.
+
+You can copy the example file and rename it to `.env` with following command (from project root directory):
+
+```bash
+cp src/main/resources/.env.example src/main/resources/.env
+```
+
+Below are the environment variables required for the application:
+
+| Environment Variable         | Description                          |
+|-------------------------------|--------------------------------------|
+| `SPRING_DATASOURCE_URL`      | The URL for the database connection.|
+| `SPRING_DATASOURCE_USERNAME` | The username for the database.       |
+| `SPRING_DATASOURCE_PASSWORD` | The password for the database.       |
+| `JWT_SECRET`                 | Secret key for JWT authentication.  |
 
 ---
 
