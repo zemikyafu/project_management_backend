@@ -38,6 +38,26 @@ public class JwtHelper {
         return usernameMatch && !tokenIsExpired;
     }
 
+    public String generateInvitationToken(String email) {
+        return this.generateInvitationToken(new HashMap<>(), email);
+    }
+
+    private String generateInvitationToken(Map<String, Object> extraClaims, String email) {
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .signWith(getSignInKey())
+                .compact();
+    }
+    public boolean isInvitationTokenValid(String token) {
+        final Date tokenExpirationDate = extractClaim(token, Claims::getExpiration);
+        boolean tokenIsExpired = tokenExpirationDate.before(new Date(System.currentTimeMillis()));
+
+        return  !tokenIsExpired;
+    }
     public String generateToken(UserDetails userDetails) {
         return this.generateToken(new HashMap<>(), userDetails);
     }
