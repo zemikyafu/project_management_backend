@@ -1,4 +1,4 @@
-package org.project_management.application.dto.User;
+package org.project_management.application.dto.Invitation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

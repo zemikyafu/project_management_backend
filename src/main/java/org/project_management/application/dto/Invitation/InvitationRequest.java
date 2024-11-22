@@ -1,4 +1,4 @@
-package org.project_management.application.dto.User;
+package org.project_management.application.dto.Invitation;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -21,4 +21,6 @@ public class InvitationRequest {
     private UUID workspaceId;
     @NotNull(message = "Role ID is required")
     private UUID roleId;
+
+
 }
