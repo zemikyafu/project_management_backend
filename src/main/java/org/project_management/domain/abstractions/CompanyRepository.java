@@ -8,10 +8,18 @@ import java.util.UUID;
 
 public interface CompanyRepository {
     Company save(Company company);
+
     Optional<Company> findById(UUID id);
+
     Optional<Company> findByEmail(String email);
+
     Optional<Company> findByName(String name);
+
     Company update(Company company);
+
     void delete(UUID id);
+
     List<Company> findAll();
+
+    List<Company> findByEmailOrName(String email, String name);
 }
