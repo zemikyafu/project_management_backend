@@ -46,7 +46,7 @@ public class JwtHelper {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(email)  // Subject is the email
+                .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey())
