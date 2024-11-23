@@ -17,7 +17,7 @@ public class EmailService {
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
-    public void sendEmail(String recipientEmail, String subject, String invitationText, String invitationUrl,String token) {
+    public boolean sendEmail(String recipientEmail, String subject, String invitationText, String invitationUrl,String token) {
         if (recipientEmail == null || recipientEmail.isEmpty()) {
             throw new BadRequestException("Recipient email cannot be null or empty");
         }
@@ -48,5 +48,6 @@ public class EmailService {
         } catch (MessagingException | MailException e) {
             throw new EmailException("Failed to send email.");
         }
+        return true;
     }
 }

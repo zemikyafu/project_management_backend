@@ -10,11 +10,13 @@ import org.project_management.domain.abstractions.WorkspaceRepository;
 import org.project_management.domain.entities.invitation.Invitation;
 import org.project_management.domain.entities.role.Role;
 import org.project_management.domain.entities.workspace.Workspace;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class InvitationServiceImpl implements InvitationService {
     private final InvitationRepository invitationRepository;
     private final WorkspaceRepository workspaceRepository;
@@ -37,7 +39,7 @@ public class InvitationServiceImpl implements InvitationService {
         try {
             return invitationRepository.save(invitation);
         } catch (Exception e) {
-            throw new UnableToSaveResourceException("Invitation not saved");
+            throw new UnableToSaveResourceException("Unable to save invitation.");
 
         }
     }
@@ -61,11 +63,6 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public Optional<Invitation> findById(UUID invitationId) {
         return this.invitationRepository.findById(invitationId);
-    }
-
-    @Override
-    public Optional<Invitation> findByUserId(UUID userId) {
-        return invitationRepository.findByUserId(userId);
     }
 
     @Override
