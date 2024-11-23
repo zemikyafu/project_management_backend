@@ -45,9 +45,9 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
                 throw new InvitationException("Email could not be sent to the recipient.");
             }
         } catch (EmailException e) {
-            throw new InvitationException("Failed to send the invitation email.");
+            throw new EmailException("Failed to send the invitation email.");
         } catch (UnableToSaveResourceException e) {
-            throw new InvitationException("Failed to save the invitation after sending the email.");
+            throw new UnableToSaveResourceException("Failed to save the invitation after sending the email.");
         }
 
 
