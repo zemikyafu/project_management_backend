@@ -1,11 +1,10 @@
-package org.project_management.application.services;
+package org.project_management.application.services.Invitation;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.project_management.application.exceptions.BadRequestException;
 import org.project_management.application.exceptions.EmailException;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
