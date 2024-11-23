@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/company")
+@RequestMapping("/api/v1/companies")
 @Tag(name = "Company", description = "Company management")
 public class CompanyController {
     private final CompanyService companyService;
@@ -50,9 +50,7 @@ public class CompanyController {
                     ))
             @RequestBody @Valid CompanyCreate newCompany) {
         Company company = CompanyMapper.toCompany(newCompany);
-        Company savedCompany = companyService.save(company);
-
-        return new ResponseEntity<>(new GlobalResponse<>(HttpStatus.CREATED.value(), savedCompany), HttpStatus.CREATED);
+        return new ResponseEntity<>(new GlobalResponse<>(HttpStatus.CREATED.value(), companyService.save(company)), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Delete existing company by ID")
@@ -69,7 +67,6 @@ public class CompanyController {
             @PathVariable UUID id
     ) {
         companyService.delete(id);
-
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), "Company deleted successfully"));
     }
 
@@ -84,9 +81,7 @@ public class CompanyController {
     })
     @GetMapping("/")
     public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
-        List<Company> companies = companyService.findAll();
-
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companies));
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
     }
 
     @Operation(summary = "Get existing company by ID")
@@ -103,11 +98,7 @@ public class CompanyController {
             @Parameter(description = "Company id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id
     ) {
-        Company company = companyService.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("company not found with ID: " + id.toString())
-        );
-
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), company));
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findById(id)));
     }
 
     @Operation(summary = "Update existing company by ID")
@@ -132,8 +123,6 @@ public class CompanyController {
     ) {
         Company company = CompanyMapper.toCompany(companyUpdateDto);
         company.setId(id);
-        Company updatedCompany = companyService.update(company);
-
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), updatedCompany));
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.update(company)));
     }
 }
