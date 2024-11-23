@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.project_management.application.dto.Invitation.InvitationRequest;
 import org.project_management.application.dto.Invitation.UpdateInvitation;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/invitations")
+@Tag(name = "Invitations", description = "Invitation management")
 public class InvitationController {
 
     private final InvitationUseCaseImpl invitationUseCaseImpl;
