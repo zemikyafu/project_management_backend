@@ -9,9 +9,9 @@ import java.util.UUID;
 public interface PermissionService {
     Permission save(Permission permission);
 
-    Optional<Permission> findById(UUID id);
+    Permission findById(UUID id);
 
-    Optional<Permission> findByName(String name);
+    Permission findByName(String name);
 
     Permission update(Permission permission);
 

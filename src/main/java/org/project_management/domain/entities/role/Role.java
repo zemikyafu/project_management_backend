@@ -20,7 +20,7 @@ public class Role {
     @Column(updatable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false, length = 50,unique = true)
+    @Column(name = "name", nullable = false, length = 50, unique = true)
     private String name;
 
     public Role(String name) {

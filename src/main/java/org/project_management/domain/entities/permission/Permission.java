@@ -20,7 +20,7 @@ public class Permission {
     @Column(updatable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false, length = 100,unique = true)
+    @Column(name = "name", nullable = false, length = 100, unique = true)
     private String name;
 
     public Permission(String name) {
