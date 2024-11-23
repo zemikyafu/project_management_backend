@@ -41,6 +41,8 @@ public class InvitationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Invitation sent successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid email address or input"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to send email")
     })
     @PostMapping
@@ -62,6 +64,8 @@ public class InvitationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "302", description = "Redirect to the user onboarding page after accepting the invitation"),
             @ApiResponse(responseCode = "400", description = "Invalid token provided"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
             @ApiResponse(responseCode = "404", description = "Invitation not found or expired"),
             @ApiResponse(responseCode = "500", description = "Internal server error while processing invitation acceptance")
     })
@@ -78,6 +82,8 @@ public class InvitationController {
     @Operation(summary = "Update an invitation")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Invitation updated successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
             @ApiResponse(responseCode = "404", description = "Invitation not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
             @ApiResponse(responseCode = "500", description = "Internal server error while updating invitation")
@@ -91,9 +97,9 @@ public class InvitationController {
 
     @Operation(summary = "Get all invitations")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List of all invitations retrieved successfully",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GlobalResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
+            @ApiResponse(responseCode = "200", description = "List of all invitations retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error while retrieving invitations",
                     content = @Content(mediaType = "application/json"))
     })
@@ -107,6 +113,9 @@ public class InvitationController {
     @Operation(summary = "Find an invitation by email and workspace ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Invitation found successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
+            @ApiResponse(responseCode = "400", description = "Invalid email or workspace ID format"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
             @ApiResponse(responseCode = "404", description = "Invitation not found")
     })
     @GetMapping("{email}/{workspaceId}")
@@ -120,9 +129,11 @@ public class InvitationController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitation));
     }
 
-    @Operation(summary = "Find a invitation by ID")
+    @Operation(summary = "Find Invitation by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Invitation found successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
             @ApiResponse(responseCode = "404", description = "Invitation not found"),
             @ApiResponse(responseCode = "400", description = "Invalid ID format")
     })
@@ -138,8 +149,11 @@ public class InvitationController {
     @Operation(summary = "Delete a resource by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Invitation deleted successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
             @ApiResponse(responseCode = "404", description = "Invitation not found"),
-            @ApiResponse(responseCode = "400", description = "Invitation ID format")
+            @ApiResponse(responseCode = "400", description = "Invitation ID format"),
+            @ApiResponse(responseCode = "500", description = "Internal server error while deleting the invitation")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<GlobalResponse<String>> deleteById(
