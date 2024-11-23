@@ -8,10 +8,13 @@ import org.project_management.domain.abstractions.InvitationRepository;
 import org.project_management.domain.entities.invitation.Invitation;
 import org.project_management.infrastructure.jpa_repositories.JpaInvitationRepository;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class InvitationRepositoryImpl implements InvitationRepository {
 
     private final JpaInvitationRepository jpaInvitationRepository;
@@ -38,12 +41,12 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     }
 
     @Override
-    public Optional<Invitation> findByUserId(UUID userId) {
-        return jpaInvitationRepository.findById(userId)
-                .or(() -> {
-                    throw new ResourceNotFoundException("Invitation not found with user id: " + userId.toString());
+    public Optional<Invitation> findByEmailandWorkspaceId(String email, UUID workspaceId){
+        return jpaInvitationRepository.findByEmailAndWorkspaceId(email, workspaceId).or(() -> {
+                    throw new ResourceNotFoundException("Invitation not found with email: " + email + " and workspace id: " + workspaceId.toString());
                 });
     }
+
 
     @Override
     public Invitation update(Invitation invitation) {
