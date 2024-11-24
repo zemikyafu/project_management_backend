@@ -28,7 +28,6 @@ import java.util.UUID;
 @RequestMapping("/api/invitations")
 @Tag(name = "Invitations", description = "Invitation management")
 public class InvitationController {
-
     private final InvitationUseCaseImpl invitationUseCaseImpl;
     private final InvitationService invitationService;
 
@@ -108,7 +107,6 @@ public class InvitationController {
         List<Invitation> invitations = invitationService.findAll();
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitations));
     }
-
 
     @Operation(summary = "Find an invitation by email and workspace ID")
     @ApiResponses(value = {

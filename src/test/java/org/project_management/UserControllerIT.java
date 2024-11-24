@@ -1,6 +1,7 @@
 package org.project_management;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Transactional
 public class UserControllerIT {
     @Autowired
     MockMvc mockMvc;
@@ -62,7 +62,7 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.data.email").value(userCreate.getEmail()))
                 .andExpect(jsonPath("$.data.password").doesNotExist())
                 .andExpect(jsonPath("$.data.status").value("ACTIVE"))
-                .andExpect(jsonPath("$.data.id").exists());
+                .andExpect(jsonPath("$.data.userId").exists());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.data.email").value(user.getEmail()))
                 .andExpect(jsonPath("$.data.password").doesNotExist())
                 .andExpect(jsonPath("$.data.status").value(user.getStatus().toString()))
-                .andExpect(jsonPath("$.data.id").value(user.getId().toString()));
+                .andExpect(jsonPath("$.data.userId").value(user.getId().toString()));
     }
 
     @Test
@@ -130,7 +130,7 @@ public class UserControllerIT {
                 .andExpect(jsonPath("$.data.email").value("new_email@email.com"))
                 .andExpect(jsonPath("$.data.password").doesNotExist())
                 .andExpect(jsonPath("$.data.status").value(user.getStatus().toString()))
-                .andExpect(jsonPath("$.data.id").value(user.getId().toString()));
+                .andExpect(jsonPath("$.data.userId").value(user.getId().toString()));
     }
 
     @Test

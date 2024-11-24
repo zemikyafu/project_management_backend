@@ -1,6 +1,5 @@
 package org.project_management.application.dto.Invitation;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +19,4 @@ public class InvitationResponse {
     private UUID roleId;
     private boolean isAccepted;
     private LocalDateTime expiredAt;
-
 }

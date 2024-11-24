@@ -17,10 +17,10 @@ public class InvitationRequest {
     @Email
     @NotNull(message = "Recipient email is required")
     private String  recipientEmail;
+
     @NotNull(message = "Workspace ID is required")
     private UUID workspaceId;
+
     @NotNull(message = "Role ID is required")
     private UUID roleId;
-
-
 }

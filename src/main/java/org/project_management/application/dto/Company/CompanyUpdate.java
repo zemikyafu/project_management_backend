@@ -1,4 +1,4 @@
-package org.project_management.application.dto.User;
+package org.project_management.application.dto.Company;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class UserPartialUpdate {
+public class CompanyUpdate {
     @NotNull
     private String name;
 
     @NotNull
     @Email
     private String email;
+
+    @NotNull
+    private String address;
 }

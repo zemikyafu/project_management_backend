@@ -40,7 +40,6 @@ public class InvitationServiceImpl implements InvitationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + invitationRequest.getRoleId()));
         Invitation invitation = new Invitation(invitationRequest.getRecipientEmail(), workspace, role);
         return invitationRepository.save(invitation);
-
     }
 
     @Override
