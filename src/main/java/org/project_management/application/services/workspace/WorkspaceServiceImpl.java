@@ -23,6 +23,11 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     }
 
     @Override
+    public Optional<Workspace> findById(UUID workspaceId) {
+        return workspaceRepository.findById(workspaceId);
+    }
+
+    @Override
     public Optional<Workspace> findByIdAndCompanyId(UUID workspaceId, UUID companyId) {
         return workspaceRepository.findByIdAndCompanyId(workspaceId,companyId);
     }
