@@ -1,6 +1,6 @@
 package org.project_management.presentation.config;
 
-import org.project_management.application.services.UserDetailsServiceImpl;
+import org.project_management.application.services.User.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

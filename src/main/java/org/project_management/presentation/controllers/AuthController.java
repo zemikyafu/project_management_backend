@@ -6,9 +6,10 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.project_management.application.dto.User.*;
-import org.project_management.application.services.AuthService;
+import org.project_management.application.services.Auth.AuthService;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name = "Auth", description = "Authentication management")
 public class AuthController {
     private final AuthService authService;
 

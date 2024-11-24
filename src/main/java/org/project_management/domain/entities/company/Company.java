@@ -20,13 +20,13 @@ public class Company {
     @Column(updatable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false, columnDefinition = "Text")
+    @Column(name = "name", nullable = false, columnDefinition = "Text", unique = true)
     private String name;
 
     @Column(name="email", nullable = false, length = 320, unique = true)
     private String email;
 
-    @Column(name="address",columnDefinition = "Text")
+    @Column(name="address", columnDefinition = "Text")
     private String address;
 
     public Company(String name, String email, String address) {
