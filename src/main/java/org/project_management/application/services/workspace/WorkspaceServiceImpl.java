@@ -32,6 +32,9 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     public Workspace save(WorkspaceCreate createDTO, UUID companyId) {
 
         Company company = companyService.findById(companyId);
+        if (company == null) {
+            throw new IllegalArgumentException("Company not found with id: " + createDTO.getCompanyId());
+        }
         Workspace workspace = WorkspaceMapper.toEntity(createDTO, company);
         return workspaceRepository.save(workspace);
     }
