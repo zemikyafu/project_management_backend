@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class UserPartialUpdate {
     @NotNull
     private String name;
+
     @NotNull
     @Email
     private String email;

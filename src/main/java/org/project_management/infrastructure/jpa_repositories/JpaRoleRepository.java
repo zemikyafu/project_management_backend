@@ -9,5 +9,6 @@ import java.util.UUID;
 
 public interface JpaRoleRepository extends JpaRepository<Role, UUID> {
     Optional<Role> findByName(String name);
+
     List<Role> findByCompanyId(UUID companyId);
 }

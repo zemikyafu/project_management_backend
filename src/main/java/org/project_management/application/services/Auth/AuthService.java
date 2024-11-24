@@ -5,5 +5,6 @@ import org.project_management.domain.entities.user.User;
 
 public interface AuthService {
     User signUp(User user);
+
     SigninResponse signIn(String email, String password);
 }
