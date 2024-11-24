@@ -1,9 +1,8 @@
-package org.project_management.application.services;
+package org.project_management.application.services.AccessControl;
 
 import org.project_management.domain.entities.permission.Permission;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface PermissionService {

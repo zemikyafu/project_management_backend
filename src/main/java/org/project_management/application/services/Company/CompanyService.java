@@ -1,4 +1,4 @@
-package org.project_management.application.services;
+package org.project_management.application.services.Company;
 
 import org.project_management.domain.entities.company.Company;
 
