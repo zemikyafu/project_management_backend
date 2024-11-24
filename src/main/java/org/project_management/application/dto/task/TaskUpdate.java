@@ -8,12 +8,15 @@ import org.project_management.domain.entities.task.TaskPriority;
 import org.project_management.domain.entities.task.TaskStatus;
 
 import java.util.Date;
+import java.util.UUID;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class TaskUpdate {
+
+    private UUID id;
     @NotNull
     String title;
     @NotNull

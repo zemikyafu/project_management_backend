@@ -55,8 +55,8 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public Task update(TaskUpdate taskUpdate, UUID taskId) {
-        Task existingTask = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+    public Task update(TaskUpdate taskUpdate) {
+        Task existingTask = taskRepository.findById(taskUpdate.getId()).orElseThrow(() -> new RuntimeException("Task not found"));
         Task task = TaskMapper.toEntity(taskUpdate, existingTask);
         return taskRepository.update(task);
     }

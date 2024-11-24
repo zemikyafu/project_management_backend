@@ -15,7 +15,7 @@ public interface TaskService {
     Optional<Task> findById(UUID taskId);
     List<Task> findByProjectId(UUID projectId);
     Optional<Task> findByIdAndProjectId(UUID taskId, UUID projectId);
-    Task update(TaskUpdate taskUpdate, UUID taskId);
+    Task update(TaskUpdate taskUpdate);
     List<Task> findByStatus(TaskStatus status);
     List<Task> findByAssignee(UUID assigneeId);
     List<Task> findByDeadlineAtBefore(Date deadlineDate);
