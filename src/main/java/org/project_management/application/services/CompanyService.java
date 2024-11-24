@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CompanyService {
-    Company save(Company project);
+    Company save(Company company);
 
     Company findById(UUID companyId);
 
