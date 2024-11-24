@@ -40,11 +40,10 @@ public class Comment {
     @Column(name = "edited_at")
     private Date editedAt;
 
-    public Comment(String content, Task task, User user, Date createdAt, Date editedAt) {
+    public Comment(String content, Task task, User user) {
         this.content = content;
         this.task = task;
         this.user = user;
-        this.createdAt = createdAt;
-        this.editedAt = editedAt;
+        this.createdAt =  new Date();
     }
 }

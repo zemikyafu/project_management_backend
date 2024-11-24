@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/invitations")
+@RequestMapping("/api/v1/invitations")
 @Tag(name = "Invitations", description = "Invitation management")
 public class InvitationController {
     private final InvitationUseCaseImpl invitationUseCaseImpl;
