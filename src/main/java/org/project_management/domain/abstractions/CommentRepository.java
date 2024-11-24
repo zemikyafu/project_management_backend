@@ -10,6 +10,7 @@ public interface CommentRepository {
     Comment save(Comment comment);
     Optional<Comment> findByIdAndTaskId(UUID commentId, UUID taskId);
     List<Comment> findByTaskId(UUID taskId);
+    Optional<Comment> findById(UUID commentId);
     Comment update(Comment comment);
     void deleteByIdAndTaskId(UUID commentId, UUID taskId);
 }
