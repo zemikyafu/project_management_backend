@@ -13,4 +13,5 @@ public interface RoleRepository {
     Role update(Role role);
     void delete(UUID id);
     List<Role> findAll();
+    List<Role> findByCompanyId(UUID companyId);
 }

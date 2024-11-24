@@ -3,6 +3,7 @@ package org.project_management.infrastructure.repositoryImpl;
 import org.project_management.domain.abstractions.RoleRepository;
 import org.project_management.domain.entities.role.Role;
 import org.project_management.infrastructure.jpa_repositories.JpaRoleRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,5 +46,10 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public List<Role> findAll() {
         return jpaRoleRepository.findAll();
+    }
+
+    @Override
+    public List<Role> findByCompanyId(@Param("company_id") UUID companyId) {
+        return jpaRoleRepository.findByCompanyId(companyId);
     }
 }

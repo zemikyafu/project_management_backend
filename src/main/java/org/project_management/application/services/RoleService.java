@@ -12,6 +12,8 @@ public interface RoleService {
 
     Role findByName(String name);
 
+    List<Role> findByCompanyId(UUID companyId);
+
     Role update(Role role);
 
     void delete(UUID id);
