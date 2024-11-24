@@ -24,6 +24,34 @@ The API documentation can also be accessed in JSON and YAML formats:
 
 ## Running the application
 
+### Setup smtp mail for sending invitation to new users
+#### Prerequisites
+- Gmail Account: Ensure you have a Gmail account to be used for sending emails.
+- App Password: Generate an App Password for your Gmail account:
+  *  Log in to your Gmail account.
+  *  Navigate to Google Account Settings > Security > App Passwords.
+  *  Choose the app and device for which you want to generate the password, then click Generate.
+  *  Copy the generated password for use in your application.
+  
+#### Add the following configuration properties to your application.properties
+```properties
+# SMTP Configuration for Gmail
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=${SPRING_MAIL_USERNAME}  # Set in the environment
+spring.mail.password=${SPRING_MAIL_PASSWORD} # Set in the environment
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+```
+#### Explanation of SMTP Configuration Properties 
+- spring.mail.host: Specifies Gmail's SMTP server (smtp.gmail.com). 
+- spring.mail.port: Uses port 587 for secure communication.
+- spring.mail.username: The email address for the Gmail account used to send emails. 
+- spring.mail.password: The App Password for your Gmail account. 
+- spring.mail.properties.mail.smtp.auth: Enables authentication for the SMTP server. 
+- spring.mail.properties.mail.smtp.starttls.enable: Ensures secure communication by upgrading the connection to use encryption.
+
 ### Environment variables
 
 To run the app, configure the required environment variables for this project.
@@ -37,13 +65,15 @@ cp src/main/resources/.env.example src/main/resources/.env
 
 Below are the environment variables required for the application:
 
-| Environment Variable         | Description                          |
-|-------------------------------|--------------------------------------|
-| `SPRING_DATASOURCE_URL`      | The URL for the database connection.|
-| `SPRING_DATASOURCE_USERNAME` | The username for the database.       |
-| `SPRING_DATASOURCE_PASSWORD` | The password for the database.       |
-| `JWT_SECRET`                 | Secret key for JWT authentication.  |
-
+| Environment Variable         | Description                                                        |
+|------------------------------|--------------------------------------------------------------------|
+| `SPRING_DATASOURCE_URL`      | The URL for the database connection.                               |
+| `SPRING_DATASOURCE_USERNAME` | The username for the database.                                     |
+| `SPRING_DATASOURCE_PASSWORD` | The password for the database.                                     |
+| `JWT_SECRET`                 | Secret key for JWT authentication.                                 |
+| `SPRING_MAIL_USERNAME`       | The Email address used  to authenticate with the SMTP mail server. |
+| `SPRING_MAIL_PASSWORD`       | The Password  used  to authenticate with the SMTP mail server.     |
+| `DOMAIN_URL`                 | The base URL of the application domain.                            |
 ---
 
 # Integrify project details

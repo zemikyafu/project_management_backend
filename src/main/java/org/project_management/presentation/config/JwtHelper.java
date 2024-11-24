@@ -38,6 +38,32 @@ public class JwtHelper {
         return usernameMatch && !tokenIsExpired;
     }
 
+    public String generateInvitationToken(String email, String workspaceId) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("email", email);
+        extraClaims.put("workspaceId", workspaceId);
+        return this.generateInvitationToken(extraClaims, email);
+    }
+
+    private String generateInvitationToken(Map<String, Object> extraClaims, String email) {
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .signWith(getSignInKey())
+                .compact();
+    }
+    public boolean isInvitationTokenValid(String token) {
+        final Date tokenExpirationDate = extractClaim(token, Claims::getExpiration);
+        boolean tokenIsExpired = tokenExpirationDate.before(new Date(System.currentTimeMillis()));
+
+        return  !tokenIsExpired;
+    }
+    public String extractWorkspaceId(String token) {
+        return extractClaim(token, claims -> claims.get("workspaceId", String.class));
+    }
     public String generateToken(UserDetails userDetails) {
         return this.generateToken(new HashMap<>(), userDetails);
     }
