@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface TaskService {
     Task save(Task task);
+    Optional<Task> findById(UUID taskId);
     List<Task> findByProjectId(UUID projectId);
     Optional<Task> findByIdAndProjectId(UUID taskId, UUID projectId);
     Task update(Task task);
