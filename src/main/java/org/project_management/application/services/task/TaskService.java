@@ -1,5 +1,7 @@
 package org.project_management.application.services.task;
 
+import org.project_management.application.dto.task.TaskCreate;
+import org.project_management.application.dto.task.TaskUpdate;
 import org.project_management.domain.entities.task.Task;
 import org.project_management.domain.entities.task.TaskStatus;
 
@@ -9,11 +11,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TaskService {
-    Task save(Task task);
+    Task save(TaskCreate taskCreate, UUID projectId, UUID assigneeId);
     Optional<Task> findById(UUID taskId);
     List<Task> findByProjectId(UUID projectId);
     Optional<Task> findByIdAndProjectId(UUID taskId, UUID projectId);
-    Task update(Task task);
+    Task update(TaskUpdate taskUpdate, UUID taskId);
     List<Task> findByStatus(TaskStatus status);
     List<Task> findByAssignee(UUID assigneeId);
     List<Task> findByDeadlineAtBefore(Date deadlineDate);

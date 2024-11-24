@@ -44,6 +44,11 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
+    public Optional<Project> findById(UUID projectId) {
+        return projectRepository.findById(projectId);
+    }
+
+    @Override
     public Project update(ProjectUpdate updateDTO) {
         Project existingProject = projectRepository.findById(updateDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Project not found"));

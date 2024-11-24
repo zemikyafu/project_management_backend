@@ -1,8 +1,15 @@
 package org.project_management.application.services.task;
 
+import org.project_management.application.dto.task.TaskCreate;
+import org.project_management.application.dto.task.TaskMapper;
+import org.project_management.application.dto.task.TaskUpdate;
+import org.project_management.application.services.User.UserService;
+import org.project_management.application.services.project.ProjectService;
 import org.project_management.domain.abstractions.TaskRepository;
+import org.project_management.domain.entities.project.Project;
 import org.project_management.domain.entities.task.Task;
 import org.project_management.domain.entities.task.TaskStatus;
+import org.project_management.domain.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -12,14 +19,23 @@ import java.util.UUID;
 
 public class TaskServiceImpl implements TaskService{
     private final TaskRepository taskRepository;
+    private final ProjectService projectService;
+    private final UserService userService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, ProjectService projectService, UserService userService) {
         this.taskRepository = taskRepository;
+        this.projectService = projectService;
+        this.userService = userService;
     }
 
+
     @Override
-    public Task save(Task task) {
+    public Task save(TaskCreate taskCreate, UUID projectId, UUID assigneeId) {
+        Project project = projectService.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+        User assignee = userService.findById(assigneeId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        Task task = TaskMapper.toTask(taskCreate, project, assignee);
         return taskRepository.save(task);
     }
 
@@ -39,7 +55,9 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public Task update(Task task) {
+    public Task update(TaskUpdate taskUpdate, UUID taskId) {
+        Task existingTask = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        Task task = TaskMapper.toEntity(taskUpdate, existingTask);
         return taskRepository.update(task);
     }
 
