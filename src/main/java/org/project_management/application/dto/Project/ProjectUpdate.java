@@ -12,10 +12,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 public class ProjectUpdate {
-    private UUID id;
+    private UUID id; // The unique identifier of the project being updated
     private String name;
     private String description;
     private ProjectStatus status;
     private Date startDate;
     private Date endDate;
+
+    public void setId(UUID projectId) {
+    }
 }

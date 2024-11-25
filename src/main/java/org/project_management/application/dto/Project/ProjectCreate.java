@@ -18,7 +18,7 @@ public class ProjectCreate {
     private String name;
     private String description;
     private ProjectStatus status;
-    private UUID workspaceId;
+    private UUID workspaceId; // The ID of the workspace this project belongs to
     private Date startDate;
     private Date endDate;
 }

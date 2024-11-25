@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ProjectService {
-    Project save(ProjectCreate createDTO);
+    Project save(ProjectCreate createDTO); // Handles workspace association
     List<Project> findByWorkspaceId(UUID workspaceId);
     Optional<Project> findByIdAndWorkspaceId(UUID projectId, UUID workspaceId);
     Optional<Project> findById(UUID projectId);

@@ -5,33 +5,29 @@ import org.project_management.domain.entities.workspace.Workspace;
 
 public class ProjectMapper {
 
-    public static Project toProject(ProjectCreate createDTO, Workspace workspace) {
+    public static Project toProject(ProjectCreate createDTO) {
         Project project = new Project();
         project.setName(createDTO.getName());
         project.setDescription(createDTO.getDescription());
         project.setStatus(createDTO.getStatus());
-        project.setWorkspace(workspace);
         project.setStartDate(createDTO.getStartDate());
         project.setEndDate(createDTO.getEndDate());
+        // workspace will be null for now, and will be set in service layer
         return project;
     }
 
-    public static Project toProject(ProjectUpdate updateDTO, Project existingProject) {
-        if (updateDTO.getName() != null) {
-            existingProject.setName(updateDTO.getName());
-        }
-        if (updateDTO.getDescription() != null) {
-            existingProject.setDescription(updateDTO.getDescription());
-        }
-        if (updateDTO.getStatus() != null) {
-            existingProject.setStatus(updateDTO.getStatus());
-        }
-        if (updateDTO.getStartDate() != null) {
-            existingProject.setStartDate(updateDTO.getStartDate());
-        }
-        if (updateDTO.getEndDate() != null) {
-            existingProject.setEndDate(updateDTO.getEndDate());
-        }
-        return existingProject;
+    // For updating, creates a partial Project with updated fields
+    public static Project toProjectFragment(ProjectUpdate updateDTO) {
+        Project projectFragment = new Project();
+        projectFragment.setName(updateDTO.getName());
+        projectFragment.setDescription(updateDTO.getDescription());
+        projectFragment.setStatus(updateDTO.getStatus());
+        projectFragment.setStartDate(updateDTO.getStartDate());
+        projectFragment.setEndDate(updateDTO.getEndDate());
+        // Workspace remains untouched
+        return projectFragment;
     }
+
+
+
 }
