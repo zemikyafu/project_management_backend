@@ -1,6 +1,6 @@
 package org.project_management.application.use_cases;
 
-import org.project_management.application.dto.Invitation.InvitationRequest;
+import org.project_management.application.dto.invitation.InvitationRequest;
 import org.project_management.application.exceptions.*;
 import org.project_management.application.services.Invitation.EmailService;
 import org.project_management.application.services.Invitation.InvitationService;

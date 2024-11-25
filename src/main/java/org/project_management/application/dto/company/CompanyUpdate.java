@@ -1,4 +1,4 @@
-package org.project_management.application.dto.Company;
+package org.project_management.application.dto.company;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-public class CompanyCreate {
+public class CompanyUpdate {
     @NotNull
     private String name;
 

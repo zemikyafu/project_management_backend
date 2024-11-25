@@ -1,8 +1,8 @@
 package org.project_management.application.services.Comment;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.project_management.application.dto.Comment.CommentCreate;
-import org.project_management.application.dto.Comment.CommentUpdate;
+import org.project_management.application.dto.comment.CommentCreate;
+import org.project_management.application.dto.comment.CommentUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.domain.abstractions.CommentRepository;
 import org.project_management.domain.abstractions.TaskRepository;
@@ -13,7 +13,6 @@ import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.JwtAuthFilter;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package org.project_management.application.dto.User;
+package org.project_management.application.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
