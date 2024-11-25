@@ -22,9 +22,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/comments")
+@RequestMapping("/api/v1/task/{taskId}/comments")
 @Tag(name = "Comment", description = "Comment management API")
 public class CommentController {
+
     private final CommentService commentService;
 
     public CommentController(CommentService commentService) {
@@ -41,6 +42,7 @@ public class CommentController {
     })
     @PostMapping
     public ResponseEntity<GlobalResponse<Comment>> save(
+            @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Details for creating a comment",
                     required = true,
@@ -52,29 +54,29 @@ public class CommentController {
         return new ResponseEntity<>(new GlobalResponse<>(HttpStatus.CREATED.value(), comment), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Find a comment by its ID and Task ID")
+    @Operation(summary = "Find a comment by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment retrieved successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid ID or task ID"),
+            @ApiResponse(responseCode = "400", description = "Invalid comment or task ID"),
             @ApiResponse(responseCode = "404", description = "Comment not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/{commentId}/{taskId}")
-    public ResponseEntity<GlobalResponse<Comment>> findByIdAndTaskId(
-            @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId,
-            @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId) {
+    @GetMapping("/{commentId}")
+    public ResponseEntity<GlobalResponse<Comment>> findById(
+            @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
+            @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId) {
         Comment comment = commentService.findByIdAndTaskId(commentId, taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), comment));
     }
 
-    @Operation(summary = "Find comments by Task ID")
+    @Operation(summary = "Find all comments for a task")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comments retrieved successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid task ID"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/{taskId}")
+    @GetMapping
     public ResponseEntity<GlobalResponse<List<Comment>>> findByTaskId(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId) {
         List<Comment> comments = commentService.findByTaskId(taskId);
@@ -88,8 +90,10 @@ public class CommentController {
             @ApiResponse(responseCode = "404", description = "Comment not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PutMapping
+    @PutMapping("/{commentId}")
     public ResponseEntity<GlobalResponse<Comment>> update(
+            @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
+            @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Details for updating a comment",
                     required = true,
@@ -101,17 +105,17 @@ public class CommentController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), updatedComment));
     }
 
-    @Operation(summary = "Delete a comment by its ID and Task ID")
+    @Operation(summary = "Delete a comment by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Comment deleted successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid IDs"),
             @ApiResponse(responseCode = "404", description = "Comment not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @DeleteMapping("/{commentId}/{taskId}")
-    public ResponseEntity<Void> deleteByIdAndTaskId(
-            @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId,
-            @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId) {
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteById(
+            @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
+            @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId) {
         commentService.deleteByIdAndTaskId(commentId, taskId);
         return ResponseEntity.noContent().build();
     }
