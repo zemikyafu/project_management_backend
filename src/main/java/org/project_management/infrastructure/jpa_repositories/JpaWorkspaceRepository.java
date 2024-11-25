@@ -16,7 +16,6 @@ public interface JpaWorkspaceRepository extends JpaRepository<Workspace, UUID> {
     @Query("SELECT w FROM Workspace w WHERE w.company.id = :companyId")
     List<Workspace> findByCompanyId(UUID companyId);
 
-   // findAllWorkspaceUser(
     @Modifying
     @Query("DELETE FROM Workspace w WHERE w.id = :workspaceId AND w.company.id = :companyId")
     void deleteByIdAndCompanyId(UUID workspaceId, UUID companyId);
