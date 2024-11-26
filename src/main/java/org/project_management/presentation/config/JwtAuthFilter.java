@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project_management.application.services.User.UserDetailsServiceImpl;
+import org.project_management.domain.entities.user.User;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -33,6 +37,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String authHeader = request.getHeader("Authorization");
             String token = null;
             String username = null;
+
+            // Extract token and username
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
                 username = jwtHelper.extractUserEmail(token);
@@ -43,25 +49,37 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
+            String companyId = request.getHeader("company_id");
+            String workspaceId = request.getHeader("workspace_id");
+
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails;
+
+                if (companyId != null) {
+                    userDetails = userDetailsService.loadUserAsOwnerOfCompany(username, UUID.fromString(companyId));
+                } else if (workspaceId != null) {
+                    userDetails = userDetailsService.loadUserAndAuthByUsername(username, UUID.fromString(workspaceId));
+                } else {
+                    throw new AccessDeniedException("Workspace ID or Company ID is required");
+                }
                 if (jwtHelper.isTokenValid(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, null);
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
+
             filterChain.doFilter(request, response);
 
         } catch (AccessDeniedException e) {
-
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write(e.getMessage());
-        } catch (java.io.IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
+
     public String getUserEmailFromToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
