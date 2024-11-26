@@ -15,4 +15,5 @@ public interface CompanyUserService {
     CompanyUser update(CompanyUserUpdate companyUserUpdate);
     void delete(UUID userId, UUID companyId);
     List<CompanyUser> findAll();
+    List<CompanyUser> findAllByCompanyId(UUID companyId);
 }

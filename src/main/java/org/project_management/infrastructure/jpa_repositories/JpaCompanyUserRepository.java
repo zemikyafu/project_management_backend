@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,5 +20,8 @@ public interface JpaCompanyUserRepository  extends JpaRepository<CompanyUser, Co
 
     @Query("SELECT cu.user FROM CompanyUser cu WHERE cu.company.id = :companyId AND cu.isOwner = :isOwner")
     Optional<User> findOwnerOfCompany(UUID companyId, boolean isOwner);
+
+    @Query("SELECT cu FROM CompanyUser cu WHERE cu.company.id = :companyId")
+    List<CompanyUser> findAllByCompanyId(UUID companyId);
 
 }
