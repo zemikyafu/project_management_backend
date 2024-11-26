@@ -8,12 +8,14 @@ import org.project_management.domain.entities.workspace.WorkspaceUser;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface AuthRepository {
-    User saveUser(User user);
-    Optional<User> findUserByEmail(String email);
+    User save(User user);
+    Optional<User> findByEmail(String email);
     public List<Role> findRoles();
     public List<WorkspaceUser> findWorkspaceUser();
     public List<Permission> findPermissions();
     public List<RolePermission> findRolePermissions();
+    List<String> findGrantedAuthorities(UUID userId, UUID workspaceId);
 }
