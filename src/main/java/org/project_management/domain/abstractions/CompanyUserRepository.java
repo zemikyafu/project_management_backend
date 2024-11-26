@@ -2,6 +2,7 @@ package org.project_management.domain.abstractions;
 
 import org.project_management.domain.entities.company.CompanyUser;
 import org.project_management.domain.entities.company.CompanyUserId;
+import org.project_management.domain.entities.user.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,8 @@ public interface CompanyUserRepository {
     CompanyUser update(CompanyUser companyUser);
     void delete(UUID userId, UUID companyId);
     List<CompanyUser> findAll();
+    Optional <User> findOwnerOfCompany (UUID companyId);
+
+    List<CompanyUser> findAllByCompanyId(UUID companyId);
+
 }

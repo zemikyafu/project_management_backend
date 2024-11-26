@@ -1,7 +1,7 @@
 package org.project_management.application.services.project;
 
-import org.project_management.application.dto.Project.ProjectCreate;
-import org.project_management.application.dto.Project.ProjectUpdate;
+import org.project_management.application.dto.project.ProjectCreate;
+import org.project_management.application.dto.project.ProjectUpdate;
 import org.project_management.domain.entities.project.Project;
 
 import java.util.List;

@@ -5,7 +5,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.project_management.application.dto.Company.CompanyCreate;
+import org.project_management.application.dto.company.CompanyCreate;
 import org.project_management.domain.abstractions.CompanyRepository;
 import org.project_management.domain.entities.company.Company;
 import org.springframework.beans.factory.annotation.Autowired;
