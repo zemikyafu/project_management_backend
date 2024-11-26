@@ -1,7 +1,12 @@
 package org.project_management.application.services.AccessControl;
 
+import jakarta.transaction.Transactional;
+import org.project_management.application.dto.role.RoleCreate;
+import org.project_management.application.dto.role.RoleUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
+import org.project_management.domain.abstractions.CompanyRepository;
 import org.project_management.domain.abstractions.RoleRepository;
+import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,18 +17,33 @@ import java.util.UUID;
 @Service
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
+    private final CompanyRepository companyRepository;
 
     @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, CompanyRepository companyRepository) {
         this.roleRepository = roleRepository;
+        this.companyRepository = companyRepository;
     }
 
     @Override
-    public Role save(Role role) {
-        if (roleRepository.findByName(role.getName()).isPresent()) {
-            throw new ResourceNotFoundException("Role with name '" + role.getName() + "' already exists");
+    public Role save(RoleCreate roleCreateDto) {
+
+        if (roleRepository.findByName(roleCreateDto.getName()).isPresent()) {
+            throw new ResourceNotFoundException("Role with name '" + roleCreateDto.getName() + "' already exists");
         }
-        return roleRepository.save(role);
+        Company company = companyRepository.findById(roleCreateDto.getCompanyId()).orElseThrow(
+                () -> new ResourceNotFoundException("Company not found with id: " + roleCreateDto.getCompanyId())
+        );
+        Role role = new Role();
+        role.setCompany(company);
+        role.setName(roleCreateDto.getName());
+
+        try {
+            return roleRepository.save(role);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Role with name '" + roleCreateDto.getName() + "' already exists");
+        }
+
     }
 
     @Override
@@ -41,13 +61,27 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role update(Role role) {
-        return roleRepository.update(role);
+    public Role update(RoleUpdate roleUpdateDto) {
+        Company company = companyRepository.findById(roleUpdateDto.getCompanyId()).orElseThrow(
+                () -> new ResourceNotFoundException("Company not found with id: " + roleUpdateDto.getCompanyId())
+        );
+        Role role = new Role(roleUpdateDto.getId(), roleUpdateDto.getName(), company);
+        try {
+            return roleRepository.update(role);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException("Role not found with id: " + roleUpdateDto.getId());
+        }
+
     }
 
     @Override
     public void delete(UUID id) {
-        roleRepository.delete(id);
+        try {
+            roleRepository.delete(id);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException("Role not found with id: " + id);
+        }
+
     }
 
     @Override

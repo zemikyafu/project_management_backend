@@ -5,6 +5,7 @@ import org.project_management.application.exceptions.UnableToSaveResourceExcepti
 import org.project_management.domain.abstractions.CompanyUserRepository;
 import org.project_management.domain.entities.company.CompanyUser;
 import org.project_management.domain.entities.company.CompanyUserId;
+import org.project_management.domain.entities.user.User;
 import org.project_management.infrastructure.jpa_repositories.JpaCompanyUserRepository;
 import org.springframework.stereotype.Repository;
 
@@ -58,4 +59,16 @@ public class CompanyUserRepositoryImpl implements CompanyUserRepository {
     public List<CompanyUser> findAll() {
         return jpaCompanyUserRepository.findAll();
     }
+
+    @Override
+    public Optional<User> findOwnerOfCompany(UUID companyId) {
+        return jpaCompanyUserRepository.findOwnerOfCompany(companyId, true);
+    }
+
+    @Override
+    public List<CompanyUser> findAllByCompanyId(UUID companyId) {
+       return jpaCompanyUserRepository.findAllByCompanyId(companyId);
+    }
+
+
 }
