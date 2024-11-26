@@ -24,7 +24,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User save(User user) {
-
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
             throw new BadRequestException("Name, email and password are required");
         }
@@ -91,6 +90,7 @@ public class UserRepositoryImpl implements UserRepository {
             throw new UnableToSaveResourceException("Unable to partially update user");
         }
     }
+
     @Override
     public void deleteUser(UUID id) {
         User user = jpaUserRepository.findById(id)

@@ -5,7 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.project_management.application.services.UserDetailsServiceImpl;
+import org.project_management.application.services.User.UserDetailsServiceImpl;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,10 +18,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtHelper jwtHelper;
+    private final HttpServletRequest request;
 
-    public JwtAuthFilter(UserDetailsServiceImpl userDetailsService, JwtHelper jwtHelper) {
+    public JwtAuthFilter(UserDetailsServiceImpl userDetailsService, JwtHelper jwtHelper, HttpServletRequest request) {
         this.userDetailsService = userDetailsService;
         this.jwtHelper = jwtHelper;
+        this.request = request;
     }
 
     @Override
@@ -59,6 +61,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throw new RuntimeException(e);
         }
 
+    }
+    public String getUserEmailFromToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            return jwtHelper.extractUserEmail(token);
+        }
+        throw new IllegalArgumentException("Invalid Authorization header");
     }
 
 }

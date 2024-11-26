@@ -1,6 +1,7 @@
 package org.project_management.presentation.shared;
 
 import org.project_management.application.exceptions.*;
+import org.project_management.domain.entities.invitation.Invitation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,6 +21,24 @@ public class GlobalExceptionHandler {
 
         GlobalResponse globalResponse = new GlobalResponse(HttpStatus.BAD_REQUEST.value(), errors);
         return new ResponseEntity<>(globalResponse, null, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<GlobalResponse> handleUserAlreadyExistException(UserAlreadyExistException e) {
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
+
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.CONFLICT.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ResourceTakenException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<GlobalResponse> handleResourceTakenException(ResourceTakenException e) {
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
+
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.CONFLICT.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(UnableToSaveResourceException.class)
@@ -83,6 +102,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<GlobalResponse> handleValidationExceptions(HttpMessageNotReadableException ex) {
 
         List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem("Invalid JSON"));
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.BAD_REQUEST.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<GlobalResponse> handleEmailException(EmailException e) {
+
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
+        GlobalResponse globalResponse = new GlobalResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), errors);
+        return new ResponseEntity<>(globalResponse, null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(InvitationException.class)
+    public ResponseEntity<GlobalResponse> handleInvitationException(InvitationException e) {
+
+        List<GlobalResponse.ErrorItem> errors = List.of(new GlobalResponse.ErrorItem(e.getMessage()));
         GlobalResponse globalResponse = new GlobalResponse(HttpStatus.BAD_REQUEST.value(), errors);
         return new ResponseEntity<>(globalResponse, null, HttpStatus.BAD_REQUEST);
     }

@@ -1,6 +1,6 @@
 package org.project_management.presentation.config;
 
-import org.project_management.application.services.UserDetailsServiceImpl;
+import org.project_management.application.services.User.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers(baseUrl + "/auth/**").permitAll()
+                .requestMatchers(baseUrl + "/invitation/accept/**").permitAll()
                 .requestMatchers(apiDocPaths).permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
