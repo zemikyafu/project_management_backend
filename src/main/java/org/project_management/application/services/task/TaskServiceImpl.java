@@ -31,13 +31,13 @@ public class TaskServiceImpl implements TaskService{
 
 
     @Override
-    public Task save(TaskCreate taskCreate, UUID projectId, UUID assigneeId) {
-        Project project = projectService.findById(projectId)
+    public Task save(TaskCreate createDto) {
+        Project project = projectService.findById(createDto.getProjectId())
                 .orElseThrow(() -> new RuntimeException("Project not found"));
-        User assignee = userService.findById(assigneeId)
+        User assignee = userService.findById(createDto.getAssigneeId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Task task = TaskMapper.toTask(taskCreate);
+        Task task = TaskMapper.toTask(createDto);
         task.setProject(project);
         task.setAssignee(assignee);
 

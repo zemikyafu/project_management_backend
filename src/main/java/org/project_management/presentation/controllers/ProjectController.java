@@ -97,7 +97,7 @@ public class ProjectController {
                             examples = @ExampleObject(value = "{ \"name\": \"Updated Project\", \"description\": \"Updated description\", \"status\": \"COMPLETED\", \"startDate\": \"2024-01-01\", \"endDate\": \"2024-06-30\" }")
                     ))
             @Valid @RequestBody ProjectUpdate updateDto,
-            //@Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
+            @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
     ) {
         updateDto.setId(projectId);
