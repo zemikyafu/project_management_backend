@@ -15,15 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 public class TaskUpdate {
-
-    private UUID id;
+    private UUID id;   // The ID of the task being updated
     @NotNull
-    String title;
+    private String title;
     @NotNull
-    String content;
+    private String content;
     @NotNull
-    TaskPriority priority;
+    private TaskPriority priority;
     @NotNull
-    TaskStatus status;
-    Date deadlineAt;
+    private TaskStatus status;
+    private Date deadlineAt;
 }

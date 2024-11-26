@@ -56,11 +56,8 @@ public class ProjectServiceImpl implements ProjectService{
     public Project update(ProjectUpdate updateDTO) {
         Project existingProject = projectRepository.findById(updateDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Project not found"));
-
-        // Use the partial project fragment from the mapper
         Project projectFragment = ProjectMapper.toProjectFragment(updateDTO);
 
-        // Apply changes to the existing project
         if (projectFragment.getName() != null) {
             existingProject.setName(projectFragment.getName());
         }

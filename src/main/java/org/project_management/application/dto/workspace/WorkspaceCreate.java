@@ -14,5 +14,5 @@ import java.util.UUID;
 public class WorkspaceCreate {
     private String name;
     private String description;
-    private UUID companyId;
+    private UUID companyId; // Remains unchanged
 }

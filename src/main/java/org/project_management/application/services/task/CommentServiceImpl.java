@@ -31,15 +31,18 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public Comment save(CommentCreate createDTO) {
         Task task = taskService.findById(createDTO.getTaskId())
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + createDTO.getTaskId()));
 
         User user = userService.findById(createDTO.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + createDTO.getUserId()));
 
-        Comment comment = CommentMapper.toComment(createDTO, task, user);
+        Comment comment = CommentMapper.toComment(createDTO);
+        comment.setTask(task);
+        comment.setUser(user);
 
         return commentRepository.save(comment);
     }
+
 
     @Override
     public Optional<Comment> findByIdAndTaskId(UUID commentId, UUID taskId) {
@@ -51,14 +54,22 @@ public class CommentServiceImpl implements CommentService{
         return commentRepository.findByTaskId(taskId);
     }
 
+
     @Override
     public Comment update(CommentUpdate updateDTO) {
         Comment existingComment = commentRepository.findById(updateDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
-        Comment updatedComment = CommentMapper.toComment(updateDTO, existingComment);
+        Comment commentFragment = CommentMapper.toCommentFragment(updateDTO);
 
-        return commentRepository.update(updatedComment);
+        if (commentFragment.getContent() != null) {
+            existingComment.setContent(commentFragment.getContent());
+        }
+        if (commentFragment.getEditedAt() != null) {
+            existingComment.setEditedAt(commentFragment.getEditedAt());
+        }
+
+        return commentRepository.save(existingComment);
     }
 
 

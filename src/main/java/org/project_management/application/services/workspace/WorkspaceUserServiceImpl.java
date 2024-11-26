@@ -42,7 +42,10 @@ public class WorkspaceUserServiceImpl implements WorkspaceUserService{
         Workspace workspace = workspaceService.findById(createDTO.getWorkspaceId())
                 .orElseThrow(() -> new IllegalArgumentException("Workspace not found with id: " + createDTO.getWorkspaceId()));
 
-        WorkspaceUser workspaceUser = WorkspaceUserMapper.toEntity(createDTO, user, role, workspace);
+        WorkspaceUser workspaceUser = WorkspaceUserMapper.toEntity(createDTO);
+        workspaceUser.setUser(user);
+        workspaceUser.setRole(role);
+        workspaceUser.setWorkspace(workspace);
         return workspaceUserRepository.save(workspaceUser);
     }
 
@@ -58,14 +61,12 @@ public class WorkspaceUserServiceImpl implements WorkspaceUserService{
 
     @Override
     public WorkspaceUser update(WorkspaceUserUpdate updateDTO) {
-        WorkspaceUser existingWorkspaceUser = workspaceUserRepository.findById(updateDTO.getId())
-                .orElseThrow(() -> new IllegalArgumentException("WorkspaceUser not found with id: " + updateDTO.getId()));
-
         Role updatedRole = roleService.findById(updateDTO.getRoleId());
         if (updatedRole == null) {
             throw new IllegalArgumentException("Role not found with id: " + updateDTO.getRoleId());
         }
-        WorkspaceUser updatedWorkspaceUser = WorkspaceUserMapper.toEntity(updateDTO, existingWorkspaceUser, updatedRole);
+        WorkspaceUser updatedWorkspaceUser = WorkspaceUserMapper.toEntity(updateDTO);
+        updatedWorkspaceUser.setRole(updatedRole);
         return workspaceUserRepository.save(updatedWorkspaceUser);
     }
 

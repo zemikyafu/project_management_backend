@@ -4,22 +4,24 @@ import org.project_management.domain.entities.comment.Comment;
 import org.project_management.domain.entities.task.Task;
 import org.project_management.domain.entities.user.User;
 
+import java.util.Date;
+
 public class CommentMapper {
-    public static Comment toComment(CommentCreate createDTO, Task task, User user) {
-        return new Comment(
-                createDTO.getContent(),
-                task,
-                user,
-                new java.util.Date(),
-                null
-        );
+
+    public static Comment toComment(CommentCreate createDTO) {
+        Comment comment = new Comment();
+        comment.setContent(createDTO.getContent());
+        comment.setCreatedAt(new Date());
+        comment.setEditedAt(null);
+        return comment;
     }
 
-    public static Comment toComment(CommentUpdate updateDTO, Comment existingComment) {
+    public static Comment toCommentFragment(CommentUpdate updateDTO) {
+        Comment commentFragment = new Comment();
         if (updateDTO.getContent() != null) {
-            existingComment.setContent(updateDTO.getContent());
-            existingComment.setEditedAt(new java.util.Date());
+            commentFragment.setContent(updateDTO.getContent());
         }
-        return existingComment;
+        commentFragment.setEditedAt(new Date());
+        return commentFragment;
     }
 }

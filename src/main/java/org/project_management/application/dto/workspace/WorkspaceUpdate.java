@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class WorkspaceUpdate {
-    private UUID id;
+    private UUID id; // ID of the workspace being updated
     private String name;
     private String description;
 }

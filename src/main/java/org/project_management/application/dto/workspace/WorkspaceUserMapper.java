@@ -6,12 +6,13 @@ import org.project_management.domain.entities.workspace.Workspace;
 import org.project_management.domain.entities.workspace.WorkspaceUser;
 
 public class WorkspaceUserMapper {
-    public static WorkspaceUser toEntity(WorkspaceUserCreate createDTO, User user, Role role, Workspace workspace) {
-        return new WorkspaceUser(user, role, workspace);
+    // Maps WorkspaceUserCreate DTO to WorkspaceUser entity
+    public static WorkspaceUser toEntity(WorkspaceUserCreate createDTO) {
+        return new WorkspaceUser();
     }
 
-    public static WorkspaceUser toEntity(WorkspaceUserUpdate updateDTO, WorkspaceUser existingWorkspaceUser, Role updatedRole) {
-        existingWorkspaceUser.setRole(updatedRole);
-        return existingWorkspaceUser;
+    public static WorkspaceUser toEntity(WorkspaceUserUpdate updateDTO) {
+        WorkspaceUser workspaceUser = new WorkspaceUser();
+        return new WorkspaceUser();
     }
 }

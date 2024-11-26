@@ -32,10 +32,15 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     public Task save(TaskCreate taskCreate, UUID projectId, UUID assigneeId) {
-        Project project = projectService.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
-        User assignee = userService.findById(assigneeId).orElseThrow(() -> new RuntimeException("User not found"));
+        Project project = projectService.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+        User assignee = userService.findById(assigneeId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Task task = TaskMapper.toTask(taskCreate, project, assignee);
+        Task task = TaskMapper.toTask(taskCreate);
+        task.setProject(project);
+        task.setAssignee(assignee);
+
         return taskRepository.save(task);
     }
 
@@ -56,9 +61,19 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     public Task update(TaskUpdate taskUpdate) {
-        Task existingTask = taskRepository.findById(taskUpdate.getId()).orElseThrow(() -> new RuntimeException("Task not found"));
-        Task task = TaskMapper.toEntity(taskUpdate, existingTask);
-        return taskRepository.update(task);
+        Task task = TaskMapper.toTaskFragment(taskUpdate);
+        Task existingTask = taskRepository.findById(taskUpdate.getId())
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        // Update the existing task with new fields
+        existingTask.setTitle(task.getTitle());
+        existingTask.setContent(task.getContent());
+        existingTask.setPriority(task.getPriority());
+        existingTask.setStatus(task.getStatus());
+        existingTask.setDeadlineAt(task.getDeadlineAt());
+        existingTask.setEditedAt(new java.util.Date());  // Set the edited date to current time
+
+        return taskRepository.save(existingTask);
     }
 
     @Override

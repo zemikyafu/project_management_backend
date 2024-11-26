@@ -13,12 +13,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 public class TaskCreate {
-
-    String title;
-    String content;
-    TaskPriority priority;
-    TaskStatus status;
-    UUID projectId;
-    UUID assigneeId;
-    Date deadlineAt;
+    private String title;
+    private String content;
+    private TaskPriority priority;
+    private TaskStatus status;
+    private UUID projectId;   // The project the task belongs to
+    private UUID assigneeId;  // The assignee of the task
+    private Date deadlineAt;  // The task deadline
 }
