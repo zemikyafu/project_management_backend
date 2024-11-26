@@ -1,4 +1,4 @@
-package org.project_management.application.dto.Project;
+package org.project_management.application.dto.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

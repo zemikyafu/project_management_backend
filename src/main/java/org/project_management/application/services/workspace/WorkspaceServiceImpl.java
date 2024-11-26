@@ -1,13 +1,11 @@
 package org.project_management.application.services.workspace;
 
-import org.project_management.application.dto.Project.ProjectMapper;
 import org.project_management.application.dto.workspace.WorkspaceCreate;
 import org.project_management.application.dto.workspace.WorkspaceMapper;
 import org.project_management.application.dto.workspace.WorkspaceUpdate;
 import org.project_management.application.services.Company.CompanyService;
 import org.project_management.domain.abstractions.WorkspaceRepository;
 import org.project_management.domain.entities.company.Company;
-import org.project_management.domain.entities.project.Project;
 import org.project_management.domain.entities.workspace.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
 

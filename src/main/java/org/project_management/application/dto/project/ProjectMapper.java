@@ -1,4 +1,4 @@
-package org.project_management.application.dto.Project;
+package org.project_management.application.dto.project;
 
 import org.project_management.domain.entities.project.Project;
 import org.project_management.domain.entities.workspace.Workspace;

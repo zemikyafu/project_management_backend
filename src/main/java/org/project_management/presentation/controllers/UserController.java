@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.project_management.application.dto.User.*;
+import org.project_management.application.dto.user.*;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.services.Auth.AuthService;
 import org.project_management.application.services.User.UserService;

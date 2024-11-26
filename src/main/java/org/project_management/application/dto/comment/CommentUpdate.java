@@ -13,7 +13,8 @@ import java.util.UUID;
 public class CommentUpdate {
     @NotNull
     UUID id;
-
+    @NotNull
+    UUID taskId;
     @NotNull
     String content;
 }

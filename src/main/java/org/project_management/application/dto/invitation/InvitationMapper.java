@@ -1,4 +1,4 @@
-package org.project_management.application.dto.Invitation;
+package org.project_management.application.dto.invitation;
 
 import org.project_management.domain.entities.invitation.Invitation;
 

@@ -9,9 +9,7 @@ public class CommentMapper {
         return new Comment(
                 createDTO.getContent(),
                 task,
-                user,
-                new java.util.Date(),
-                null
+                user
         );
     }
 

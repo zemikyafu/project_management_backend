@@ -1,9 +1,8 @@
-package org.project_management.application.dto.Project;
+package org.project_management.application.dto.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.project_management.domain.entities.project.ProjectStatus;
 
 

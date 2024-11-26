@@ -1,7 +1,7 @@
 package org.project_management.application.services.Invitation;
 
-import org.project_management.application.dto.Invitation.InvitationRequest;
-import org.project_management.application.dto.Invitation.UpdateInvitation;
+import org.project_management.application.dto.invitation.InvitationRequest;
+import org.project_management.application.dto.invitation.UpdateInvitation;
 import org.project_management.domain.entities.invitation.Invitation;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.project_management.application.dto.Company;
+package org.project_management.application.dto.company;
 
 import org.project_management.domain.entities.company.Company;
 

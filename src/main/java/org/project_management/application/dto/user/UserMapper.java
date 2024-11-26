@@ -1,4 +1,4 @@
-package org.project_management.application.dto.User;
+package org.project_management.application.dto.user;
 
 import org.project_management.domain.entities.user.User;
 

@@ -9,8 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.project_management.application.dto.Invitation.InvitationRequest;
-import org.project_management.application.dto.Invitation.UpdateInvitation;
+import org.project_management.application.dto.invitation.InvitationRequest;
+import org.project_management.application.dto.invitation.UpdateInvitation;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.services.Invitation.InvitationService;
 import org.project_management.application.use_cases.InvitationUseCaseImpl;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/invitations")
+@RequestMapping("/api/v1/invitations")
 @Tag(name = "Invitations", description = "Invitation management")
 public class InvitationController {
     private final InvitationUseCaseImpl invitationUseCaseImpl;

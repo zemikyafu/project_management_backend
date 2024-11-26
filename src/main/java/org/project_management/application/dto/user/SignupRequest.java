@@ -1,4 +1,4 @@
-package org.project_management.application.dto.User;
+package org.project_management.application.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -7,12 +7,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.project_management.domain.entities.user.Status;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class UserUpdate {
+public class SignupRequest {
     @NotNull
     private String name;
 
@@ -25,7 +24,4 @@ public class UserUpdate {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
             message = "Password must contain at least one uppercase letter and one special character")
     private String password;
-
-    @NotNull
-    private Status status;
 }
