@@ -7,8 +7,11 @@ Table of Contents
      * [Setup smtp mail for sending invitation to new users](#setup-smtp-mail-for-sending-invitation-to-new-users)
        * [Prerequisites](#prerequisites) 
        * [Configuring application.properties](#configuring-applicationproperties)
-       * [Explanation of SMTP Configuration Properties](#explanation-of-smtp-configuration-properties)
+       * [Explanation of SMTP configuration properties](#explanation-of-smtp-configuration-properties)
      * [Environment variables](#environment-variables)
+     * [Set up database](#set-up-database)
+       * [Generate database schema](#generate-database-schema)
+       * [Insert permissions data](#insert-permissions-data)
    * [API Documentation](#api-documentation)
      * [Swagger UI](#swagger-ui)
      * [JSON and YAML files](#json-and-yaml-files)
@@ -50,7 +53,7 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 SPRING_MAIL_USERNAME and SPRING_MAIL_PASSWORD are environment variables that should be set in the environment
 where the application is running. See the [Environment variables](#environment-variables) section for more details.
 
-#### Explanation of SMTP Configuration Properties
+#### Explanation of SMTP configuration properties
 
 - spring.mail.host: Specifies Gmail's SMTP server (smtp.gmail.com).
 - spring.mail.port: Uses port 587 for secure communication.
@@ -82,6 +85,28 @@ Below are the environment variables required for the application:
 | `SPRING_MAIL_PASSWORD`       | The Password  used  to authenticate with the SMTP mail server.     |
 | `DOMAIN_URL`                 | The base URL of the application domain.                            |
 | `PORT`                       | Web service port, defaults to 10000                                |
+
+
+### Set up database
+
+#### Generate database schema
+
+When the project run for the first time, the database schema will be created automatically with Hibernate ORM.
+
+- connect to your database
+  ```sql
+    psql -U your_username -d your_database_name
+  ```
+
+##### Insert permissions data
+
+To insert the permissions data into the database, follow the steps below:
+
+1. Download the `permissions_insert.sql` file from the project directory .
+2. Run the script in your PostgreSQL database:
+  ```sql
+   \i /path/to/permissions_insert.sql
+  ```
 
 ## API Documentation
 
@@ -128,18 +153,7 @@ BACKEND_URL: https://backend.example.com/actuator/health
 ```
 
 ---
-### Set Up the Database
-#### When the project run for the first time, the database schema will be created automatically with Hibernate ORM.
-- connect to your database
-  ```sql
-    psql -U your_username -d your_database_name
-    ```
-#####  Run the Permissions Insert Script
- * Download the permissions_insert.sql file from the project directory .
- * Run the script in your PostgreSQL database:
-   ```sql
-    \i /path/to/permissions_insert.sql
-    ```
+
 # Integrify project details
 
 ## Teamwork
