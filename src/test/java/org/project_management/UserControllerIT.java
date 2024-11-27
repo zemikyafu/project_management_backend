@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.project_management.application.dto.user.SignupRequest;
 import org.project_management.application.dto.user.UserMapper;
 import org.project_management.application.dto.user.UserPartialUpdate;
+import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +37,14 @@ public class UserControllerIT {
     ObjectMapper objectMapper;
 
     @Autowired
-    UserRepository userRepository;
+    AuthRepository authRepository;
 
     User user;
     SignupRequest userCreate = new SignupRequest("Ted Tester", "testing@email.com", "Password123#");
 
     @BeforeEach
     public void addUser() {
-        user = userRepository.save(UserMapper.toUser(userCreate));
+        user = authRepository.save(UserMapper.toUser(userCreate));
     }
 
     @Test
