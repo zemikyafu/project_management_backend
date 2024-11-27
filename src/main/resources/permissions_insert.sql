@@ -1,4 +1,4 @@
-INSERT INTO permissions (id, name)
+INSERT INTO permission (id, name)
 VALUES (gen_random_uuid(), 'COMPANY-CREATE'),
        (gen_random_uuid(), 'COMPANY-READ'),
        (gen_random_uuid(), 'COMPANY-UPDATE'),
