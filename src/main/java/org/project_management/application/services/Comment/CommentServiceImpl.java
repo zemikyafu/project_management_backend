@@ -4,9 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.project_management.application.dto.comment.CommentCreate;
 import org.project_management.application.dto.comment.CommentUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
+import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.CommentRepository;
 import org.project_management.domain.abstractions.TaskRepository;
-import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.comment.Comment;
 import org.project_management.domain.entities.task.Task;
 import org.project_management.domain.entities.user.User;
@@ -25,21 +25,21 @@ public class CommentServiceImpl implements CommentService {
     private final TaskRepository taskRepository;
     private final JwtAuthFilter jwtAuthFilter;
     private final HttpServletRequest request;
-    private final UserRepository userRepository;
+   private final AuthRepository authRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, TaskRepository taskRepository, UserRepository userRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request) {
+    public CommentServiceImpl(CommentRepository commentRepository, TaskRepository taskRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request, AuthRepository authRepository) {
         this.commentRepository = commentRepository;
         this.taskRepository = taskRepository;
-        this.userRepository = userRepository;
         this.jwtAuthFilter = jwtAuthFilter;
         this.request = request;
+        this.authRepository = authRepository;
     }
 
     @Override
     public Comment save(CommentCreate commentCreate) {
         String userEmail = jwtAuthFilter.getUserEmailFromToken(request);
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = authRepository.findByEmail(userEmail).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Task task = taskRepository.findById(commentCreate.getTaskId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + commentCreate.getTaskId()));
 

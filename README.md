@@ -128,7 +128,18 @@ BACKEND_URL: https://backend.example.com/actuator/health
 ```
 
 ---
-
+### Set Up the Database
+#### When the project run for the first time, the database schema will be created automatically with Hibernate ORM.
+- connect to your database
+  ```sql
+    psql -U your_username -d your_database_name
+    ```
+#####  Run the Permissions Insert Script
+ * Download the permissions_insert.sql file from the project directory .
+ * Run the script in your PostgreSQL database:
+   ```sql
+    \i /path/to/permissions_insert.sql
+    ```
 # Integrify project details
 
 ## Teamwork
