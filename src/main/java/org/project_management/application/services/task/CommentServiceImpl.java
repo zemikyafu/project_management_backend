@@ -5,7 +5,6 @@ import org.project_management.application.dto.comment.CommentCreate;
 import org.project_management.application.dto.comment.CommentMapper;
 import org.project_management.application.dto.comment.CommentUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
-import org.project_management.application.services.User.UserService;
 import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.CommentRepository;
 import org.project_management.domain.abstractions.TaskRepository;
@@ -45,7 +44,6 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = CommentMapper.toComment(createDTO);
         comment.setTask(task);
         comment.setUser(user);
-
         return commentRepository.save(comment);
     }
 

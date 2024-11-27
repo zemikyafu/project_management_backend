@@ -4,7 +4,6 @@ import org.project_management.application.dto.project.ProjectCreate;
 import org.project_management.application.dto.project.ProjectMapper;
 import org.project_management.application.dto.project.ProjectUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
-import org.project_management.application.services.workspace.WorkspaceService;
 import org.project_management.domain.abstractions.ProjectRepository;
 import org.project_management.domain.abstractions.WorkspaceRepository;
 import org.project_management.domain.entities.project.Project;
@@ -17,21 +16,20 @@ import java.util.UUID;
 
 public class ProjectServiceImpl implements ProjectService{
     private final ProjectRepository projectRepository;
-    private final WorkspaceService workspaceService;
+    private final WorkspaceRepository workspaceRepository;
 
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository , WorkspaceService workspaceService) {
+    public ProjectServiceImpl(ProjectRepository projectRepository , WorkspaceRepository workspaceRepository) {
         this.projectRepository = projectRepository;
-        this.workspaceService = workspaceService;
+        this.workspaceRepository = workspaceRepository;
     }
 
     @Override
     public Project save(ProjectCreate createDTO) {
-        Workspace workspace = workspaceService.findById(createDTO.getWorkspaceId())
+        Workspace workspace = workspaceRepository.findById(createDTO.getWorkspaceId())
                 .orElseThrow(() -> new ResourceNotFoundException("Workspace not found with ID: " + createDTO.getWorkspaceId()));
         Project project = ProjectMapper.toProject(createDTO);
-
         project.setWorkspace(workspace);
 
         return projectRepository.save(project);
