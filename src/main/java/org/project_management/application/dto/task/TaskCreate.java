@@ -23,8 +23,8 @@ public class TaskCreate {
     @NotNull
     private TaskStatus status;
     @NotNull
-    private UUID projectId;   // The project the task belongs to
+    private UUID projectId;
     @NotNull
-    private UUID assigneeId;  // The assignee of the task
-    private Date deadlineAt;  // The task deadline
+    private UUID assigneeId;
+    private Date deadlineAt;
 }

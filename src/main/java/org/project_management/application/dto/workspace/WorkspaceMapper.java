@@ -8,11 +8,10 @@ public class WorkspaceMapper {
         return new Workspace(
                 createDTO.getName(),
                 createDTO.getDescription(),
-                null // company will be set in the service layer
+                null
         );
     }
 
-    // as the company of a workspace can't be changed
     public static Workspace toEntity(WorkspaceUpdate updateDTO) {
         Workspace workspace = new Workspace();
         if (updateDTO.getName() != null) {

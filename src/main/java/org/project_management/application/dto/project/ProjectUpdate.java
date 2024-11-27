@@ -16,7 +16,7 @@ import java.util.UUID;
 @Setter
 public class ProjectUpdate {
     @NotNull
-    private UUID id; // The unique identifier of the project being updated
+    private UUID id;
     @NotNull
     private String name;
     private String description;

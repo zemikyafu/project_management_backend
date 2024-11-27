@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 public class WorkspaceUserUpdate {
     @NotNull
-    private UUID id; // Primary key to identify the existing record
+    private UUID id;
     @NotNull
-    private UUID roleId;// Role can be updated
+    private UUID roleId;
 }

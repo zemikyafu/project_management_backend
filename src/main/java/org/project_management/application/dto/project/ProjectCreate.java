@@ -21,7 +21,7 @@ public class ProjectCreate {
     @NotNull
     private ProjectStatus status;
     @NotNull
-    private UUID workspaceId; // The ID of the workspace this project belongs to
+    private UUID workspaceId;
     private Date startDate;
     private Date endDate;
 }

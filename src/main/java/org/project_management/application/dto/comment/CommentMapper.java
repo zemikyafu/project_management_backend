@@ -1,9 +1,6 @@
 package org.project_management.application.dto.comment;
 
 import org.project_management.domain.entities.comment.Comment;
-import org.project_management.domain.entities.task.Task;
-import org.project_management.domain.entities.user.User;
-
 import java.util.Date;
 
 public class CommentMapper {

@@ -6,7 +6,7 @@ import org.project_management.domain.entities.workspace.Workspace;
 import org.project_management.domain.entities.workspace.WorkspaceUser;
 
 public class WorkspaceUserMapper {
-    // Maps WorkspaceUserCreate DTO to WorkspaceUser entity
+
     public static WorkspaceUser toEntity(WorkspaceUserCreate createDTO) {
         return new WorkspaceUser();
     }

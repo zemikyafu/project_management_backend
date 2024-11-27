@@ -12,11 +12,11 @@ import java.util.UUID;
 @Getter
 public class CommentCreate {
     @NotNull
-    String content;
+   private String content;
 
     @NotNull
-    UUID taskId;
+    private UUID taskId;
 
     @NotNull
-    UUID userId;
+    private UUID userId;
 }

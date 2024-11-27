@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 public class TaskUpdate {
     @NotNull
-    private UUID id;   // The ID of the task being updated
+    private UUID id;
     @NotNull
     private String title;
     @NotNull

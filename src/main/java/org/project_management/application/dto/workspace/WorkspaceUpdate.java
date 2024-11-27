@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 public class WorkspaceUpdate {
     @NotNull
-    private UUID id; // ID of the workspace being updated
+    private UUID id;
     @NotNull
     private String name;
     @NotNull

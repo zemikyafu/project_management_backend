@@ -18,5 +18,5 @@ public class WorkspaceCreate {
     @NotNull
     private String description;
     @NotNull
-    private UUID companyId; // Remains unchanged
+    private UUID companyId;
 }
