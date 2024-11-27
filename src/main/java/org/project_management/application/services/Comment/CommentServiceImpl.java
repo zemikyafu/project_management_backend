@@ -11,6 +11,7 @@ import org.project_management.domain.entities.comment.Comment;
 import org.project_management.domain.entities.task.Task;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.JwtAuthFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,13 +27,13 @@ public class CommentServiceImpl implements CommentService {
     private final HttpServletRequest request;
     private final UserRepository userRepository;
 
+    @Autowired
     public CommentServiceImpl(CommentRepository commentRepository, TaskRepository taskRepository, UserRepository userRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request) {
         this.commentRepository = commentRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.jwtAuthFilter = jwtAuthFilter;
         this.request = request;
-
     }
 
     @Override
@@ -68,7 +69,6 @@ public class CommentServiceImpl implements CommentService {
         comment.setEditedAt(new Date());
 
         return commentRepository.update(comment);
-
     }
 
     @Override
