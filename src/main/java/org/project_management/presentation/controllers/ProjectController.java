@@ -17,6 +17,7 @@ import org.project_management.domain.entities.project.Project;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class ProjectController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to save project")
     })
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('PROJECT-CREATE')")
     public ResponseEntity<GlobalResponse<Project>> saveProject(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "New project information", required = true,
@@ -55,9 +57,12 @@ public class ProjectController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Projects retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Workspace not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('PROJECT-READ')")
     public ResponseEntity<GlobalResponse<List<Project>>> findAllProjects(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId
     ) {
@@ -68,9 +73,12 @@ public class ProjectController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Project retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{projectId}")
+    @PreAuthorize("hasAuthority('PROJECT-READ')")
     public ResponseEntity<GlobalResponse<Project>> findProjectById(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
@@ -80,14 +88,16 @@ public class ProjectController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), project));
     }
 
-
     @Operation(summary = "Update a specific project")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Project updated successfully"),
             @ApiResponse(responseCode = "404", description = "Project or workspace not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{projectId}")
+    @PreAuthorize("hasAuthority('PROJECT-UPDATE')")
     public ResponseEntity<GlobalResponse<Project>> updateProject(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Updated project data", required = true,
@@ -104,14 +114,16 @@ public class ProjectController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), updatedProject));
     }
 
-
     @Operation(summary = "Delete a specific project")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Project deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Project or workspace not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{projectId}")
+    @PreAuthorize("hasAuthority('PROJECT-DELETE')")
     public ResponseEntity<GlobalResponse<String>> deleteProject(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
@@ -119,5 +131,4 @@ public class ProjectController {
         projectService.deleteByIdAndWorkspaceId(projectId, workspaceId);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), "Project deleted successfully"));
     }
-
 }

@@ -15,6 +15,7 @@ import org.project_management.domain.entities.company.CompanyUserId;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
+    @PreAuthorize("hasAuthority('COMPANYUSER-CREATE')")
     public ResponseEntity<GlobalResponse<CompanyUser>> save(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Details for creating a Company User",
@@ -62,6 +64,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAuthority('COMPANYUSER-READ')")
     public ResponseEntity<GlobalResponse<CompanyUser>> findById(
             @PathVariable UUID companyId,
             @PathVariable UUID userId) {
@@ -79,6 +82,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
+    @PreAuthorize("hasAuthority('COMPANYUSER-READ')")
     public ResponseEntity<GlobalResponse<List<CompanyUser>>> findAll(@PathVariable UUID companyId) {
         List<CompanyUser> companyUsers = companyUserService.findAllByCompanyId(companyId);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyUsers));
@@ -93,6 +97,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{userId}")
+    @PreAuthorize("hasAuthority('COMPANYUSER-UPDATE')")
     public ResponseEntity<GlobalResponse<CompanyUser>> update(
             @PathVariable UUID companyId,
             @PathVariable UUID userId,
@@ -116,6 +121,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('COMPANYUSER-DELETE')")
     public ResponseEntity<Void> deleteById(
             @PathVariable UUID companyId,
             @PathVariable UUID userId) {
