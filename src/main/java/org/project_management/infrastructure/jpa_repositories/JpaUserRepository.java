@@ -10,7 +10,8 @@ import java.util.UUID;
 
 public interface JpaUserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
-    Optional<User> findUserByUsername(String username);
+
+    Optional<User> findByName(String name);
 
     @Query("SELECT p.name " +
             "FROM WorkspaceUser wu " +
@@ -18,6 +19,4 @@ public interface JpaUserRepository extends JpaRepository<User, UUID> {
             "JOIN Permission p ON rp.permission.id = p.id " +
             "WHERE wu.user.id = :userId AND wu.workspace.id = :workspaceId")
     List<String> findGrantedAuthorities(UUID userId, UUID workspaceId);
-
-
 }
