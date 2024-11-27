@@ -23,19 +23,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
-        if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
-            throw new BadRequestException("Name, email and password are required");
-        }
-        try {
-            return jpaUserRepository.save(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new UnableToSaveResourceException("Unable to save user");
-        }
-    }
-
-    @Override
     public Optional<User> findById(UUID id) {
         return jpaUserRepository.findById(id)
                 .or(() -> {
@@ -43,10 +30,6 @@ public class UserRepositoryImpl implements UserRepository {
                 });
     }
 
-    @Override
-    public Optional<User> findByEmail(@Param("email") String email) {
-        return jpaUserRepository.findByEmail(email);
-    }
     @Override
     public List<User> findAll() {
         return jpaUserRepository.findAll();
@@ -101,5 +84,10 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (Exception e) {
             throw new UnableToDeleteResourceException("Unable to delete user");
         }
+    }
+
+    public List<String> findGlobalAuthorities(UUID userId) {
+        // Query the database to fetch global permissions for the Owner
+        return List.of("MANAGE_COMPANY", "MANAGE_WORKSPACES", "MANAGE_USERS");
     }
 }
