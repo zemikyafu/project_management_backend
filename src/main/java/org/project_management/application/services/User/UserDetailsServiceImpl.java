@@ -1,6 +1,7 @@
 package org.project_management.application.services.User;
 import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.CompanyUserRepository;
+import org.project_management.domain.abstractions.PermissionRepository;
 import org.project_management.domain.entities.user.User;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,9 +21,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final AuthRepository authRepository;
     private final CompanyUserRepository companyUserRepository;
 
-    public UserDetailsServiceImpl(AuthRepository authRepository, CompanyUserRepository companyUserRepository) {
+    private final PermissionRepository permissionRepository;
+    public UserDetailsServiceImpl(AuthRepository authRepository, CompanyUserRepository companyUserRepository, PermissionRepository permissionRepository) {
         this.authRepository = authRepository;
         this.companyUserRepository = companyUserRepository;
+        this.permissionRepository = permissionRepository;
     }
 
     @Override
@@ -58,7 +61,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
 
-        // Validate if the user is the owner of the company
         Optional<User> owner = companyUserRepository.findOwnerOfCompany(companyId);
         if (owner.isEmpty()) {
             throw new AccessDeniedException("No owner found for the company with ID: " + companyId);
@@ -68,8 +70,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new AccessDeniedException("Logged-in user is not the owner of the company with ID: " + companyId);
         }
 
-       //will be updated in next the PR to be fetched from DB
-        List<String> permissions = List.of("MANAGE_COMPANY", "MANAGE_WORKSPACES", "MANAGE_USERS");
+        List<String> permissions = permissionRepository.findAll().stream().map(p -> p.getName()).collect(Collectors.toList());
         return getUserDetails(user, permissions);
     }
 
