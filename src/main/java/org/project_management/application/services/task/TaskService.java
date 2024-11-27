@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TaskService {
-    Task save(TaskCreate taskCreate, UUID projectId, UUID assigneeId);
+    Task save(TaskCreate taskCreate);
     Optional<Task> findById(UUID taskId);
     List<Task> findByProjectId(UUID projectId);
     Optional<Task> findByIdAndProjectId(UUID taskId, UUID projectId);

@@ -3,7 +3,7 @@ package org.project_management.application.services.workspace;
 import org.project_management.application.dto.workspace.WorkspaceCreate;
 import org.project_management.application.dto.workspace.WorkspaceMapper;
 import org.project_management.application.dto.workspace.WorkspaceUpdate;
-import org.project_management.application.services.Company.CompanyService;
+import org.project_management.domain.abstractions.CompanyRepository;
 import org.project_management.domain.abstractions.WorkspaceRepository;
 import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.workspace.Workspace;
@@ -16,26 +16,25 @@ import java.util.UUID;
 public class WorkspaceServiceImpl implements WorkspaceService{
 
     private final WorkspaceRepository workspaceRepository;
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
 
 
     @Autowired
-    public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,CompanyService companyService) {
+    public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository, CompanyRepository companyRepository) {
         this.workspaceRepository = workspaceRepository;
-        this.companyService = companyService;
+        this.companyRepository = companyRepository;
     }
 
 
     @Override
-    public Workspace save(WorkspaceCreate createDTO, UUID companyId) {
-
-        Company company = companyService.findById(companyId);
-        if (company == null) {
-            throw new IllegalArgumentException("Company not found with id: " + createDTO.getCompanyId());
-        }
-        Workspace workspace = WorkspaceMapper.toEntity(createDTO, company);
+    public Workspace save(WorkspaceCreate createDTO) {
+        Company company = companyRepository.findById(createDTO.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("Company not found"));;
+        Workspace workspace = WorkspaceMapper.toEntity(createDTO);
+        workspace.setCompany(company);
         return workspaceRepository.save(workspace);
     }
+
 
     @Override
     public Optional<Workspace> findById(UUID workspaceId) {
@@ -56,12 +55,17 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     public Workspace update(WorkspaceUpdate updateDTO) {
         Workspace existingWorkspace = workspaceRepository.findById(updateDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Workspace not found"));
-        Workspace updatedWorkspace = WorkspaceMapper.toEntity(updateDTO, existingWorkspace);
-        return workspaceRepository.update(updatedWorkspace);
 
+        Workspace updatedWorkspace = WorkspaceMapper.toEntity(updateDTO);
 
+        if (updatedWorkspace.getName() != null) {
+            existingWorkspace.setName(updatedWorkspace.getName());
+        }
+        if (updatedWorkspace.getDescription() != null) {
+            existingWorkspace.setDescription(updatedWorkspace.getDescription());
+        }
+        return workspaceRepository.save(existingWorkspace);
     }
-
 
     @Override
     public void deleteByIdAndCompanyId(UUID workspaceId, UUID companyId) {
