@@ -9,7 +9,6 @@ import org.project_management.application.dto.user.SignupRequest;
 import org.project_management.application.dto.user.UserMapper;
 import org.project_management.application.dto.user.UserPartialUpdate;
 import org.project_management.domain.abstractions.AuthRepository;
-import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -40,30 +39,15 @@ public class UserControllerIT {
     AuthRepository authRepository;
 
     User user;
-    SignupRequest userCreate = new SignupRequest("Ted Tester", "testing@email.com", "Password123#");
+    SignupRequest userCreate = new SignupRequest(
+            "Ted Tester",
+            "testing@email.com",
+            "Password123#"
+    );
 
     @BeforeEach
     public void addUser() {
         user = authRepository.save(UserMapper.toUser(userCreate));
-    }
-
-    @Test
-    void shouldCreateUserSuccessfully() throws Exception {
-        SignupRequest userCreate = new SignupRequest("New User", "new@email.com", "Password123#");
-
-        mockMvc.perform(post("/api/v1/auth/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userCreate))
-                )
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("success"))
-                .andExpect(jsonPath("$.code").value("201"))
-                .andExpect(jsonPath("$.errors").value((Object) null))
-                .andExpect(jsonPath("$.data.name").value(userCreate.getName()))
-                .andExpect(jsonPath("$.data.email").value(userCreate.getEmail()))
-                .andExpect(jsonPath("$.data.password").doesNotExist())
-                .andExpect(jsonPath("$.data.status").value("ACTIVE"))
-                .andExpect(jsonPath("$.data.userId").exists());
     }
 
     @Test

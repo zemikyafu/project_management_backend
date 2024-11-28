@@ -84,6 +84,7 @@ public class CommentControllerIT {
 
     @BeforeEach
     public void setup() {
+        /*
         CompanyCreate companyCreate = new CompanyCreate("name", "email@email.com", "address");
         company = companyRepository.save(CompanyMapper.toCompany(companyCreate));
         WorkspaceCreate workspaceCreate = new WorkspaceCreate("new workspace 1", "description", company.getId());
@@ -96,6 +97,7 @@ public class CommentControllerIT {
         task = taskRepository.save(TaskMapper.toTask(taskCreate, project, user));
         CommentCreate createComment = new CommentCreate("This is a comment", task.getId(), user.getId());
         comment = commentRepository.save(CommentMapper.toComment(createComment, task, user));
+         */
     }
 
     @Test

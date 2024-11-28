@@ -24,6 +24,7 @@ public class SecurityConfig {
 
     @Value("${api.base.url}")
     private String baseUrl;
+
     public SecurityConfig(UserDetailsServiceImpl userDetailService, JwtAuthFilter jwtAuthFilter,
                           CustomAuthenticationEntryPoint authenticationHandler, CustomAccessDeniedHandler accessDeniedHandler) {
         this.userDetailService = userDetailService;
@@ -41,11 +42,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(baseUrl + "/auth/**").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
-
-
-                .requestMatchers("/**").permitAll()
-
-
                 .requestMatchers(baseUrl + "/invitation/accept/**").permitAll()
                 .requestMatchers(apiDocPaths).permitAll()
                 .anyRequest().authenticated().and()
