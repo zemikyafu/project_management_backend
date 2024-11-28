@@ -110,7 +110,7 @@ public class InvitationController {
                     content = @Content(mediaType = "application/json"))
     })
     @GetMapping
-    @PreAuthorize("hasAuthority('INVITATION-READ')")
+    @PreAuthorize("hasAuthority('INVITATION-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Invitation>>> findAll() {
         List<Invitation> invitations = invitationService.findAll();
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitations));

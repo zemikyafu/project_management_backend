@@ -76,4 +76,5 @@ public class AuthRepositoryImpl implements AuthRepository {
     public List<String> findGrantedAuthorities(UUID userId, UUID workspaceId) {
         return jpaUserRepository.findGrantedAuthorities(userId, workspaceId);
     }
+
 }

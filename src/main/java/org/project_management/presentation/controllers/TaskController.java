@@ -65,6 +65,7 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('TASK-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Task>>> findAllTasksInProject(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
