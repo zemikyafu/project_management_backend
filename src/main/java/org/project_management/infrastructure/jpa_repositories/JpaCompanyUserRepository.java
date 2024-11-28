@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface JpaCompanyUserRepository  extends JpaRepository<CompanyUser, CompanyUserId> {
+public interface JpaCompanyUserRepository extends JpaRepository<CompanyUser, CompanyUserId> {
     @Modifying
     @Query("DELETE FROM CompanyUser cu WHERE cu.user.id = :userId AND cu.company.id = :companyId")
     void deleteByUserIdAndCompanyId(@Param("userId") UUID userId, @Param("companyId") UUID companyId);
@@ -23,5 +23,8 @@ public interface JpaCompanyUserRepository  extends JpaRepository<CompanyUser, Co
 
     @Query("SELECT cu FROM CompanyUser cu WHERE cu.company.id = :companyId")
     List<CompanyUser> findAllByCompanyId(UUID companyId);
+
+    @Query("SELECT cu.company FROM CompanyUser cu WHERE cu.user.id = :userId")
+    List<CompanyUser>findAllByUserId(UUID userId);
 
 }

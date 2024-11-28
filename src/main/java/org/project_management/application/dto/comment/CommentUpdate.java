@@ -12,9 +12,9 @@ import java.util.UUID;
 @Getter
 public class CommentUpdate {
     @NotNull
-    UUID id;
+    private UUID id;
     @NotNull
-    UUID taskId;
+    private UUID taskId;
     @NotNull
-    String content;
+    private String content;
 }

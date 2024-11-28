@@ -1,5 +1,6 @@
 package org.project_management.application.dto.task;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 public class TaskCreate {
-
-    String title;
-    String content;
-    TaskPriority priority;
-    TaskStatus status;
-    UUID projectId;
-    UUID assigneeId;
-    Date deadlineAt;
+    @NotNull
+    private String title;
+    @NotNull
+    private String content;
+    @NotNull
+    private TaskPriority priority;
+    @NotNull
+    private TaskStatus status;
+    @NotNull
+    private UUID projectId;
+    @NotNull
+    private UUID assigneeId;
+    private Date deadlineAt;
 }
