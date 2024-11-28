@@ -14,4 +14,5 @@ public interface RoleRepository {
     void delete(UUID id);
     List<Role> findAll();
     List<Role> findByCompanyId(UUID companyId);
+    Optional<Role> findByNameAndCompanyId(String name, UUID companyId);
 }

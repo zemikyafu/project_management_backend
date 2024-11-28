@@ -21,4 +21,6 @@ public interface RoleService {
     void delete(UUID id);
 
     List<Role> findAll();
+
+    Role findByNameAndCompanyId(String name, UUID companyId);
 }

@@ -22,9 +22,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/roles")
-@Tag(name = "Role", description = "Role management API endpoints")
+@Tag(name = "Role", description = "Role management")
 public class RoleController {
-
     private final RoleService roleService;
 
     public RoleController(RoleService roleService) {
@@ -65,40 +64,28 @@ public class RoleController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), role));
     }
 
-    @Operation(summary = "Find a role by name")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Role retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Role not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/name/{name}")
-    public ResponseEntity<GlobalResponse<Role>> findByName(
-            @Parameter(description = "Role name", required = true) @PathVariable String name) {
-        Role role = roleService.findByName(name);
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), role));
-    }
-
-    @Operation(summary = "Find all roles")
+    @Operation(summary = "Find all roles, optional filter by name and/or company ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Roles retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "No matching roles found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping
-    public ResponseEntity<GlobalResponse<List<Role>>> findAll() {
-        List<Role> roles = roleService.findAll();
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), roles));
-    }
+    @GetMapping("/")
+    public ResponseEntity<GlobalResponse<List<Role>>> findByNameAndCompanyId(
+            @Parameter(description = "Role name (optional)") @RequestParam(required = false) String name,
+            @Parameter(description = "Company ID (optional)") @RequestParam(required = false) UUID companyId) {
+        List<Role> roles;
 
-    @Operation(summary = "Find roles by company ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Roles retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Company not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @GetMapping("/company/{companyId}")
-    public ResponseEntity<GlobalResponse<List<Role>>> findByCompanyId(
-            @Parameter(description = "Company ID", required = true) @PathVariable UUID companyId) {
-        List<Role> roles = roleService.findByCompanyId(companyId);
+        if (name != null && companyId != null) {
+            roles = List.of(roleService.findByNameAndCompanyId(name, companyId));
+        } else if (name != null) {
+            roles = List.of(roleService.findByName(name));
+        } else if (companyId != null) {
+            roles = roleService.findByCompanyId(companyId);
+        } else {
+            roles = roleService.findAll();
+        }
+
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), roles));
     }
 
@@ -130,7 +117,6 @@ public class RoleController {
             @ApiResponse(responseCode = "404", description = "Role not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
             @Parameter(description = "Role ID", required = true) @PathVariable UUID id) {

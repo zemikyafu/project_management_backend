@@ -16,6 +16,7 @@ import org.project_management.application.services.Invitation.InvitationService;
 import org.project_management.application.use_cases.InvitationUseCaseImpl;
 import org.project_management.domain.entities.invitation.Invitation;
 import org.project_management.presentation.shared.GlobalResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ import java.util.UUID;
 public class InvitationController {
     private final InvitationUseCaseImpl invitationUseCaseImpl;
     private final InvitationService invitationService;
+
+    @Value("${domain_url}")
+    private String domainUrl;
 
     public InvitationController(InvitationUseCaseImpl invitationUseCaseImpl, InvitationService invitationService) {
         this.invitationUseCaseImpl = invitationUseCaseImpl;
@@ -74,7 +78,7 @@ public class InvitationController {
             @RequestParam("token") String token) {
         invitationUseCaseImpl.acceptInvitation(token);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .header(HttpHeaders.LOCATION, "https://to-be-implemented/user-onboarding")
+                .header(HttpHeaders.LOCATION, domainUrl + "/onboarding")
                 .build();
     }
 

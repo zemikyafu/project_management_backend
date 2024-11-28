@@ -22,10 +22,9 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/task/{taskId}/comments")
-@Tag(name = "Comment", description = "Comment management API")
+@RequestMapping("/api/v1/tasks/{taskId}/comments")
+@Tag(name = "Comment", description = "Comment management")
 public class CommentController {
-
     private final CommentService commentService;
 
     public CommentController(CommentService commentService) {
@@ -40,7 +39,7 @@ public class CommentController {
             @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<GlobalResponse<Comment>> save(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -120,4 +119,3 @@ public class CommentController {
         return ResponseEntity.noContent().build();
     }
 }
-

@@ -61,6 +61,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public Role findByNameAndCompanyId(String name, UUID companyId) {
+        return roleRepository.findByNameAndCompanyId(name, companyId).orElseThrow(
+                () -> new ResourceNotFoundException("Role not found with name: " + name + " and company id: " + companyId)
+        );
+    }
+
+    @Override
     public Role update(RoleUpdate roleUpdateDto) {
         Company company = companyRepository.findById(roleUpdateDto.getCompanyId()).orElseThrow(
                 () -> new ResourceNotFoundException("Company not found with id: " + roleUpdateDto.getCompanyId())

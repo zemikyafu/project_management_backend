@@ -52,4 +52,9 @@ public class RoleRepositoryImpl implements RoleRepository {
     public List<Role> findByCompanyId(@Param("company_id") UUID companyId) {
         return jpaRoleRepository.findByCompanyId(companyId);
     }
+
+    @Override
+    public Optional<Role> findByNameAndCompanyId(@Param("name") String name, @Param("company_id") UUID companyId) {
+        return jpaRoleRepository.findByNameAndCompanyId(name, companyId);
+    }
 }
