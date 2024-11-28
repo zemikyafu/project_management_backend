@@ -5,6 +5,7 @@ import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.UserAlreadyExistException;
 import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.CompanyUserRepository;
+import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.JwtHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -44,16 +48,24 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public SigninResponse signIn(String email, String password) {
-            User user = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with the provided email"));
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            if(authentication.isAuthenticated()){
-                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                String token = jwtHelper.generateToken(userDetails);
-                return new  SigninResponse(token, user.getId(), user.getName());
+        User user = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with the provided email"));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        if(authentication.isAuthenticated()){
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            Optional<Company> ownerCompany = companyUserRepository.findOwnerCompanyByUserId(user.getId());
+            String token ;
+            if(ownerCompany.isPresent())
+            {
+                String companyId = ownerCompany.get().getId().toString();
+                Map<String, Object> extraClaims=new HashMap<>();
+                extraClaims.put("companyId",companyId);
+                token = jwtHelper.generateToken(extraClaims,userDetails);
             }
-            else {
-                throw new BadCredentialsException("Invalid credentials");
-            }
+             token = jwtHelper.generateToken(userDetails);
+            return new SigninResponse(token, user.getId(), user.getName());
+        } else {
+            throw new BadCredentialsException("Invalid credentials");
+        }
     }
 
 }

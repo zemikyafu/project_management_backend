@@ -64,6 +64,9 @@ public class JwtHelper {
     public String extractWorkspaceId(String token) {
         return extractClaim(token, claims -> claims.get("workspaceId", String.class));
     }
+    public String extractCompanyId(String token) {
+        return extractClaim(token, claims -> claims.get("companyId", String.class));
+    }
     public String generateToken(UserDetails userDetails) {
         return this.generateToken(new HashMap<>(), userDetails);
     }

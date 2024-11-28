@@ -48,7 +48,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String companyId = request.getHeader("company_id");
+            String companyId= jwtHelper.extractCompanyId(token);
+
             String workspaceId = request.getHeader("workspace_id");
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

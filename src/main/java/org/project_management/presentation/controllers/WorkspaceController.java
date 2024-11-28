@@ -67,7 +67,7 @@ public class WorkspaceController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('WORKSPACE-READ')")
+    @PreAuthorize("hasAuthority('WORKSPACE-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Workspace>>> findAllWorkspaces(
             @Parameter(description = "Company ID", required = true) @PathVariable UUID companyId) {
         List<Workspace> workspaces = workspaceService.findByCompanyId(companyId);

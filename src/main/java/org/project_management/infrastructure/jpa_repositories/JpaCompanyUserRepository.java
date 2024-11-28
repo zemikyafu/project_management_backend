@@ -24,7 +24,7 @@ public interface JpaCompanyUserRepository extends JpaRepository<CompanyUser, Com
     @Query("SELECT cu FROM CompanyUser cu WHERE cu.company.id = :companyId")
     List<CompanyUser> findAllByCompanyId(UUID companyId);
 
-    @Query("SELECT cu.company FROM CompanyUser cu WHERE cu.user.id = :userId")
-    List<CompanyUser>findAllByUserId(UUID userId);
+    @Query("SELECT cu.company FROM CompanyUser cu WHERE cu.user.id = :userId and cu.isOwner = true")
+    Optional<Company>findOwnerCompanyByUserId(UUID userId);
 
 }
