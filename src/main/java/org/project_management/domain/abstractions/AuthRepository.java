@@ -18,6 +18,6 @@ public interface AuthRepository {
     public List<Permission> findPermissions();
     public List<RolePermission> findRolePermissions();
     List<String> findGrantedAuthorities(UUID userId, UUID workspaceId);
-    void OnBoarding(String name, String email, String password);
+
 
 }
