@@ -1,10 +1,8 @@
 package org.project_management.infrastructure.repositoryImpl;
 
 import org.project_management.application.exceptions.BadRequestException;
-import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.UnableToSaveResourceException;
 import org.project_management.domain.abstractions.AuthRepository;
-import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.permission.Permission;
 import org.project_management.domain.entities.role.Role;
 import org.project_management.domain.entities.role.RolePermission;
@@ -35,7 +33,6 @@ public class AuthRepositoryImpl implements AuthRepository {
         this.jpaPermissionRepository = jpaPermissionRepository;
     }
 
-
     @Override
     public User save(User user) {
         if (user.getName() == null || user.getEmail() == null || user.getPassword() == null) {
@@ -51,9 +48,7 @@ public class AuthRepositoryImpl implements AuthRepository {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return jpaUserRepository.findByEmail(email).or(() -> {
-            throw new ResourceNotFoundException("User not found with email: " + email);
-        });
+        return jpaUserRepository.findByEmail(email);
     }
 
     @Override
