@@ -15,6 +15,7 @@ import org.project_management.domain.entities.workspace.WorkspaceUser;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,9 +36,13 @@ public class WorkspaceUserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Workspace not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
+
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('WORKSPACE_USER-READ')")
     public ResponseEntity<GlobalResponse<List<WorkspaceUser>>> getUsersByWorkspace(
             @Parameter(description = "company ID", required = true) @PathVariable UUID companyId,
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId
@@ -51,9 +56,12 @@ public class WorkspaceUserController {
             @ApiResponse(responseCode = "201", description = "User assigned successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
             @ApiResponse(responseCode = "404", description = "Workspace or user not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/{userId}")
+    @PreAuthorize("hasAuthority('WORKSPACE_USER-CREATE')")
     public ResponseEntity<GlobalResponse<WorkspaceUser>> assignUserToWorkspace(
             @Parameter(description = "company ID", required = true) @PathVariable UUID companyId,
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
@@ -77,9 +85,12 @@ public class WorkspaceUserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User removed successfully"),
             @ApiResponse(responseCode = "404", description = "Workspace or user not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('WORKSPACE_USER-DELETE')")
     public ResponseEntity<GlobalResponse<String>> removeUserFromWorkspace(
             @Parameter(description = "company ID", required = true) @PathVariable UUID companyId,
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,

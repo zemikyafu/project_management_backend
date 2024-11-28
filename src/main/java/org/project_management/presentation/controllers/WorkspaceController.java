@@ -18,6 +18,7 @@ import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,9 +40,12 @@ public class WorkspaceController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Workspace created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to save workspace")
     })
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('WORKSPACE-CREATE')")
     public ResponseEntity<GlobalResponse<Workspace>> saveWorkspace(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "New workspace information", required = true,
@@ -57,10 +61,13 @@ public class WorkspaceController {
     @Operation(summary = "Retrieve all workspaces for a company")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Workspaces retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Company not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('WORKSPACE-READ')")
     public ResponseEntity<GlobalResponse<List<Workspace>>> findAllWorkspaces(
             @Parameter(description = "Company ID", required = true) @PathVariable UUID companyId) {
         List<Workspace> workspaces = workspaceService.findByCompanyId(companyId);
@@ -70,10 +77,13 @@ public class WorkspaceController {
     @Operation(summary = "Retrieve a specific workspace")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Workspace retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Workspace not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{workspaceId}")
+    @PreAuthorize("hasAuthority('WORKSPACE-READ')")
     public ResponseEntity<GlobalResponse<Workspace>> findWorkspaceById(
             @Parameter(description = "Company ID", required = true) @PathVariable UUID companyId,
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId) {
@@ -85,10 +95,13 @@ public class WorkspaceController {
     @Operation(summary = "Update a specific workspace")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Workspace updated successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Workspace not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{workspaceId}")
+    @PreAuthorize("hasAuthority('WORKSPACE-UPDATE')")
     public ResponseEntity<GlobalResponse<Workspace>> updateWorkspace(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Updated workspace data", required = true,
@@ -107,10 +120,13 @@ public class WorkspaceController {
     @Operation(summary = "Delete a specific workspace")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Workspace deleted successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Workspace not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{workspaceId}")
+    @PreAuthorize("hasAuthority('WORKSPACE-DELETE')")
     public ResponseEntity<GlobalResponse<String>> deleteWorkspace(
             @Parameter(description = "Company ID", required = true) @PathVariable UUID companyId,
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId) {

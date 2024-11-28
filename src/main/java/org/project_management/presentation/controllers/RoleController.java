@@ -15,6 +15,7 @@ import org.project_management.domain.entities.role.Role;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +37,12 @@ public class RoleController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "409", description = "Role with the same name already exists"),
             @ApiResponse(responseCode = "404", description = "Company not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE-CREATE')")
     public ResponseEntity<GlobalResponse<Role>> save(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Details for creating a role",
@@ -55,9 +59,12 @@ public class RoleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Role retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Role not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE-READ')")
     public ResponseEntity<GlobalResponse<Role>> findById(
             @Parameter(description = "Role ID", required = true) @PathVariable UUID id) {
         Role role = roleService.findById(id);
@@ -66,11 +73,14 @@ public class RoleController {
 
     @Operation(summary = "Find all roles, optional filter by name and/or company ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Roles retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "No matching roles found"),
+            @ApiResponse(responseCode = "200", description = "Role retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Role not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('ROLE-READ')")
     public ResponseEntity<GlobalResponse<List<Role>>> findByNameAndCompanyId(
             @Parameter(description = "Role name (optional)") @RequestParam(required = false) String name,
             @Parameter(description = "Company ID (optional)") @RequestParam(required = false) UUID companyId) {
@@ -94,9 +104,12 @@ public class RoleController {
             @ApiResponse(responseCode = "200", description = "Role updated successfully"),
             @ApiResponse(responseCode = "404", description = "Role or company not found"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE-UPDATE')")
     public ResponseEntity<GlobalResponse<Role>> update(
             @Parameter(description = "Role ID", required = true) @PathVariable UUID id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -115,9 +128,12 @@ public class RoleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Role deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Role not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE-DELETE')")
     public ResponseEntity<Void> delete(
             @Parameter(description = "Role ID", required = true) @PathVariable UUID id) {
         roleService.delete(id);

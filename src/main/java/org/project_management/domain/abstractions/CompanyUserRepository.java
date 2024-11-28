@@ -1,5 +1,6 @@
 package org.project_management.domain.abstractions;
 
+import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.company.CompanyUser;
 import org.project_management.domain.entities.company.CompanyUserId;
 import org.project_management.domain.entities.user.User;
@@ -17,5 +18,6 @@ public interface CompanyUserRepository {
     Optional <User> findOwnerOfCompany (UUID companyId);
 
     List<CompanyUser> findAllByCompanyId(UUID companyId);
+    List<CompanyUser> findAllByUserId(UUID userId);
 
 }

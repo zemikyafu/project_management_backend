@@ -16,6 +16,7 @@ import org.project_management.domain.entities.comment.Comment;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class CommentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('COMMENT-CREATE')")
     public ResponseEntity<GlobalResponse<Comment>> save(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -61,6 +63,7 @@ public class CommentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{commentId}")
+    @PreAuthorize("hasAuthority('COMMENT-READ')")
     public ResponseEntity<GlobalResponse<Comment>> findById(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
             @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId) {
@@ -76,6 +79,7 @@ public class CommentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
+    @PreAuthorize("hasAuthority('COMMENT-READ')")
     public ResponseEntity<GlobalResponse<List<Comment>>> findByTaskId(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId) {
         List<Comment> comments = commentService.findByTaskId(taskId);
@@ -90,6 +94,7 @@ public class CommentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{commentId}")
+    @PreAuthorize("hasAuthority('COMMENT-UPDATE')")
     public ResponseEntity<GlobalResponse<Comment>> update(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
             @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId,
@@ -112,6 +117,7 @@ public class CommentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{commentId}")
+    @PreAuthorize("hasAuthority('COMMENT-DELETE')")
     public ResponseEntity<Void> deleteById(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId,
             @Parameter(description = "Comment ID", required = true) @PathVariable UUID commentId) {

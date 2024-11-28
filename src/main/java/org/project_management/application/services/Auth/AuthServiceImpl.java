@@ -4,6 +4,7 @@ import org.project_management.application.dto.user.SigninResponse;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.UserAlreadyExistException;
 import org.project_management.domain.abstractions.AuthRepository;
+import org.project_management.domain.abstractions.CompanyUserRepository;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.JwtHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,11 +23,13 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtHelper jwtHelper;
-    public AuthServiceImpl(AuthRepository authRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtHelper jwtHelper) {
+    private final CompanyUserRepository companyUserRepository;
+    public AuthServiceImpl(AuthRepository authRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtHelper jwtHelper, CompanyUserRepository companyUserRepository) {
         this.authRepository = authRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtHelper = jwtHelper;
+        this.companyUserRepository = companyUserRepository;
     }
 
     @Override
@@ -52,4 +55,5 @@ public class AuthServiceImpl implements AuthService {
                 throw new BadCredentialsException("Invalid credentials");
             }
     }
+
 }

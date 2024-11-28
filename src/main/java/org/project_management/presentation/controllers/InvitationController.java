@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class InvitationController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to send email")
     })
     @PostMapping
+    @PreAuthorize("hasAuthority('INVITATION-CREATE')")
     public ResponseEntity<GlobalResponse<Invitation>> invite(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Details required to send an invitation",
@@ -92,6 +94,7 @@ public class InvitationController {
             @ApiResponse(responseCode = "500", description = "Internal server error while updating invitation")
     })
     @PutMapping
+    @PreAuthorize("hasAuthority('INVITATION-UPDATE')")
     public ResponseEntity<GlobalResponse<Invitation>> update(
             @RequestBody @Valid UpdateInvitation updateInvitationDto) {
         Invitation invitation = invitationService.update(updateInvitationDto);
@@ -107,6 +110,7 @@ public class InvitationController {
                     content = @Content(mediaType = "application/json"))
     })
     @GetMapping
+    @PreAuthorize("hasAuthority('INVITATION-READ')")
     public ResponseEntity<GlobalResponse<List<Invitation>>> findAll() {
         List<Invitation> invitations = invitationService.findAll();
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitations));
@@ -121,6 +125,7 @@ public class InvitationController {
             @ApiResponse(responseCode = "404", description = "Invitation not found")
     })
     @GetMapping("{email}/{workspaceId}")
+    @PreAuthorize("hasAuthority('INVITATION-READ')")
     public ResponseEntity<GlobalResponse<Invitation>> findByEmailAndWorkspaceId(
             @Parameter(description = "Email address of the user", required = true, example = "user@example.com")
             @PathVariable String email,
@@ -140,6 +145,7 @@ public class InvitationController {
             @ApiResponse(responseCode = "400", description = "Invalid ID format")
     })
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('INVITATION-READ')")
     public ResponseEntity<GlobalResponse<Invitation>> findById(
             @Parameter(description = "ID of the Invitation", required = true, example = "5109fc9e-ce10-4bba-a9f5-f821cf66ce0b")
             @PathVariable UUID id) {

@@ -8,11 +8,13 @@ import org.project_management.domain.abstractions.WorkspaceRepository;
 import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.workspace.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class WorkspaceServiceImpl implements WorkspaceService{
 
     private final WorkspaceRepository workspaceRepository;
