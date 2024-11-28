@@ -82,7 +82,7 @@ public class CompanyUserController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
-    @PreAuthorize("hasAuthority('COMPANYUSER-READ')")
+    @PreAuthorize("hasAuthority('COMPANYUSER-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<CompanyUser>>> findAll(@PathVariable UUID companyId) {
         List<CompanyUser> companyUsers = companyUserService.findAllByCompanyId(companyId);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyUsers));

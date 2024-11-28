@@ -82,7 +82,7 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find companies")
     })
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('COMPANY-READ')")
+    @PreAuthorize("hasAuthority('COMPANY-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
     }

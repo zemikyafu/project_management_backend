@@ -80,7 +80,7 @@ public class CommentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
-    @PreAuthorize("hasAuthority('COMMENT-READ')")
+    @PreAuthorize("hasAuthority('COMMENT-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Comment>>> findByTaskId(
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId) {
         List<Comment> comments = commentService.findByTaskId(taskId);

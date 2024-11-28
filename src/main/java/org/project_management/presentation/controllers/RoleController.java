@@ -96,7 +96,7 @@ public class RoleController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
-    @PreAuthorize("hasAuthority('ROLE-READ')")
+    @PreAuthorize("hasAuthority('ROLE-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Role>>> findAll() {
         List<Role> roles = roleService.findAll();
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), roles));

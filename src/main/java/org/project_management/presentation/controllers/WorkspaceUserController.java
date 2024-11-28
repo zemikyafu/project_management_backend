@@ -42,7 +42,7 @@ public class WorkspaceUserController {
 
     })
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('WORKSPACE_USER-READ')")
+    @PreAuthorize("hasAuthority('WORKSPACE_USER-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<WorkspaceUser>>> getUsersByWorkspace(
             @Parameter(description = "company ID", required = true) @PathVariable UUID companyId,
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId
