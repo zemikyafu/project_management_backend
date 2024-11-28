@@ -18,6 +18,7 @@ import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find user")
     })
     @GetMapping("/{id}")
+    @PreAuthorize("@securityUtils.isOwner(#id)")
     public ResponseEntity<GlobalResponse<UserRead>> findById(
             @Parameter(description = "User id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id
@@ -64,6 +66,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find users")
     })
     @GetMapping
+    @PreAuthorize("hasAuthority('USER-READ')")
     public ResponseEntity<GlobalResponse<List<UserRead>>> findAll() {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), userService.findAll().stream().map(UserMapper::toUserRead).collect(Collectors.toList())));
     }
@@ -77,6 +80,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to update user")
     })
     @PutMapping("/{id}")
+    @PreAuthorize("@securityUtils.isOwner(#id)")
     public ResponseEntity<GlobalResponse<UserRead>> updateUser(
             @Parameter(description = "User id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id,
@@ -104,6 +108,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to update user")
     })
     @PatchMapping("/{id}")
+    @PreAuthorize("@securityUtils.isOwner(#id)")
     public ResponseEntity<GlobalResponse<UserRead>> updateUserAndEmail(
             @Parameter(description = "User id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id,
@@ -131,6 +136,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to delete user")
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER-DELETE')")
     public ResponseEntity<GlobalResponse<String>> deleteUser(
             @Parameter(description = "User id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id

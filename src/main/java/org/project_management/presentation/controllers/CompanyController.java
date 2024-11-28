@@ -17,6 +17,7 @@ import org.project_management.domain.entities.company.Company;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to save company")
     })
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('COMPANY-CREATE')")
     public ResponseEntity<GlobalResponse<Company>> saveCompany(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "New company information", required = true,
@@ -61,6 +63,7 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to delete company")
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('COMPANY-DELETE')")
     public ResponseEntity<GlobalResponse<String>> deleteCompany(
             @Parameter(description = "Company id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id
@@ -79,6 +82,7 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find companies")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('COMPANY-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
     }
@@ -93,6 +97,7 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find company")
     })
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('COMPANY-READ')")
     public ResponseEntity<GlobalResponse<Company>> findCompanyById(
             @Parameter(description = "Company id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id
@@ -109,6 +114,7 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find company")
     })
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('COMPANY-UPDATE')")
     public ResponseEntity<GlobalResponse<Company>> updateCompany(
             @Parameter(description = "Company id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id,

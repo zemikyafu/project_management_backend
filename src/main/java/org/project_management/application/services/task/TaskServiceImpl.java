@@ -14,12 +14,13 @@ import org.project_management.domain.entities.task.TaskStatus;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@Service
 public class TaskServiceImpl implements TaskService{
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;

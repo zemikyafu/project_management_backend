@@ -3,6 +3,7 @@ package org.project_management.infrastructure.repositoryImpl;
 import org.project_management.application.exceptions.UnableToDeleteResourceException;
 import org.project_management.application.exceptions.UnableToSaveResourceException;
 import org.project_management.domain.abstractions.CompanyUserRepository;
+import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.company.CompanyUser;
 import org.project_management.domain.entities.company.CompanyUserId;
 import org.project_management.domain.entities.user.User;
@@ -68,6 +69,11 @@ public class CompanyUserRepositoryImpl implements CompanyUserRepository {
     @Override
     public List<CompanyUser> findAllByCompanyId(UUID companyId) {
        return jpaCompanyUserRepository.findAllByCompanyId(companyId);
+    }
+
+    @Override
+    public Optional<Company> findOwnerCompanyByUserId(UUID userId) {
+        return jpaCompanyUserRepository.findOwnerCompanyByUserId(userId);
     }
 
 

@@ -48,7 +48,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String companyId = request.getHeader("company_id");
+            String companyId= jwtHelper.extractCompanyId(token);
+
             String workspaceId = request.getHeader("workspace_id");
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -59,7 +60,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 } else if (workspaceId != null) {
                     userDetails = userDetailsService.loadUserAndAuthByUsername(username, UUID.fromString(workspaceId));
                 } else {
-                    throw new AccessDeniedException("Workspace ID or Company ID is required");
+                    userDetails = userDetailsService.loadUserByUsername(username);
                 }
                 if (jwtHelper.isTokenValid(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken =

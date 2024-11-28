@@ -17,6 +17,7 @@ import org.project_management.domain.entities.task.Task;
 import org.project_management.presentation.shared.GlobalResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,9 +38,12 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Task created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
-            @ApiResponse(responseCode = "500", description = "Internal server error, unable to save task")
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('TASK-CREATE')")
     public ResponseEntity<GlobalResponse<Task>> saveTask(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "New task information", required = true,
@@ -56,9 +60,12 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tasks retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('TASK-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Task>>> findAllTasksInProject(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
@@ -71,9 +78,12 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Task not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{taskId}")
+    @PreAuthorize("hasAuthority('TASK-READ')")
     public ResponseEntity<GlobalResponse<Task>> findTaskById(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId,
@@ -89,9 +99,12 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task updated successfully"),
             @ApiResponse(responseCode = "404", description = "Task or project not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{taskId}")
+    @PreAuthorize("hasAuthority('TASK-UPDATE')")
     public ResponseEntity<GlobalResponse<Task>> updateTask(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Updated task data", required = true,
@@ -113,9 +126,12 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Task or project not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{taskId}")
+    @PreAuthorize("hasAuthority('TASK-DELETE')")
     public ResponseEntity<GlobalResponse<String>> deleteTask(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId,
