@@ -48,7 +48,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     public void setAuthorities(List<GrantedAuthority> authorities) {
