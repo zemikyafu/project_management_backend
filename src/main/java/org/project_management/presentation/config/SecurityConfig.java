@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationHandler)
-                .accessDeniedHandler(accessDeniedHandler);;
+                .accessDeniedHandler(accessDeniedHandler);
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationManager(authenticationManager(http));
