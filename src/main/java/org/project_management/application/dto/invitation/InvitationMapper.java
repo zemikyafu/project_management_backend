@@ -9,7 +9,13 @@ public class InvitationMapper {
     }
 
     public static InvitationResponse toInvitationResponse(Invitation invitation) {
-        return new InvitationResponse(invitation.getId(), invitation.getEmail(),
-                invitation.getWorkspace().getId(), invitation.getRole().getId(), invitation.isAccepted(), invitation.getExpiredAt());
+        InvitationResponse invitationResponse = new InvitationResponse();
+        invitationResponse.setId(invitation.getId());
+        invitationResponse.setRecipientEmail(invitation.getEmail());
+        invitationResponse.setWorkspaceId(invitation.getWorkspace().getId());
+        invitationResponse.setRoleId(invitation.getRole().getId());
+        invitationResponse.setAccepted(invitation.isAccepted());
+        invitationResponse.setExpiredAt(invitation.getExpiredAt());
+        return invitationResponse;
     }
 }

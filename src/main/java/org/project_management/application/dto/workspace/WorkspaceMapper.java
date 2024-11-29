@@ -1,5 +1,6 @@
 package org.project_management.application.dto.workspace;
 
+import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.workspace.Workspace;
 
 public class WorkspaceMapper {
@@ -9,11 +10,10 @@ public class WorkspaceMapper {
     }
 
     public static Workspace toEntity(WorkspaceCreate createDTO) {
-        return new Workspace(
-                createDTO.getName(),
-                createDTO.getDescription(),
-                null
-        );
+        Workspace workspace = new Workspace();
+        workspace.setName(createDTO.getName());
+        workspace.setDescription(createDTO.getDescription());
+        return workspace;
     }
 
     public static Workspace toEntity(WorkspaceUpdate updateDTO) {
