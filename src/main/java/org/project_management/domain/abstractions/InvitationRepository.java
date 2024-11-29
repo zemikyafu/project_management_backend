@@ -11,7 +11,7 @@ public interface InvitationRepository {
 
     Optional<Invitation> findById(UUID invitationId);
 
-    Optional<Invitation> findByEmailandWorkspaceId(String Email, UUID workspaceId);
+    Optional<Invitation> findByEmailAndWorkspaceId(String email, UUID workspaceId);
 
     Invitation update(Invitation invitation);
 

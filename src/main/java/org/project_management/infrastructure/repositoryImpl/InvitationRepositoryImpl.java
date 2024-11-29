@@ -40,10 +40,8 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     }
 
     @Override
-    public Optional<Invitation> findByEmailandWorkspaceId(String email, UUID workspaceId){
-        return jpaInvitationRepository.findByEmailAndWorkspaceId(email, workspaceId).or(() -> {
-                    throw new ResourceNotFoundException("Invitation not found with email: " + email + " and workspace id: " + workspaceId.toString());
-                });
+    public Optional<Invitation> findByEmailAndWorkspaceId(String email, UUID workspaceId){
+        return jpaInvitationRepository.findByEmailAndWorkspaceId(email, workspaceId);
     }
 
     @Override

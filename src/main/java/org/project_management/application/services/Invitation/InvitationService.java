@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface InvitationService {
-    Invitation save(InvitationRequest invitationRequest);
+    Invitation save(InvitationRequest invitationRequest, String token);
 
     Optional<Invitation> findById(UUID invitationId);
 
