@@ -9,8 +9,12 @@ import java.util.UUID;
 
 public interface RolePermissionRepository {
     RolePermission save(RolePermission rolePermission);
+
     Optional<RolePermission> findById(RolePermissionId id);
+
     RolePermission update(RolePermission rolePermission);
+
     void delete(UUID roleId, UUID permissionId);
+
     List<RolePermission> findAll();
 }

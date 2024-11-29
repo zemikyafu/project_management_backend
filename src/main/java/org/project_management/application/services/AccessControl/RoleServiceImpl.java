@@ -1,6 +1,5 @@
 package org.project_management.application.services.AccessControl;
 
-import jakarta.transaction.Transactional;
 import org.project_management.application.dto.role.RoleCreate;
 import org.project_management.application.dto.role.RoleUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;

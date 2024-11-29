@@ -16,15 +16,21 @@ import java.util.UUID;
 public class TaskCreate {
     @NotNull
     private String title;
+
     @NotNull
     private String content;
+
     @NotNull
     private TaskPriority priority;
+
     @NotNull
     private TaskStatus status;
+
     @NotNull
     private UUID projectId;
+
     @NotNull
     private UUID assigneeId;
+
     private Date deadlineAt;
 }

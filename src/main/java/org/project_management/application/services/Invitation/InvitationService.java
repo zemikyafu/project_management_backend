@@ -13,7 +13,7 @@ public interface InvitationService {
 
     Optional<Invitation> findById(UUID invitationId);
 
-    Optional<Invitation>findByEmailandWorkspaceId(String email, UUID workspaceId);
+    Optional<Invitation>findByEmailAndWorkspaceId(String email, UUID workspaceId);
 
     Invitation updateInvitationStatus(String email, UUID workspaceId, boolean status);
 

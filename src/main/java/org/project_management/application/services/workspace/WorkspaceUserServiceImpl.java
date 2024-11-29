@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Service
 public class WorkspaceUserServiceImpl implements WorkspaceUserService{
     private final WorkspaceUserRepository workspaceUserRepository;
@@ -92,11 +93,8 @@ public class WorkspaceUserServiceImpl implements WorkspaceUserService{
         return workspaceUserRepository.save(updatedWorkspaceUser);
     }
 
-
     @Override
     public void deleteByWorkspaceIdAndUserId(UUID workspaceId, UUID userId) {
         workspaceUserRepository.deleteByWorkspaceIdAndUserId(workspaceId,userId);
     }
-
-
 }

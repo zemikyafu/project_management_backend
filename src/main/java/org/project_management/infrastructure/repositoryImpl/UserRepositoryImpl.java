@@ -7,8 +7,6 @@ import org.project_management.application.exceptions.UnableToSaveResourceExcepti
 import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.user.User;
 import org.project_management.infrastructure.jpa_repositories.JpaUserRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

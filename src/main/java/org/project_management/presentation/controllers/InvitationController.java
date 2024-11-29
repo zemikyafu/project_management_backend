@@ -131,7 +131,7 @@ public class InvitationController {
             @PathVariable String email,
             @Parameter(description = "Workspace ID of the invitation", required = true, example = "5109fc9e-ce10-4bba-a9f5-f821cf66ce0b")
             @PathVariable UUID workspaceId) {
-        Invitation invitation = invitationService.findByEmailandWorkspaceId(email, workspaceId)
+        Invitation invitation = invitationService.findByEmailAndWorkspaceId(email, workspaceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Invitation not found"));
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitation));
     }

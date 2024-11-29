@@ -6,8 +6,8 @@ import java.util.List;
 
 @Getter
 public class GlobalResponse<T> {
-    public final static String SUCCESS = "success";
-    public final static String ERROR = "error";
+    public static final String SUCCESS = "success";
+    public static final String ERROR = "error";
     private final String status;
     private final int code;
     public final T data;

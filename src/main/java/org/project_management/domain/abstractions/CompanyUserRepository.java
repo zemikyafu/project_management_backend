@@ -11,13 +11,18 @@ import java.util.UUID;
 
 public interface CompanyUserRepository {
     CompanyUser save(CompanyUser companyUser);
+
     Optional<CompanyUser> findById(CompanyUserId id);
+
     CompanyUser update(CompanyUser companyUser);
+
     void delete(UUID userId, UUID companyId);
+
     List<CompanyUser> findAll();
+
     Optional <User> findOwnerOfCompany (UUID companyId);
 
     List<CompanyUser> findAllByCompanyId(UUID companyId);
-    Optional<Company> findOwnerCompanyByUserId(UUID userId);
 
+    Optional<Company> findOwnerCompanyByUserId(UUID userId);
 }

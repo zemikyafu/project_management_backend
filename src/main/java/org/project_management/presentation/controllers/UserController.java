@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -68,7 +67,7 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasAuthority('USER-READ')")
     public ResponseEntity<GlobalResponse<List<UserRead>>> findAll() {
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), userService.findAll().stream().map(UserMapper::toUserRead).collect(Collectors.toList())));
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), userService.findAll().stream().map(UserMapper::toUserRead).toList()));
     }
 
     @Operation(summary = "Update existing user by ID")

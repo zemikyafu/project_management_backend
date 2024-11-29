@@ -4,6 +4,10 @@ import org.project_management.domain.entities.project.Project;
 
 public class ProjectMapper {
 
+    private ProjectMapper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Project toProject(ProjectCreate createDTO) {
         Project project = new Project();
         project.setName(createDTO.getName());
@@ -14,7 +18,6 @@ public class ProjectMapper {
         return project;
     }
 
-
     public static Project toProjectFragment(ProjectUpdate updateDTO) {
         Project projectFragment = new Project();
         projectFragment.setName(updateDTO.getName());
@@ -24,7 +27,4 @@ public class ProjectMapper {
         projectFragment.setEndDate(updateDTO.getEndDate());
         return projectFragment;
     }
-
-
-
 }

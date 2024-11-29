@@ -64,7 +64,7 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public Optional<Invitation> findByEmailandWorkspaceId(String email, UUID workspaceId) {
+    public Optional<Invitation> findByEmailAndWorkspaceId(String email, UUID workspaceId) {
         return invitationRepository.findByEmailandWorkspaceId(email, workspaceId);
     }
 
@@ -72,7 +72,6 @@ public class InvitationServiceImpl implements InvitationService {
     public Invitation updateInvitationStatus(String email, UUID workspaceId, boolean status) {
         Optional<Invitation> invitation = invitationRepository.findByEmailandWorkspaceId(email, workspaceId);
         if (invitation.isPresent() && !invitation.get().isAccepted()) {
-
             invitation.get().setAccepted(status);
             return invitationRepository.update(invitation.get());
         }

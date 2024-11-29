@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @Service
 public class InvitationUseCaseImpl implements InvitationUseCase {
-
     @Value("${api.base.url}")
     private String baseUrl;
     @Value("${domain_url}")
@@ -30,17 +29,14 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
 
     @Override
     public Invitation sendInvitation(InvitationRequest invitationRequest) {
-
         String token = jwtHelper.generateInvitationToken(invitationRequest.getRecipientEmail(), invitationRequest.getWorkspaceId().toString());
-
         String invitationUrl = domainUrl + baseUrl + "/invitation/accept?token=" + token;
         String emailBody = "You have been invited to join the workspace. Please accept your invitation by clicking the button below:";
-
 
         try {
             boolean emailSent = emailService.sendEmail(invitationRequest.getRecipientEmail(), "You're Invited!", emailBody, invitationUrl, token);
             if (emailSent) {
-              return   invitationService.save(invitationRequest);
+                return invitationService.save(invitationRequest);
             } else {
                 throw new InvitationException("Email could not be sent to the recipient.");
             }
@@ -49,8 +45,6 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
         } catch (UnableToSaveResourceException e) {
             throw new UnableToSaveResourceException("Failed to save the invitation after sending the email.");
         }
-
-
     }
 
     @Override
@@ -74,8 +68,5 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
         } catch (UnableToUpdateResourceException e) {
             throw new UnableToUpdateResourceException("Failed to update the invitation as accepted.");
         }
-
     }
-
-
 }
