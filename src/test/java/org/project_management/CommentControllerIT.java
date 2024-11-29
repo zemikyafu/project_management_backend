@@ -34,6 +34,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -44,10 +45,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 @Transactional
-public class CommentControllerIT {
+class CommentControllerIT {
     @Autowired
     MockMvc mockMvc;
 
@@ -56,9 +57,6 @@ public class CommentControllerIT {
 
     @Autowired
     CommentRepository commentRepository;
-
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     TaskRepository taskRepository;
@@ -81,23 +79,64 @@ public class CommentControllerIT {
     Comment comment;
     Workspace workspace;
     Company company;
+    String token;
+    UUID userId;
 
     @BeforeEach
-    public void setup() {
-        /*
+    public void setup() throws Exception {
+        // User related setup
+        SignupRequest userCreate = new SignupRequest(
+                "Ted Tester",
+                "testing@email.com",
+                "Password123#"
+        );
+
+        user = UserMapper.toUser(userCreate);
+
+        mockMvc.perform(post("/api/v1/auth/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userCreate))
+        );
+
+        MvcResult result = mockMvc.perform(post("/api/v1/auth/signin")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"email\": \"" + userCreate.getEmail() + "\", \"password\": \"" + userCreate.getPassword() + "\" }")
+        ).andReturn();
+
+        String responseBody = result.getResponse().getContentAsString();
+        token = objectMapper.readTree(responseBody).path("data").path("token").asText();
+        userId = UUID.fromString(objectMapper.readTree(responseBody).path("data").path("userId").asText());
+
+        // Company related setup
         CompanyCreate companyCreate = new CompanyCreate("name", "email@email.com", "address");
         company = companyRepository.save(CompanyMapper.toCompany(companyCreate));
+
+        // Workspace related setup
         WorkspaceCreate workspaceCreate = new WorkspaceCreate("new workspace 1", "description", company.getId());
-        workspace = workspaceRepository.save(WorkspaceMapper.toEntity(workspaceCreate, company));
-        SignupRequest userCreate = new SignupRequest("Ted Tester", "testing@email.com", "Password123#");
-        user = authRepository.save(UserMapper.toUser(userCreate));
+        workspace = WorkspaceMapper.toEntity(workspaceCreate);
+        workspace.setCompany(company);
+        workspace = workspaceRepository.save(workspace);
+
+        // Project related setup
         ProjectCreate projectCreate = new ProjectCreate("name", "description", ProjectStatus.NOT_STARTED, UUID.randomUUID(), new Date(12), new Date(12));
-        project = projectRepository.save(ProjectMapper.toProject(projectCreate, workspace));
-        TaskCreate taskCreate = new TaskCreate("title", "content", TaskPriority.LOW, TaskStatus.BACKLOG, project.getId(), null, new Date(12));
-        task = taskRepository.save(TaskMapper.toTask(taskCreate, project, user));
+        project = ProjectMapper.toProject(projectCreate);
+        project.setWorkspace(workspace);
+        project = projectRepository.save(project);
+
+        // Task related setup
+        TaskCreate taskCreate = new TaskCreate("title", "content", TaskPriority.LOW, TaskStatus.BACKLOG, project.getId(), user.getId(), new Date(12));
+        task = TaskMapper.toTask(taskCreate);
+        task.setProject(project);
+        task.setAssignee(user);
+        task = taskRepository.save(task);
+
+        // Comment related setup
         CommentCreate createComment = new CommentCreate("This is a comment", task.getId(), user.getId());
-        comment = commentRepository.save(CommentMapper.toComment(createComment, task, user));
-         */
+        comment = CommentMapper.toComment(createComment);
+        comment.setTask(task);
+        comment = commentRepository.save(comment);
+
+        user = authRepository.findByEmail(userCreate.getEmail()).get();
     }
 
     @Test
@@ -106,6 +145,7 @@ public class CommentControllerIT {
 
         mockMvc.perform(post("/api/v1/tasks/" + task.getId() + "/comments/")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(newComment))
                 )
                 .andExpect(status().isCreated())
@@ -118,7 +158,9 @@ public class CommentControllerIT {
 
     @Test
     void shouldGetCommentById() throws Exception {
-        mockMvc.perform(get("/api/v1/tasks/" + task.getId() + "/comments/" + comment.getId()))
+        mockMvc.perform(get("/api/v1/tasks/" + task.getId() + "/comments/" + comment.getId())
+                        .header("Authorization", "Bearer " + token)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("success"))
                 .andExpect(jsonPath("$.code").value("200"))
@@ -128,7 +170,9 @@ public class CommentControllerIT {
 
     @Test
     void shouldGetAllComments() throws Exception {
-        mockMvc.perform(get("/api/v1/tasks/" + task.getId() + "/comments"))
+        mockMvc.perform(get("/api/v1/tasks/" + task.getId() + "/comments")
+                        .header("Authorization", "Bearer " + token)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(1)))
                 .andExpect(jsonPath("$.status").value("success"))
@@ -140,7 +184,9 @@ public class CommentControllerIT {
 
     @Test
     void shouldDeleteComment() throws Exception {
-        mockMvc.perform(delete("/api/v1/tasks/" + task.getId() + "/comments/" + comment.getId()))
+        mockMvc.perform(delete("/api/v1/tasks/" + task.getId() + "/comments/" + comment.getId())
+                        .header("Authorization", "Bearer " + token)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("success"))
                 .andExpect(jsonPath("$.code").value("200"))
@@ -148,7 +194,9 @@ public class CommentControllerIT {
                 .andExpect(jsonPath("$.data").value("Comment deleted successfully"));
 
         // check that comment not found
-        mockMvc.perform(get("/api/v1/tasks/" + task.getId() + "/comments/" + comment.getId()))
+        mockMvc.perform(get("/api/v1/tasks/" + task.getId() + "/comments/" + comment.getId())
+                        .header("Authorization", "Bearer " + token)
+                )
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value("error"))
                 .andExpect(jsonPath("$.code").value("404"))
@@ -165,6 +213,7 @@ public class CommentControllerIT {
 
         mockMvc.perform(put("/api/v1/tasks/" + task.getId() + "/comments/" + comment.getId())
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(commentUpdate))
                 )
                 .andExpect(status().isOk())
