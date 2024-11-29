@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,6 +61,26 @@ class AuthControllerIT {
                 .andExpect(jsonPath("$.data.password").doesNotExist())
                 .andExpect(jsonPath("$.data.status").value("ACTIVE"))
                 .andExpect(jsonPath("$.data.userId").exists());
+    }
+
+    @Test
+    void shouldFailToCreateUserIfValidationFail() throws Exception {
+        SignupRequest newUser = new SignupRequest("New User", "newemail.com", "123#");
+
+        mockMvc.perform(post("/api/v1/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newUser))
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value("error"))
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.data").value((Object) null))
+                .andExpect(jsonPath("$.errors", hasSize(3)))  // Ensure there are 3 errors
+                .andExpect(jsonPath("$.errors[*].message", containsInAnyOrder(
+                        "password Password must contain at least one uppercase letter and one special character",
+                        "password Password must be at least 8 characters long",
+                        "email must be a well-formed email address"
+                )));
     }
 
     @Test
