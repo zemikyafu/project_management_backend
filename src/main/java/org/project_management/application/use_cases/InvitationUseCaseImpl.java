@@ -36,7 +36,7 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
         try {
             boolean emailSent = emailService.sendEmail(invitationRequest.getRecipientEmail(), "You're Invited!", emailBody, invitationUrl, token);
             if (emailSent) {
-                return invitationService.save(invitationRequest);
+                return invitationService.save(invitationRequest, token);
             } else {
                 throw new InvitationException("Email could not be sent to the recipient.");
             }
@@ -49,8 +49,10 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
 
     @Override
     public void acceptInvitation(String token) {
-        if (!jwtHelper.isInvitationTokenValid(token)) {
-            throw new BadRequestException("Invalid token");
+        try {
+            jwtHelper.isInvitationTokenValid(token);
+        } catch (Exception e) {
+            throw new BadRequestException("Invalid invitation token");
         }
 
         String workspaceId = jwtHelper.extractWorkspaceId(token);
