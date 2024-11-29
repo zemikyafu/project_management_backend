@@ -36,6 +36,9 @@ public class Invitation {
     @Column(name="expired_at", nullable = false)
     private LocalDateTime expiredAt;
 
+    @Column(name="token", nullable = false)
+    private String token;
+
     @ManyToOne
     @JoinColumn(name="role_id", nullable = false)
     private Role role;
