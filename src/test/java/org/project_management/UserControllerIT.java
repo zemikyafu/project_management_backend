@@ -25,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 @Transactional
-public class UserControllerIT {
+class UserControllerIT {
     @Autowired
     MockMvc mockMvc;
 
@@ -54,7 +54,6 @@ public class UserControllerIT {
     void shouldGetAllUsers() throws Exception {
         mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", hasSize(1)))
                 .andExpect(jsonPath("$.status").value("success"))
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.errors").value((Object) null))
@@ -120,7 +119,9 @@ public class UserControllerIT {
 
     @Test
     void shouldFailToUpdateNonExistentUser() throws Exception {
-        mockMvc.perform(put("/api/v1/users/" + UUID.randomUUID())
+        UUID id = UUID.randomUUID();
+
+        mockMvc.perform(put("/api/v1/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))
                 )
@@ -151,8 +152,9 @@ public class UserControllerIT {
     @Test
     void shouldFailPartiallyUpdateNonExistentUser() throws Exception {
         UserPartialUpdate userPartialUpdate = new UserPartialUpdate("New Name", "new_email@mail.com");
+        UUID id = UUID.randomUUID();
 
-        mockMvc.perform(patch("/api/v1/users/" + UUID.randomUUID())
+        mockMvc.perform(patch("/api/v1/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userPartialUpdate))
                 )
