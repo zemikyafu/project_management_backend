@@ -41,7 +41,6 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to save company")
     })
     @PostMapping("/")
-    @PreAuthorize("hasAuthority('COMPANY-CREATE')")
     public ResponseEntity<GlobalResponse<Company>> saveCompany(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "New company information", required = true,

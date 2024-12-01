@@ -31,30 +31,6 @@ public class CompanyUserController {
         this.companyUserService = companyUserService;
     }
 
-    @Operation(summary = "Create a new Company User")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Company User created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "404", description = "User or Company not found"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
-            @ApiResponse(responseCode = "403", description = "Forbidden access"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    @PostMapping
-    @PreAuthorize("hasAuthority('COMPANYUSER-CREATE')")
-    public ResponseEntity<GlobalResponse<CompanyUser>> save(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Details for creating a Company User",
-                    required = true,
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CompanyUserCreate.class))
-            )
-            @RequestBody @Valid CompanyUserCreate companyUserCreate,
-            @PathVariable UUID companyId) {
-        companyUserCreate.setCompanyId(companyId); // Ensure the company ID is set
-        CompanyUser companyUser = companyUserService.save(companyUserCreate);
-        return new ResponseEntity<>(new GlobalResponse<>(HttpStatus.CREATED.value(), companyUser), HttpStatus.CREATED);
-    }
-
     @Operation(summary = "Find a Company User by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Company User retrieved successfully"),
