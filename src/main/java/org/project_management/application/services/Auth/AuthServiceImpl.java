@@ -61,7 +61,9 @@ public class AuthServiceImpl implements AuthService {
                 extraClaims.put("companyId",companyId);
                 token = jwtHelper.generateToken(extraClaims,userDetails);
             }
-             token = jwtHelper.generateToken(userDetails);
+            else {
+                token = jwtHelper.generateToken(userDetails);
+            }
             return new SigninResponse(token, user.getId(), user.getName());
         } else {
             throw new BadCredentialsException("Invalid credentials");
