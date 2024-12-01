@@ -49,4 +49,19 @@ public class EmailService {
         }
         return true;
     }
+    public boolean sendEmail(String recipientEmail, String subject, String body) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(recipientEmail);
+            helper.setSubject(subject);
+            helper.setText(body, true);
+
+            javaMailSender.send(message);
+            return true;
+        } catch (MessagingException | MailException e) {
+            throw new EmailException("Failed to send email: " + e.getMessage());
+        }
+    }
 }
