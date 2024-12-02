@@ -8,10 +8,15 @@ import java.util.UUID;
 
 public interface ProjectRepository {
     Project save(Project project);
+
     List<Project> findByWorkspaceId(UUID workspaceId);
+
     Optional<Project> findById(UUID projectId);
+
     Optional<Project> findByIdAndWorkspaceId(UUID projectId, UUID workspaceId);
+
     Project update(Project project);
+
     void deleteByIdAndWorkspaceId(UUID projectId, UUID workspaceId);
 
 }

@@ -1,7 +1,6 @@
 package org.project_management.presentation.shared;
 
 import org.project_management.application.exceptions.*;
-import org.project_management.domain.entities.invitation.Invitation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

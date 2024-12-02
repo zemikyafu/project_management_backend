@@ -9,11 +9,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface InvitationService {
-    Invitation save(InvitationRequest invitationRequest);
+    Invitation save(InvitationRequest invitationRequest, String token);
 
     Optional<Invitation> findById(UUID invitationId);
 
-    Optional<Invitation>findByEmailandWorkspaceId(String email, UUID workspaceId);
+    Optional<Invitation>findByEmailAndWorkspaceId(String email, UUID workspaceId);
 
     Invitation updateInvitationStatus(String email, UUID workspaceId, boolean status);
 

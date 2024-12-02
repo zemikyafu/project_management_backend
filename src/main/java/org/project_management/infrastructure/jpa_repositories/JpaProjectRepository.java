@@ -1,6 +1,5 @@
 package org.project_management.infrastructure.jpa_repositories;
 
-
 import org.project_management.domain.entities.project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaProjectRepository extends JpaRepository<Project, UUID> {
-
     @Query("SELECT p FROM Project p WHERE p.workspace.id = :workspaceId")
     List<Project> findByWorkspaceId(UUID workspaceId);
 

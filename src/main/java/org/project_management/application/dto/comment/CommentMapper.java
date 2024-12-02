@@ -5,6 +5,10 @@ import java.util.Date;
 
 public class CommentMapper {
 
+    private CommentMapper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Comment toComment(CommentCreate createDTO) {
         Comment comment = new Comment();
         comment.setContent(createDTO.getContent());

@@ -6,10 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.project_management.domain.entities.project.ProjectStatus;
 
-
 import java.sql.Date;
 import java.util.UUID;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,11 +15,16 @@ import java.util.UUID;
 public class ProjectCreate {
     @NotNull
     private String name;
+
     private String description;
+
     @NotNull
     private ProjectStatus status;
+
     @NotNull
     private UUID workspaceId;
+
     private Date startDate;
+
     private Date endDate;
 }

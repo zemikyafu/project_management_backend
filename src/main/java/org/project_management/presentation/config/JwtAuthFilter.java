@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -95,5 +94,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         throw new IllegalArgumentException("Invalid Authorization header");
     }
-
 }

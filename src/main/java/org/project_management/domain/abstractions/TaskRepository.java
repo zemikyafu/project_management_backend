@@ -10,12 +10,20 @@ import java.util.UUID;
 
 public interface TaskRepository {
     Task save(Task task);
+
     List<Task> findByProjectId(UUID projectId);
+
     Optional<Task> findByIdAndProjectId(UUID taskId, UUID projectId);
+
     Optional <Task> findById(UUID taskId);
+
     Task update(Task task);
+
     List<Task> findByStatus(TaskStatus status);
+
     List<Task> findByAssignee(UUID assigneeId);
+
     List<Task> findByDeadlineAtBefore(Date deadlineDate);
+
     void deleteByIdAndProjectId(UUID taskId, UUID projectId);
 }

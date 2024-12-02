@@ -25,7 +25,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/{companyId}/workspaces/{workspaceId}/users")
 @Tag(name = "WorkspaceUser", description = "Manage users within a workspace")
 public class WorkspaceUserController {
-
     private final WorkspaceUserService workspaceUserService;
 
     public WorkspaceUserController(WorkspaceUserService workspaceUserService) {

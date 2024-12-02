@@ -11,7 +11,6 @@ import org.project_management.domain.entities.task.TaskStatus;
 import java.util.Date;
 import java.util.UUID;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,14 +18,18 @@ import java.util.UUID;
 public class TaskUpdate {
     @NotNull
     private UUID id;
+
     @NotNull
     private String title;
+
     @NotNull
     private String content;
+
     @NotNull
     private TaskPriority priority;
+
     @NotNull
     private TaskStatus status;
-    private Date deadlineAt;
 
+    private Date deadlineAt;
 }

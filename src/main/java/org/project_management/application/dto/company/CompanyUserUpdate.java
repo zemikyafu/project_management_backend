@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.project_management.domain.entities.company.CompanyUserId;
 
 import java.util.UUID;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -15,5 +16,4 @@ public class CompanyUserUpdate {
     private CompanyUserId id;
     private UUID userId;
     private UUID companyId;
-
 }

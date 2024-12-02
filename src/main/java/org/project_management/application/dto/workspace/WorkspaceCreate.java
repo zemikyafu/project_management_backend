@@ -15,8 +15,10 @@ import java.util.UUID;
 public class WorkspaceCreate {
     @NotNull
     private String name;
+
     @NotNull
     private String description;
+
     @NotNull
     private UUID companyId;
 }

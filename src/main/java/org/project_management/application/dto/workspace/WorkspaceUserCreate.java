@@ -15,9 +15,10 @@ import java.util.UUID;
 public class WorkspaceUserCreate {
     @NotNull
     private UUID userId;
+
     @NotNull
     private UUID roleId;
+
     @NotNull
     private UUID workspaceId;
-
 }

@@ -1,4 +1,5 @@
 package org.project_management.presentation.config;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import jakarta.servlet.ServletException;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-
     @Override
     public void handle( HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException
     ) throws IOException, ServletException{
@@ -35,5 +35,4 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         writer.write(objectMapper.writeValueAsString(errorResponse));
         writer.flush();
     }
-
 }

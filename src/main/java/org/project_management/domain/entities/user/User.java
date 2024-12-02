@@ -37,6 +37,7 @@ public class User implements UserDetails {
 
     @Column(name ="created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
+
     @Transient
     private List<GrantedAuthority> authorities;
 
@@ -47,12 +48,13 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     public void setAuthorities(List<GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
+
     public User() {
         this.status = Status.ACTIVE;
         this.createdAt = LocalDateTime.now();
