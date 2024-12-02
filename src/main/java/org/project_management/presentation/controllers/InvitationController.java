@@ -93,10 +93,13 @@ public class InvitationController {
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
             @ApiResponse(responseCode = "500", description = "Internal server error while updating invitation")
     })
-    @PutMapping
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('INVITATION-UPDATE')")
     public ResponseEntity<GlobalResponse<Invitation>> update(
-            @RequestBody @Valid UpdateInvitation updateInvitationDto) {
+            @RequestBody @Valid UpdateInvitation updateInvitationDto,
+            @Parameter(description = "ID of the Invitation", required = true, example = "5109fc9e-ce10-4bba-a9f5-f821cf66ce0b")
+            @PathVariable UUID id
+    ) {
         Invitation invitation = invitationService.update(updateInvitationDto);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitation));
     }
