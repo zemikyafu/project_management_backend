@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -47,7 +46,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find user")
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER-READ')")
+    @PreAuthorize("@securityUtils.isOwner(#id)")
     public ResponseEntity<GlobalResponse<UserRead>> findById(
             @Parameter(description = "User id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id
@@ -68,7 +67,7 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasAuthority('USER-READ')")
     public ResponseEntity<GlobalResponse<List<UserRead>>> findAll() {
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), userService.findAll().stream().map(UserMapper::toUserRead).collect(Collectors.toList())));
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), userService.findAll().stream().map(UserMapper::toUserRead).toList()));
     }
 
     @Operation(summary = "Update existing user by ID")
@@ -80,7 +79,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to update user")
     })
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER-READ')")
+    @PreAuthorize("@securityUtils.isOwner(#id)")
     public ResponseEntity<GlobalResponse<UserRead>> updateUser(
             @Parameter(description = "User id", required = true, example = "47ceb1af-94e6-436b-9f43-91cbb6fb2120")
             @PathVariable UUID id,

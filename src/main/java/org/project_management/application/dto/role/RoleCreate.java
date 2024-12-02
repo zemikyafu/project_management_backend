@@ -15,7 +15,7 @@ import java.util.UUID;
 public class RoleCreate {
     @NotNull(message = "Name is required")
     private String name;
+
     @NotNull(message = "Company ID is required")
     private UUID companyId;
-
 }

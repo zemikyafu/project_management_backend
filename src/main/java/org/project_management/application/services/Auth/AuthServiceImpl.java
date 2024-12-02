@@ -5,6 +5,7 @@ import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.UserAlreadyExistException;
 import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.CompanyUserRepository;
+import org.project_management.domain.entities.company.Company;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.JwtHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -24,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtHelper jwtHelper;
     private final CompanyUserRepository companyUserRepository;
+
     public AuthServiceImpl(AuthRepository authRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtHelper jwtHelper, CompanyUserRepository companyUserRepository) {
         this.authRepository = authRepository;
         this.authenticationManager = authenticationManager;
@@ -44,16 +48,25 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public SigninResponse signIn(String email, String password) {
-            User user = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with the provided email"));
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            if(authentication.isAuthenticated()){
-                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                String token = jwtHelper.generateToken(userDetails);
-                return new  SigninResponse(token, user.getId(), user.getName());
-            }
-            else {
-                throw new BadCredentialsException("Invalid credentials");
-            }
-    }
+        User user = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with the provided email"));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
+        if (authentication.isAuthenticated()){
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            Optional<Company> ownerCompany = companyUserRepository.findOwnerCompanyByUserId(user.getId());
+            String token;
+            if (ownerCompany.isPresent()) {
+                String companyId = ownerCompany.get().getId().toString();
+                Map<String, Object> extraClaims=new HashMap<>();
+                extraClaims.put("companyId", companyId);
+                token = jwtHelper.generateToken(extraClaims, userDetails);
+            } else {
+                token = jwtHelper.generateToken(userDetails);
+            }
+          
+            return new SigninResponse(token, user.getId(), user.getName());
+        } else {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+    }
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 public class CommentCreate {
     @NotNull
-   private String content;
+    private String content;
 
     @NotNull
     private UUID taskId;

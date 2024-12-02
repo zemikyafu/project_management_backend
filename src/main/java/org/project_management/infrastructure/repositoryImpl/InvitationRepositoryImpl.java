@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @Repository
 public class InvitationRepositoryImpl implements InvitationRepository {
-
     private final JpaInvitationRepository jpaInvitationRepository;
 
     public InvitationRepositoryImpl(JpaInvitationRepository jpaInvitationRepository) {
@@ -41,12 +40,9 @@ public class InvitationRepositoryImpl implements InvitationRepository {
     }
 
     @Override
-    public Optional<Invitation> findByEmailandWorkspaceId(String email, UUID workspaceId){
-        return jpaInvitationRepository.findByEmailAndWorkspaceId(email, workspaceId).or(() -> {
-                    throw new ResourceNotFoundException("Invitation not found with email: " + email + " and workspace id: " + workspaceId.toString());
-                });
+    public Optional<Invitation> findByEmailAndWorkspaceId(String email, UUID workspaceId){
+        return jpaInvitationRepository.findByEmailAndWorkspaceId(email, workspaceId);
     }
-
 
     @Override
     public Invitation update(Invitation invitation) {

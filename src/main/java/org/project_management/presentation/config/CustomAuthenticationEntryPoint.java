@@ -34,5 +34,4 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         writer.write(objectMapper.writeValueAsString(errorResponse));
         writer.flush();
     }
-
 }

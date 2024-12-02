@@ -17,12 +17,17 @@ import java.util.UUID;
 public class ProjectUpdate {
     @NotNull
     private UUID id;
+
     @NotNull
     private String name;
+
     private String description;
+
     @NotNull
     private ProjectStatus status;
+
     private Date startDate;
+
     private Date endDate;
 
     public void setId(UUID projectId) {

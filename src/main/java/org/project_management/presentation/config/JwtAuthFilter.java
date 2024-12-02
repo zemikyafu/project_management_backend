@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project_management.application.services.User.UserDetailsServiceImpl;
 import org.project_management.domain.entities.user.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +16,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -48,7 +48,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String companyId = request.getHeader("company_id");
+            String companyId= jwtHelper.extractCompanyId(token);
+
             String workspaceId = request.getHeader("workspace_id");
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -74,8 +75,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         } catch (AccessDeniedException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write(e.getMessage());
+        }  catch (DataAccessException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Database error: " + e.getMessage() + "\"}");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Unexpected error: " + e.getMessage() + "\"}");
         }
     }
 
@@ -87,5 +94,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         throw new IllegalArgumentException("Invalid Authorization header");
     }
-
 }

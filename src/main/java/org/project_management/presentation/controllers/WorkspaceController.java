@@ -15,11 +15,9 @@ import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.services.workspace.WorkspaceService;
 import org.project_management.domain.entities.workspace.Workspace;
 import org.project_management.presentation.shared.GlobalResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +27,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/companies/{companyId}/workspaces")
 @Tag(name = "Workspace", description = "Workspace management")
 public class WorkspaceController {
-
     private final WorkspaceService workspaceService;
 
     public WorkspaceController(WorkspaceService workspaceService) {
@@ -67,7 +64,7 @@ public class WorkspaceController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('WORKSPACE-READ')")
+    @PreAuthorize("hasAuthority('WORKSPACE-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Workspace>>> findAllWorkspaces(
             @Parameter(description = "Company ID", required = true) @PathVariable UUID companyId) {
         List<Workspace> workspaces = workspaceService.findByCompanyId(companyId);

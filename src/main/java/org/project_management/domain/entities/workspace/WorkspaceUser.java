@@ -37,5 +37,4 @@ public class WorkspaceUser {
         this.role = role;
         this.workspace = workspace;
     }
-
 }

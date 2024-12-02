@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
     private final TaskRepository taskRepository;
     private final JwtAuthFilter jwtAuthFilter;
     private final HttpServletRequest request;
-   private final AuthRepository authRepository;
+    private final AuthRepository authRepository;
 
     @Autowired
     public CommentServiceImpl(CommentRepository commentRepository, TaskRepository taskRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request, AuthRepository authRepository) {

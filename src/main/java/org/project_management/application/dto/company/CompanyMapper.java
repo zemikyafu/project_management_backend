@@ -3,6 +3,11 @@ package org.project_management.application.dto.company;
 import org.project_management.domain.entities.company.Company;
 
 public class CompanyMapper {
+
+    private CompanyMapper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Company toCompany(CompanyCreate newCompany) {
         Company company = new Company();
         company.setName(newCompany.getName());

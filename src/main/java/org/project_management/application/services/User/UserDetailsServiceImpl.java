@@ -1,4 +1,5 @@
 package org.project_management.application.services.User;
+
 import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.CompanyUserRepository;
 import org.project_management.domain.abstractions.PermissionRepository;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final AuthRepository authRepository;
     private final CompanyUserRepository companyUserRepository;
-
     private final PermissionRepository permissionRepository;
+
     public UserDetailsServiceImpl(AuthRepository authRepository, CompanyUserRepository companyUserRepository, PermissionRepository permissionRepository) {
         this.authRepository = authRepository;
         this.companyUserRepository = companyUserRepository;
@@ -29,16 +30,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Optional<User> user = authRepository.findByEmail(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> user = authRepository.findByEmail(email);
+  
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
 
         return org.springframework.security.core.userdetails.User
                 .builder()
-                .username(user.get().getUsername())
+                .username(user.get().getEmail())
                 .password(user.get().getPassword())
                 .build();
     }
@@ -79,15 +80,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
         user.get().setAuthorities(authorities);
 
         return org.springframework.security.core.userdetails.User
                 .builder()
-                .username(user.get().getUsername())
+                .username(user.get().getEmail())
                 .password(user.get().getPassword())
                 .authorities(authorities)
                 .build();
     }
-
-
 }

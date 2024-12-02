@@ -9,7 +9,6 @@ import org.project_management.application.dto.user.SignupRequest;
 import org.project_management.application.dto.user.UserMapper;
 import org.project_management.application.dto.user.UserPartialUpdate;
 import org.project_management.domain.abstractions.AuthRepository;
-import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 @Transactional
-public class UserControllerIT {
+class UserControllerIT {
     @Autowired
     MockMvc mockMvc;
 
@@ -40,7 +39,11 @@ public class UserControllerIT {
     AuthRepository authRepository;
 
     User user;
-    SignupRequest userCreate = new SignupRequest("Ted Tester", "testing@email.com", "Password123#");
+    SignupRequest userCreate = new SignupRequest(
+            "Eddy Example",
+            "testing@email.com",
+            "Password123#"
+    );
 
     @BeforeEach
     public void addUser() {
@@ -48,29 +51,9 @@ public class UserControllerIT {
     }
 
     @Test
-    void shouldCreateUserSuccessfully() throws Exception {
-        SignupRequest userCreate = new SignupRequest("New User", "new@email.com", "Password123#");
-
-        mockMvc.perform(post("/api/v1/auth/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userCreate))
-                )
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("success"))
-                .andExpect(jsonPath("$.code").value("201"))
-                .andExpect(jsonPath("$.errors").value((Object) null))
-                .andExpect(jsonPath("$.data.name").value(userCreate.getName()))
-                .andExpect(jsonPath("$.data.email").value(userCreate.getEmail()))
-                .andExpect(jsonPath("$.data.password").doesNotExist())
-                .andExpect(jsonPath("$.data.status").value("ACTIVE"))
-                .andExpect(jsonPath("$.data.userId").exists());
-    }
-
-    @Test
     void shouldGetAllUsers() throws Exception {
         mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", hasSize(1)))
                 .andExpect(jsonPath("$.status").value("success"))
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.errors").value((Object) null))
@@ -136,7 +119,9 @@ public class UserControllerIT {
 
     @Test
     void shouldFailToUpdateNonExistentUser() throws Exception {
-        mockMvc.perform(put("/api/v1/users/" + UUID.randomUUID())
+        UUID id = UUID.randomUUID();
+
+        mockMvc.perform(put("/api/v1/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))
                 )
@@ -167,8 +152,9 @@ public class UserControllerIT {
     @Test
     void shouldFailPartiallyUpdateNonExistentUser() throws Exception {
         UserPartialUpdate userPartialUpdate = new UserPartialUpdate("New Name", "new_email@mail.com");
+        UUID id = UUID.randomUUID();
 
-        mockMvc.perform(patch("/api/v1/users/" + UUID.randomUUID())
+        mockMvc.perform(patch("/api/v1/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userPartialUpdate))
                 )

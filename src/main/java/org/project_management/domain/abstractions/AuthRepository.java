@@ -12,10 +12,16 @@ import java.util.UUID;
 
 public interface AuthRepository {
     User save(User user);
+
     Optional<User> findByEmail(String email);
+
     public List<Role> findRoles();
+
     public List<WorkspaceUser> findWorkspaceUser();
+
     public List<Permission> findPermissions();
+
     public List<RolePermission> findRolePermissions();
+
     List<String> findGrantedAuthorities(UUID userId, UUID workspaceId);
 }

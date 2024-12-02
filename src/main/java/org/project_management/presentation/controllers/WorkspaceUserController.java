@@ -25,7 +25,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/{companyId}/workspaces/{workspaceId}/users")
 @Tag(name = "WorkspaceUser", description = "Manage users within a workspace")
 public class WorkspaceUserController {
-
     private final WorkspaceUserService workspaceUserService;
 
     public WorkspaceUserController(WorkspaceUserService workspaceUserService) {
@@ -42,7 +41,7 @@ public class WorkspaceUserController {
 
     })
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('WORKSPACE_USER-READ')")
+    @PreAuthorize("hasAuthority('WORKSPACE_USER-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<WorkspaceUser>>> getUsersByWorkspace(
             @Parameter(description = "company ID", required = true) @PathVariable UUID companyId,
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId

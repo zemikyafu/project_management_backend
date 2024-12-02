@@ -8,10 +8,14 @@ import java.util.UUID;
 
 public interface WorkspaceRepository {
     Workspace save(Workspace workspace);
-    Optional<Workspace> findByIdAndCompanyId(UUID workspaceId, UUID companyId);
-    Optional<Workspace> findById(UUID companyId);
-    List<Workspace> findByCompanyId(UUID companyId);
-    Workspace update(Workspace workspace);
-    void deleteByIdAndCompanyId(UUID workspaceId, UUID companyId);
 
+    Optional<Workspace> findByIdAndCompanyId(UUID workspaceId, UUID companyId);
+
+    Optional<Workspace> findById(UUID companyId);
+
+    List<Workspace> findByCompanyId(UUID companyId);
+
+    Workspace update(Workspace workspace);
+
+    void deleteByIdAndCompanyId(UUID workspaceId, UUID companyId);
 }

@@ -57,5 +57,4 @@ public class CompanyRepositoryImpl implements CompanyRepository {
     public List<Company> findAll() {
         return jpaCompanyRepository.findAll();
     }
-
 }

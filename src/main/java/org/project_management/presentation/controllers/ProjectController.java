@@ -62,7 +62,7 @@ public class ProjectController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('PROJECT-READ')")
+    @PreAuthorize("hasAuthority('PROJECT-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Project>>> findAllProjects(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId
     ) {

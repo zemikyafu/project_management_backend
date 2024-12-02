@@ -16,6 +16,7 @@ public class EmailService {
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
+
     public boolean sendEmail(String recipientEmail, String subject, String invitationText, String invitationUrl,String token) {
         if (recipientEmail == null || recipientEmail.isEmpty()) {
             throw new BadRequestException("Recipient email cannot be null or empty");
@@ -48,5 +49,20 @@ public class EmailService {
             throw new EmailException("Failed to send email.");
         }
         return true;
+    }
+    public boolean sendEmail(String recipientEmail, String subject, String body) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(recipientEmail);
+            helper.setSubject(subject);
+            helper.setText(body, true);
+
+            javaMailSender.send(message);
+            return true;
+        } catch (MessagingException | MailException e) {
+            throw new EmailException("Failed to send email: " + e.getMessage());
+        }
     }
 }

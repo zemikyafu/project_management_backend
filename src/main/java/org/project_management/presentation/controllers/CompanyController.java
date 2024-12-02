@@ -41,7 +41,6 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to save company")
     })
     @PostMapping("/")
-    @PreAuthorize("hasAuthority('COMPANY-CREATE')")
     public ResponseEntity<GlobalResponse<Company>> saveCompany(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "New company information", required = true,
@@ -82,7 +81,7 @@ public class CompanyController {
             @ApiResponse(responseCode = "500", description = "Internal server error, unable to find companies")
     })
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('COMPANY-READ')")
+    @PreAuthorize("hasAuthority('COMPANY-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
     }

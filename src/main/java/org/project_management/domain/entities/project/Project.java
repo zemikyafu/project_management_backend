@@ -51,5 +51,4 @@ public class Project {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
 }

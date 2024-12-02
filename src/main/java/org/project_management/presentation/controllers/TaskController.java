@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/api/v1/companies/{companyId}/workspaces/{workspaceId}/projects/{projectId}/tasks")
 @Tag(name = "Task", description = "Task management")
@@ -65,6 +64,7 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('TASK-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Task>>> findAllTasksInProject(
             @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
@@ -92,7 +92,6 @@ public class TaskController {
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with ID: " + taskId));
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), task));
     }
-
 
     @Operation(summary = "Update a specific task")
     @ApiResponses(value = {
@@ -139,6 +138,4 @@ public class TaskController {
         taskService.deleteByIdAndProjectId(taskId, projectId);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), "Task deleted successfully"));
     }
-
-
 }

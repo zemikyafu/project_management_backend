@@ -8,9 +8,14 @@ import java.util.UUID;
 
 public interface InvitationRepository {
     Invitation save(Invitation invitation);
+
     Optional<Invitation> findById(UUID invitationId);
-    Optional<Invitation> findByEmailandWorkspaceId(String Email, UUID workspaceId);
+
+    Optional<Invitation> findByEmailAndWorkspaceId(String email, UUID workspaceId);
+
     Invitation update(Invitation invitation);
+
     void delete(UUID id);
+
     List<Invitation> findAll();
 }

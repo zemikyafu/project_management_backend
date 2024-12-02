@@ -15,8 +15,10 @@ import java.util.UUID;
 public class RoleUpdate {
     @NotNull(message = "ID is required")
     private UUID id;
+
     @NotNull(message = "Name is required")
     private String name;
+
     @NotNull(message = "Company ID is required")
     private UUID companyId;
 }
