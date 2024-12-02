@@ -79,7 +79,7 @@ public class RoleController {
             @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/")
+    @GetMapping
     @PreAuthorize("hasAuthority('ROLE-READ')")
     public ResponseEntity<GlobalResponse<List<Role>>> findByNameAndCompanyId(
             @Parameter(description = "Role name (optional)") @RequestParam(required = false) String name,
