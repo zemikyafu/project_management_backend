@@ -10,8 +10,12 @@ import java.util.UUID;
 
 public interface WorkspaceUserService {
     WorkspaceUser save(WorkspaceUserCreate createDTO);
+
     List<WorkspaceUser> findByWorkspaceId(UUID workspaceId);
+
     Optional<WorkspaceUser> findByWorkspaceIdAndUserId(UUID workspaceId, UUID userId);
+
     WorkspaceUser update(WorkspaceUserUpdate updateDTO);
+
     void deleteByWorkspaceIdAndUserId(UUID workspaceId, UUID userId);
 }

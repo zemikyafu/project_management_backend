@@ -14,5 +14,5 @@ public class UserRead {
     private UUID userId;
     private String name;
     private String email;
-    private Status Status;
+    private Status status;
 }

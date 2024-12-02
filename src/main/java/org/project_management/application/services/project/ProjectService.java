@@ -10,9 +10,14 @@ import java.util.UUID;
 
 public interface ProjectService {
     Project save(ProjectCreate createDTO);
+
     List<Project> findByWorkspaceId(UUID workspaceId);
+
     Optional<Project> findByIdAndWorkspaceId(UUID projectId, UUID workspaceId);
+
     Optional<Project> findById(UUID projectId);
+
     Project update(ProjectUpdate updateDTO);
+
     void deleteByIdAndWorkspaceId(UUID projectId, UUID workspaceId);
 }

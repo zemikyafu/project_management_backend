@@ -3,6 +3,11 @@ package org.project_management.application.dto.task;
 import org.project_management.domain.entities.task.Task;
 
 public class TaskMapper {
+
+    private TaskMapper() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static Task toTask(TaskCreate createDTO) {
         Task task = new Task();
         task.setTitle(createDTO.getTitle());
@@ -10,7 +15,6 @@ public class TaskMapper {
         task.setPriority(createDTO.getPriority());
         task.setStatus(createDTO.getStatus());
         task.setDeadlineAt(createDTO.getDeadlineAt());
-
         return task;
     }
 
@@ -21,7 +25,6 @@ public class TaskMapper {
         task.setPriority(updateDTO.getPriority());
         task.setStatus(updateDTO.getStatus());
         task.setDeadlineAt(updateDTO.getDeadlineAt());
-
         return task;
     }
 }

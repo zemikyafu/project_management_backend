@@ -16,6 +16,7 @@ import org.project_management.application.services.Invitation.InvitationService;
 import org.project_management.application.use_cases.InvitationUseCaseImpl;
 import org.project_management.domain.entities.invitation.Invitation;
 import org.project_management.presentation.shared.GlobalResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,9 @@ import java.util.UUID;
 public class InvitationController {
     private final InvitationUseCaseImpl invitationUseCaseImpl;
     private final InvitationService invitationService;
+
+    @Value("${domain_url}")
+    private String domainUrl;
 
     public InvitationController(InvitationUseCaseImpl invitationUseCaseImpl, InvitationService invitationService) {
         this.invitationUseCaseImpl = invitationUseCaseImpl;
@@ -76,7 +80,7 @@ public class InvitationController {
             @RequestParam("token") String token) {
         invitationUseCaseImpl.acceptInvitation(token);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .header(HttpHeaders.LOCATION, "https://to-be-implemented/user-onboarding")
+                .header(HttpHeaders.LOCATION, domainUrl + "/onboarding")
                 .build();
     }
 
@@ -89,10 +93,13 @@ public class InvitationController {
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
             @ApiResponse(responseCode = "500", description = "Internal server error while updating invitation")
     })
-    @PutMapping
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('INVITATION-UPDATE')")
     public ResponseEntity<GlobalResponse<Invitation>> update(
-            @RequestBody @Valid UpdateInvitation updateInvitationDto) {
+            @RequestBody @Valid UpdateInvitation updateInvitationDto,
+            @Parameter(description = "ID of the Invitation", required = true, example = "5109fc9e-ce10-4bba-a9f5-f821cf66ce0b")
+            @PathVariable UUID id
+    ) {
         Invitation invitation = invitationService.update(updateInvitationDto);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitation));
     }
@@ -127,7 +134,7 @@ public class InvitationController {
             @PathVariable String email,
             @Parameter(description = "Workspace ID of the invitation", required = true, example = "5109fc9e-ce10-4bba-a9f5-f821cf66ce0b")
             @PathVariable UUID workspaceId) {
-        Invitation invitation = invitationService.findByEmailandWorkspaceId(email, workspaceId)
+        Invitation invitation = invitationService.findByEmailAndWorkspaceId(email, workspaceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Invitation not found"));
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitation));
     }

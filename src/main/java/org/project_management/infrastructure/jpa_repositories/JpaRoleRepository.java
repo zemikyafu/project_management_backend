@@ -11,4 +11,6 @@ public interface JpaRoleRepository extends JpaRepository<Role, UUID> {
     Optional<Role> findByName(String name);
 
     List<Role> findByCompanyId(UUID companyId);
+
+    Optional<Role> findByNameAndCompanyId(String name, UUID companyId);
 }

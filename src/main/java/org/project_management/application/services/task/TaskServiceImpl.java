@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Service
 public class TaskServiceImpl implements TaskService{
     private final TaskRepository taskRepository;
@@ -27,7 +28,6 @@ public class TaskServiceImpl implements TaskService{
     private final JwtAuthFilter jwtAuthFilter;
     private final HttpServletRequest request;
     private final AuthRepository authRepository;
-
 
     @Autowired
     public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request, AuthRepository authRepository) {
@@ -37,7 +37,6 @@ public class TaskServiceImpl implements TaskService{
         this.request = request;
         this.authRepository = authRepository;
     }
-
 
     @Override
     public Task save(TaskCreate createDto) {

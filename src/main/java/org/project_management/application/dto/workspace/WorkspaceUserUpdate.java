@@ -15,6 +15,7 @@ import java.util.UUID;
 public class WorkspaceUserUpdate {
     @NotNull
     private UUID id;
+
     @NotNull
     private UUID roleId;
 }

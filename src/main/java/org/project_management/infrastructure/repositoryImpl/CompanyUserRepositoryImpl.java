@@ -75,6 +75,4 @@ public class CompanyUserRepositoryImpl implements CompanyUserRepository {
     public Optional<Company> findOwnerCompanyByUserId(UUID userId) {
         return jpaCompanyUserRepository.findOwnerCompanyByUserId(userId);
     }
-
-
 }

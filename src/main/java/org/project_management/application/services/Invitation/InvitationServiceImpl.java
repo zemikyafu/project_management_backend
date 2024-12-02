@@ -29,8 +29,8 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public Invitation save(InvitationRequest invitationRequest) {
-        Optional<Invitation> invitationExist = invitationRepository.findByEmailandWorkspaceId(invitationRequest.getRecipientEmail(), invitationRequest.getWorkspaceId());
+    public Invitation save(InvitationRequest invitationRequest, String token) {
+        Optional<Invitation> invitationExist = invitationRepository.findByEmailAndWorkspaceId(invitationRequest.getRecipientEmail(), invitationRequest.getWorkspaceId());
         if (invitationExist.isPresent()) {
             throw new UnableToSaveResourceException("Invitation already exist");
         }
@@ -39,6 +39,7 @@ public class InvitationServiceImpl implements InvitationService {
         Role role = roleRepository.findById(invitationRequest.getRoleId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + invitationRequest.getRoleId()));
         Invitation invitation = new Invitation(invitationRequest.getRecipientEmail(), workspace, role);
+        invitation.setToken(token);
         return invitationRepository.save(invitation);
     }
 
@@ -64,15 +65,14 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public Optional<Invitation> findByEmailandWorkspaceId(String email, UUID workspaceId) {
-        return invitationRepository.findByEmailandWorkspaceId(email, workspaceId);
+    public Optional<Invitation> findByEmailAndWorkspaceId(String email, UUID workspaceId) {
+        return invitationRepository.findByEmailAndWorkspaceId(email, workspaceId);
     }
 
     @Override
     public Invitation updateInvitationStatus(String email, UUID workspaceId, boolean status) {
-        Optional<Invitation> invitation = invitationRepository.findByEmailandWorkspaceId(email, workspaceId);
+        Optional<Invitation> invitation = invitationRepository.findByEmailAndWorkspaceId(email, workspaceId);
         if (invitation.isPresent() && !invitation.get().isAccepted()) {
-
             invitation.get().setAccepted(status);
             return invitationRepository.update(invitation.get());
         }

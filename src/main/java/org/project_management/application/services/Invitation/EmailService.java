@@ -16,6 +16,7 @@ public class EmailService {
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
+
     public boolean sendEmail(String recipientEmail, String subject, String invitationText, String invitationUrl,String token) {
         if (recipientEmail == null || recipientEmail.isEmpty()) {
             throw new BadRequestException("Recipient email cannot be null or empty");

@@ -16,17 +16,14 @@ import java.util.UUID;
 
 @Service
 public class WorkspaceServiceImpl implements WorkspaceService{
-
     private final WorkspaceRepository workspaceRepository;
     private final CompanyRepository companyRepository;
-
 
     @Autowired
     public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository, CompanyRepository companyRepository) {
         this.workspaceRepository = workspaceRepository;
         this.companyRepository = companyRepository;
     }
-
 
     @Override
     public Workspace save(WorkspaceCreate createDTO) {
@@ -36,7 +33,6 @@ public class WorkspaceServiceImpl implements WorkspaceService{
         workspace.setCompany(company);
         return workspaceRepository.save(workspace);
     }
-
 
     @Override
     public Optional<Workspace> findById(UUID workspaceId) {

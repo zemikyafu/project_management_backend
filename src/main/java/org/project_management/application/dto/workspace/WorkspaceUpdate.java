@@ -15,8 +15,10 @@ import java.util.UUID;
 public class WorkspaceUpdate {
     @NotNull
     private UUID id;
+
     @NotNull
     private String name;
+
     @NotNull
     private String description;
 }

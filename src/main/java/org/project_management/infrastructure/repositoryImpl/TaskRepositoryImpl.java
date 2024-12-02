@@ -21,7 +21,6 @@ public class TaskRepositoryImpl implements TaskRepository {
         this.jpaTaskRepository = jpaTaskRepository;
     }
 
-
     @Override
     public Task save(Task task) {
         try {
@@ -83,8 +82,5 @@ public class TaskRepositoryImpl implements TaskRepository {
         } catch (Exception e) {
             throw new ResourceNotFoundException("Task not found with id: " + taskId.toString() + " and project id: " + projectId.toString());
         }
-
     }
-
-
 }

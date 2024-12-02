@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("/api/v1/companies/{companyId}/workspaces/{workspaceId}/projects/{projectId}/tasks")
 @Tag(name = "Task", description = "Task management")
@@ -94,7 +93,6 @@ public class TaskController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), task));
     }
 
-
     @Operation(summary = "Update a specific task")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task updated successfully"),
@@ -140,6 +138,4 @@ public class TaskController {
         taskService.deleteByIdAndProjectId(taskId, projectId);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), "Task deleted successfully"));
     }
-
-
 }

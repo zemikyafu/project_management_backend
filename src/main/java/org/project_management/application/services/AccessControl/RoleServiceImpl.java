@@ -1,6 +1,5 @@
 package org.project_management.application.services.AccessControl;
 
-import jakarta.transaction.Transactional;
 import org.project_management.application.dto.role.RoleCreate;
 import org.project_management.application.dto.role.RoleUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
@@ -57,6 +56,13 @@ public class RoleServiceImpl implements RoleService {
     public Role findByName(String name) {
         return roleRepository.findByName(name).orElseThrow(
                 () -> new ResourceNotFoundException("Role not found with name: " + name)
+        );
+    }
+
+    @Override
+    public Role findByNameAndCompanyId(String name, UUID companyId) {
+        return roleRepository.findByNameAndCompanyId(name, companyId).orElseThrow(
+                () -> new ResourceNotFoundException("Role not found with name: " + name + " and company id: " + companyId)
         );
     }
 

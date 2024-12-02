@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project_management.application.services.User.UserDetailsServiceImpl;
-import org.project_management.domain.entities.user.User;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +14,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -88,5 +86,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         throw new IllegalArgumentException("Invalid Authorization header");
     }
-
 }

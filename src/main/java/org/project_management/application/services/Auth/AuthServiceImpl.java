@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -28,6 +27,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtHelper jwtHelper;
     private final CompanyUserRepository companyUserRepository;
+
     public AuthServiceImpl(AuthRepository authRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtHelper jwtHelper, CompanyUserRepository companyUserRepository) {
         this.authRepository = authRepository;
         this.authenticationManager = authenticationManager;
@@ -50,22 +50,21 @@ public class AuthServiceImpl implements AuthService {
     public SigninResponse signIn(String email, String password) {
         User user = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with the provided email"));
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        if(authentication.isAuthenticated()){
+
+        if (authentication.isAuthenticated()){
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             Optional<Company> ownerCompany = companyUserRepository.findOwnerCompanyByUserId(user.getId());
-            String token ;
-            if(ownerCompany.isPresent())
-            {
+            String token;
+            if (ownerCompany.isPresent()) {
                 String companyId = ownerCompany.get().getId().toString();
                 Map<String, Object> extraClaims=new HashMap<>();
-                extraClaims.put("companyId",companyId);
-                token = jwtHelper.generateToken(extraClaims,userDetails);
+                extraClaims.put("companyId", companyId);
+                token = jwtHelper.generateToken(extraClaims, userDetails);
             }
-             token = jwtHelper.generateToken(userDetails);
+            token = jwtHelper.generateToken(userDetails);
             return new SigninResponse(token, user.getId(), user.getName());
         } else {
             throw new BadCredentialsException("Invalid credentials");
         }
     }
-
 }
