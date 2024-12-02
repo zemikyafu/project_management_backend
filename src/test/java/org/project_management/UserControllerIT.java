@@ -40,7 +40,7 @@ class UserControllerIT {
 
     User user;
     SignupRequest userCreate = new SignupRequest(
-            "Ted Tester",
+            "Eddy Example",
             "testing@email.com",
             "Password123#"
     );
