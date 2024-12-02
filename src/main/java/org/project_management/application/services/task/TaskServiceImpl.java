@@ -1,10 +1,12 @@
 package org.project_management.application.services.task;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.project_management.application.dto.task.TaskCreate;
 import org.project_management.application.dto.task.TaskMapper;
 import org.project_management.application.dto.task.TaskUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
+import org.project_management.application.services.Invitation.EmailService;
 import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.ProjectRepository;
 import org.project_management.domain.abstractions.TaskRepository;
@@ -28,16 +30,19 @@ public class TaskServiceImpl implements TaskService{
     private final JwtAuthFilter jwtAuthFilter;
     private final HttpServletRequest request;
     private final AuthRepository authRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request, AuthRepository authRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request, AuthRepository authRepository, EmailService emailService) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.jwtAuthFilter = jwtAuthFilter;
         this.request = request;
         this.authRepository = authRepository;
+        this.emailService = emailService;
     }
 
+    @Transactional
     @Override
     public Task save(TaskCreate createDto) {
         Project project = projectRepository.findById(createDto.getProjectId())
@@ -48,6 +53,17 @@ public class TaskServiceImpl implements TaskService{
         task.setProject(project);
         task.setAssignee(assignee);
 
+        String subject = "New Task Assigned: " + task.getTitle();
+        String body = String.format(
+                "Hello %s,\n\n" +
+                        "You have been assigned a new task in the project \"%s\" with the title \"%s\".\n\n" +
+                        "Please review the task and take the necessary actions.\n\n" +
+                        "Best regards,\n",
+                assignee.getName(),
+                project.getName(),
+                task.getTitle()
+        );
+        emailService.sendEmail(assignee.getEmail(), subject, body);
         return taskRepository.save(task);
     }
 

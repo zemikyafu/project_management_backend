@@ -6,6 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project_management.application.services.User.UserDetailsServiceImpl;
+import org.project_management.domain.entities.user.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,8 +75,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         } catch (AccessDeniedException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write(e.getMessage());
+        }  catch (DataAccessException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Database error: " + e.getMessage() + "\"}");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Unexpected error: " + e.getMessage() + "\"}");
         }
     }
 

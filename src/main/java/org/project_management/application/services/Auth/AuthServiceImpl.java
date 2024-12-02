@@ -60,8 +60,10 @@ public class AuthServiceImpl implements AuthService {
                 Map<String, Object> extraClaims=new HashMap<>();
                 extraClaims.put("companyId", companyId);
                 token = jwtHelper.generateToken(extraClaims, userDetails);
+            } else {
+                token = jwtHelper.generateToken(userDetails);
             }
-            token = jwtHelper.generateToken(userDetails);
+          
             return new SigninResponse(token, user.getId(), user.getName());
         } else {
             throw new BadCredentialsException("Invalid credentials");

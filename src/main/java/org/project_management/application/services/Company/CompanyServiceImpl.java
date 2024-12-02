@@ -1,10 +1,17 @@
 package org.project_management.application.services.Company;
 
+import jakarta.transaction.Transactional;
+import org.project_management.application.dto.company.CompanyUserCreate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.ResourceTakenException;
+import org.project_management.domain.abstractions.AuthRepository;
 import org.project_management.domain.abstractions.CompanyRepository;
+import org.project_management.domain.abstractions.UserRepository;
 import org.project_management.domain.entities.company.Company;
+import org.project_management.domain.entities.user.User;
+import org.project_management.presentation.config.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,16 +20,31 @@ import java.util.UUID;
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
+    private final AuthRepository authRepository;
+    private final CompanyUserService companyUserService;
+    private final SecurityUtils securityUtils;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, AuthRepository authRepository, CompanyUserService companyUserService, SecurityUtils securityUtils) {
         this.companyRepository = companyRepository;
+        this.authRepository = authRepository;
+        this.companyUserService = companyUserService;
+        this.securityUtils = securityUtils;
     }
 
+    @Transactional
     @Override
     public Company save(Company company) {
         validateNoConflicts(company);
-        return companyRepository.save(company);
+        Company newCompany = companyRepository.save(company);
+
+        String email = securityUtils.getCurrentUserLogin();
+        User loggedInUser = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+
+        CompanyUserCreate companyUserCreate = new CompanyUserCreate(loggedInUser.getId(), newCompany.getId());
+        companyUserService.save(companyUserCreate);
+
+        return newCompany;
     }
 
     @Override
