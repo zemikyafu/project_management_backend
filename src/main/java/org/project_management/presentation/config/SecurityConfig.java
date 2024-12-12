@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(baseUrl + "/auth/**").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
-                .requestMatchers(baseUrl + "/invitation/accept/**").permitAll()
+                .requestMatchers(baseUrl + "/invitations/accept/**").permitAll()
                 .requestMatchers(apiDocPaths).permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
