@@ -94,12 +94,25 @@ public class AuthServiceImpl implements AuthService {
             throw new UserAlreadyExistException("User already exists with email: " + invitation.getEmail());
         }
         try {
-            User user = new User(onBoardingRequest.getName(),invitation.getEmail(), passwordEncoder.encode(onBoardingRequest.getPassword()));
+            User user = new User(onBoardingRequest.getName(), invitation.getEmail(), passwordEncoder.encode(onBoardingRequest.getPassword()));
             authRepository.save(user);
 
             WorkspaceUser workspaceUser = new WorkspaceUser(user, invitation.getRole(), invitation.getWorkspace());
             workspaceUserRepository.save(workspaceUser);
-            OnBoardingResponse onBoardingResponse = new OnBoardingResponse(user.getId(), user.getName(), invitation.getEmail());
+
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(invitation.getEmail(), onBoardingRequest.getPassword()));
+            String token = null;
+            if (authentication.isAuthenticated()) {
+                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+                Map<String, Object> extraClaims = new HashMap<>();
+                extraClaims.put("workspaceId", invitation.getWorkspace());
+                token = jwtHelper.generateToken(extraClaims, userDetails);
+            } else {
+                throw new BadCredentialsException("Invalid credentials");
+            }
+
+            OnBoardingResponse onBoardingResponse = new OnBoardingResponse(user.getId(), user.getName(), invitation.getEmail(), token);
 
             return onBoardingResponse;
         } catch (Exception e) {

@@ -16,5 +16,5 @@ public class OnBoardingResponse {
     private UUID userId;
     private String name;
     private String email;
-
+    private String token;
 }
