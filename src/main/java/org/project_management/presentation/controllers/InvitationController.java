@@ -69,8 +69,6 @@ public class InvitationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "302", description = "Redirect to the user onboarding page after accepting the invitation"),
             @ApiResponse(responseCode = "400", description = "Invalid token provided"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
-            @ApiResponse(responseCode = "403", description = "Forbidden access, request privileges to access this resource"),
             @ApiResponse(responseCode = "404", description = "Invitation not found or expired"),
             @ApiResponse(responseCode = "500", description = "Internal server error while processing invitation acceptance")
     })
@@ -78,9 +76,9 @@ public class InvitationController {
     public ResponseEntity<Void> accept(
             @Parameter(description = "Token for invitation acceptance", required = true, example = "your-jwt-token")
             @RequestParam("token") String token) {
-        invitationUseCaseImpl.acceptInvitation(token);
+       String invitationId= invitationUseCaseImpl.acceptInvitation(token);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .header(HttpHeaders.LOCATION, domainUrl + "/onboarding")
+                .header(HttpHeaders.LOCATION, domainUrl + "/api/v1/onBoarding/" + invitationId)
                 .build();
     }
 

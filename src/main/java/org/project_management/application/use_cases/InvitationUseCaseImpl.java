@@ -1,5 +1,6 @@
 package org.project_management.application.use_cases;
 
+import jakarta.transaction.Transactional;
 import org.project_management.application.dto.invitation.InvitationRequest;
 import org.project_management.application.exceptions.*;
 import org.project_management.application.services.Invitation.EmailService;
@@ -27,28 +28,36 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
         this.invitationService = invitationService;
     }
 
+    @Transactional
     @Override
     public Invitation sendInvitation(InvitationRequest invitationRequest) {
         String token = jwtHelper.generateInvitationToken(invitationRequest.getRecipientEmail(), invitationRequest.getWorkspaceId().toString());
-        String invitationUrl = domainUrl + baseUrl + "/invitation/accept?token=" + token;
+        String invitationUrl = domainUrl + baseUrl + "/invitations/accept?token=" + token;
         String emailBody = "You have been invited to join the workspace. Please accept your invitation by clicking the button below:";
 
         try {
-            boolean emailSent = emailService.sendEmail(invitationRequest.getRecipientEmail(), "You're Invited!", emailBody, invitationUrl, token);
-            if (emailSent) {
-                return invitationService.save(invitationRequest, token);
-            } else {
+            Invitation savedInvitation = invitationService.save(invitationRequest, token);
+
+            boolean emailSent = emailService.sendEmail(
+                    invitationRequest.getRecipientEmail(),
+                    "You're Invited!",
+                    emailBody,
+                    invitationUrl,
+                    token
+            );
+
+            if (!emailSent) {
                 throw new InvitationException("Email could not be sent to the recipient.");
             }
-        } catch (EmailException e) {
-            throw new EmailException("Failed to send the invitation email.");
-        } catch (UnableToSaveResourceException e) {
-            throw new UnableToSaveResourceException("Failed to save the invitation after sending the email.");
+
+            return savedInvitation;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred while processing invitation: " );
         }
     }
-
     @Override
-    public void acceptInvitation(String token) {
+    public String acceptInvitation(String token) {
         try {
             jwtHelper.isInvitationTokenValid(token);
         } catch (Exception e) {
@@ -63,8 +72,9 @@ public class InvitationUseCaseImpl implements InvitationUseCase {
         }
 
         try {
-            invitationService.updateInvitationStatus(email, UUID.fromString(workspaceId), true);
-            System.out.println("Invitation accepted successfully for: " + email + " in workspace: " + workspaceId);
+            Invitation invitation= invitationService.updateInvitationStatus(email, UUID.fromString(workspaceId), true);
+            return invitation.getId().toString();
+
         } catch (ResourceNotFoundException e) {
             throw new BadRequestException("Invitation not found or already processed.");
         } catch (UnableToUpdateResourceException e) {

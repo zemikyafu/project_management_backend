@@ -6,5 +6,5 @@ import org.project_management.domain.entities.invitation.Invitation;
 public interface InvitationUseCase {
     public Invitation sendInvitation(InvitationRequest invitationRequest);
 
-    public void acceptInvitation(String token);
+    public String acceptInvitation(String token);
 }

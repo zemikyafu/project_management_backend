@@ -36,7 +36,7 @@ public class Invitation {
     @Column(name="expired_at", nullable = false)
     private LocalDateTime expiredAt;
 
-    @Column(name="token", nullable = false)
+    @Column(name = "token", nullable = false, length = 1000)
     private String token;
 
     @ManyToOne
