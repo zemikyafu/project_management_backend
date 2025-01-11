@@ -17,4 +17,5 @@ public interface RolePermissionRepository {
     void delete(UUID roleId, UUID permissionId);
 
     List<RolePermission> findAll();
+    List<RolePermission>findAllByRoleId(UUID roleId);
 }

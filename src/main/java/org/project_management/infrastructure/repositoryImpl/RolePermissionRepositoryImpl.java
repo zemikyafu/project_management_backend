@@ -5,11 +5,12 @@ import org.project_management.domain.abstractions.RolePermissionRepository;
 import org.project_management.domain.entities.role.RolePermission;
 import org.project_management.domain.entities.role.RolePermissionId;
 import org.project_management.infrastructure.jpa_repositories.JpaRolePermissionRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@Repository
 public class RolePermissionRepositoryImpl implements RolePermissionRepository {
     private final JpaRolePermissionRepository jpaRolePermissionRepository;
 
@@ -47,5 +48,10 @@ public class RolePermissionRepositoryImpl implements RolePermissionRepository {
     @Override
     public List<RolePermission> findAll() {
         return jpaRolePermissionRepository.findAll();
+    }
+
+    @Override
+    public List<RolePermission> findAllByRoleId(UUID roleId) {
+        return jpaRolePermissionRepository.findAllByRoleId(roleId);
     }
 }
