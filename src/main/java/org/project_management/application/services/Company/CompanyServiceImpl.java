@@ -6,6 +6,7 @@ import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.ResourceTakenException;
 import org.project_management.domain.abstractions.*;
 import org.project_management.domain.entities.company.Company;
+import org.project_management.domain.entities.company.CompanyUser;
 import org.project_management.domain.entities.permission.Permission;
 import org.project_management.domain.entities.role.Role;
 import org.project_management.domain.entities.role.RolePermission;
@@ -76,7 +77,10 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Company> findAll() {
-        return companyRepository.findAll();
+        String email = securityUtils.getCurrentUserLogin();
+        User loggedInUser = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+        List <Company> companies = companyUserService.findAllByUserId(loggedInUser.getId()).stream().map(CompanyUser::getCompany).toList();
+        return companies;
     }
 
     @Override

@@ -71,7 +71,7 @@ public class CompanyController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), "Company deleted successfully"));
     }
 
-    @Operation(summary = "Get all companies")
+    @Operation(summary = "Get all companies the login user belongs")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Companies found"),
             @ApiResponse(responseCode = "400", description = "Invalid input provided"),
@@ -85,7 +85,11 @@ public class CompanyController {
     public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
     }
-
+//    @GetMapping("/")
+//    @PreAuthorize("hasAuthority('COMPANY-READ-ALL')")
+//    public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
+//        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
+//    }
     @Operation(summary = "Get existing company by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Company found"),

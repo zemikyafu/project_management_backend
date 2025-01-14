@@ -91,6 +91,11 @@ public class CompanyUserServiceImpl implements CompanyUserService {
     }
 
     @Override
+    public List<CompanyUser> findAllByUserId(UUID userId) {
+      return companyUserRepository.findAllByUserId(userId);
+    }
+
+    @Override
     public List<CompanyUser> findAllByCompanyId(UUID companyId) {
         return companyUserRepository.findAllByCompanyId(companyId);
     }
