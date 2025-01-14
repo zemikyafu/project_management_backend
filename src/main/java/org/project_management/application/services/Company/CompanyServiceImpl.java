@@ -4,10 +4,11 @@ import jakarta.transaction.Transactional;
 import org.project_management.application.dto.company.CompanyUserCreate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.ResourceTakenException;
-import org.project_management.domain.abstractions.AuthRepository;
-import org.project_management.domain.abstractions.CompanyRepository;
-import org.project_management.domain.abstractions.UserRepository;
+import org.project_management.domain.abstractions.*;
 import org.project_management.domain.entities.company.Company;
+import org.project_management.domain.entities.permission.Permission;
+import org.project_management.domain.entities.role.Role;
+import org.project_management.domain.entities.role.RolePermission;
 import org.project_management.domain.entities.user.User;
 import org.project_management.presentation.config.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,18 @@ public class CompanyServiceImpl implements CompanyService {
     private final AuthRepository authRepository;
     private final CompanyUserService companyUserService;
     private final SecurityUtils securityUtils;
-
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
+    private final RolePermissionRepository rolePermissionRepository;
     @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository, AuthRepository authRepository, CompanyUserService companyUserService, SecurityUtils securityUtils) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, AuthRepository authRepository, CompanyUserService companyUserService, SecurityUtils securityUtils, RoleRepository roleRepository, PermissionRepository permissionRepository, RolePermissionRepository rolePermissionRepository) {
         this.companyRepository = companyRepository;
         this.authRepository = authRepository;
         this.companyUserService = companyUserService;
         this.securityUtils = securityUtils;
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
+        this.rolePermissionRepository = rolePermissionRepository;
     }
 
     @Transactional
@@ -43,6 +49,27 @@ public class CompanyServiceImpl implements CompanyService {
 
         CompanyUserCreate companyUserCreate = new CompanyUserCreate(loggedInUser.getId(), newCompany.getId());
         companyUserService.save(companyUserCreate);
+        Role adminRole = roleRepository.findByNameAndCompanyId("ADMIN", newCompany.getId()).orElseGet(() -> {
+            Role newAdminRole = new Role("ADMIN");
+            newAdminRole.setCompany(newCompany);
+            roleRepository.save(newAdminRole);
+
+            List<Permission> allPermissions = permissionRepository.findAll();
+            for (Permission permission : allPermissions) {
+
+                rolePermissionRepository.save(new RolePermission(newAdminRole, permission));
+            }
+
+            return newAdminRole;
+        });
+
+        roleRepository.findByNameAndCompanyId("GUEST", newCompany.getId()).orElseGet(() -> {
+            Role newUserRole = new Role("GUEST");
+            newUserRole.setCompany(newCompany);
+            roleRepository.save(newUserRole);
+
+            return newUserRole;
+        });
 
         return newCompany;
     }
