@@ -71,6 +71,22 @@ public class RoleController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), role));
     }
 
+    @Operation(summary = "Find a roles by Company ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Role retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Role not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/companyId/{companyId}")
+    @PreAuthorize("hasAuthority('ROLE-READ')")
+    public ResponseEntity<GlobalResponse<List<Role>>> findByCompanyId(
+            @Parameter(description = "Company ID", required = true) @PathVariable UUID companyId) {
+        List<Role> roles = roleService.findByCompanyId(companyId);
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), roles));
+    }
+
     @Operation(summary = "Find all roles, optional filter by name and/or company ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Role retrieved successfully"),

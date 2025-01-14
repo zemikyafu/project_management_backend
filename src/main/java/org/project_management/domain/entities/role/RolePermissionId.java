@@ -1,33 +1,19 @@
 package org.project_management.domain.entities.role;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.UUID;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class RolePermissionId implements Serializable {
     private UUID roleId;
     private UUID permissionId;
-
-    public RolePermissionId(UUID roleId, UUID permissionId) {
-        this.roleId = roleId;
-        this.permissionId = permissionId;
-    }
-
-    public UUID getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
-    }
-
-    public UUID getPermissionId() {
-        return permissionId;
-    }
-
-    public void setPermissionId(UUID permissionId) {
-        this.permissionId = permissionId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
