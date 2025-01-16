@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.project_management.application.dto.task.AssigneeDto;
 import org.project_management.application.dto.task.TaskCreate;
 import org.project_management.application.dto.task.TaskUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/companies/{companyId}/workspaces/{workspaceId}/projects/{projectId}/tasks")
+@RequestMapping("/api/v1/projects/{projectId}/tasks")
 @Tag(name = "Task", description = "Task management")
 public class TaskController {
     private final TaskService taskService;
@@ -66,11 +67,27 @@ public class TaskController {
     @GetMapping("/")
     @PreAuthorize("hasAuthority('TASK-READ-ALL')")
     public ResponseEntity<GlobalResponse<List<Task>>> findAllTasksInProject(
-            @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
     ) {
         List<Task> tasks = taskService.findByProjectId(projectId);
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), tasks));
+    }
+
+    @Operation(summary = "Retrieve all assignees in a project's workspace")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Assignees retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Project not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "403", description = "Forbidden access"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping("/assignees")
+    @PreAuthorize("hasAuthority('ASSIGNEE-READ-ALL')")
+    public ResponseEntity<GlobalResponse<List<AssigneeDto>>> findAssigneesInProjectWorkspace(
+            @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
+    ) {
+        List<AssigneeDto> assignees = taskService.findAssigneesInProjectWorkspace(projectId);
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), assignees));
     }
 
     @Operation(summary = "Retrieve a specific task")
@@ -84,7 +101,6 @@ public class TaskController {
     @GetMapping("/{taskId}")
     @PreAuthorize("hasAuthority('TASK-READ')")
     public ResponseEntity<GlobalResponse<Task>> findTaskById(
-            @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId,
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId
     ) {
@@ -111,7 +127,6 @@ public class TaskController {
                             examples = @ExampleObject(value = "{ \"title\": \"Updated Task\", \"content\": \"Updated description\", \"priority\": \"LOW\", \"status\": \"COMPLETED\", \"deadlineAt\": \"2025-06-30\" }")
                     ))
             @Valid @RequestBody TaskUpdate updateDto,
-            @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId,
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId
     ) {
@@ -131,7 +146,6 @@ public class TaskController {
     @DeleteMapping("/{taskId}")
     @PreAuthorize("hasAuthority('TASK-DELETE')")
     public ResponseEntity<GlobalResponse<String>> deleteTask(
-            @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId,
             @Parameter(description = "Task ID", required = true) @PathVariable UUID taskId
     ) {

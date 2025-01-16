@@ -2,26 +2,24 @@ package org.project_management.application.services.task;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import org.project_management.application.dto.task.AssigneeDto;
 import org.project_management.application.dto.task.TaskCreate;
 import org.project_management.application.dto.task.TaskMapper;
 import org.project_management.application.dto.task.TaskUpdate;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.services.Invitation.EmailService;
-import org.project_management.domain.abstractions.AuthRepository;
-import org.project_management.domain.abstractions.ProjectRepository;
-import org.project_management.domain.abstractions.TaskRepository;
+import org.project_management.domain.abstractions.*;
 import org.project_management.domain.entities.project.Project;
 import org.project_management.domain.entities.task.Task;
 import org.project_management.domain.entities.task.TaskStatus;
 import org.project_management.domain.entities.user.User;
+import org.project_management.domain.entities.workspace.Workspace;
+import org.project_management.domain.entities.workspace.WorkspaceUser;
 import org.project_management.presentation.config.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class TaskServiceImpl implements TaskService{
@@ -31,15 +29,16 @@ public class TaskServiceImpl implements TaskService{
     private final HttpServletRequest request;
     private final AuthRepository authRepository;
     private final EmailService emailService;
-
+    private final WorkspaceUserRepository workspaceUserRepository;
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request, AuthRepository authRepository, EmailService emailService) {
+    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository, JwtAuthFilter jwtAuthFilter, HttpServletRequest request, AuthRepository authRepository, EmailService emailService, WorkspaceUserRepository workspaceUserRepository) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.jwtAuthFilter = jwtAuthFilter;
         this.request = request;
         this.authRepository = authRepository;
         this.emailService = emailService;
+        this.workspaceUserRepository = workspaceUserRepository;
     }
 
     @Transactional
@@ -117,5 +116,22 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public void deleteByIdAndProjectId(UUID taskId, UUID projectId) {
         taskRepository.deleteByIdAndProjectId(taskId,projectId);
+    }
+
+    public List<AssigneeDto> findAssigneesInProjectWorkspace(UUID projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+        Workspace workspace = project.getWorkspace();
+        if (workspace == null) {
+            return Collections.emptyList();
+        }
+        UUID workspaceId = workspace.getId();
+        List<WorkspaceUser> workspaceUsers = workspaceUserRepository.findByWorkspaceId(workspaceId);
+
+        return workspaceUsers.stream()
+                .map(workspaceUser -> new AssigneeDto(
+                        workspaceUser.getUser().getId(),
+                        workspaceUser.getUser().getName()))
+                .toList();
     }
 }

@@ -1,5 +1,6 @@
 package org.project_management.application.services.task;
 
+import org.project_management.application.dto.task.AssigneeDto;
 import org.project_management.application.dto.task.TaskCreate;
 import org.project_management.application.dto.task.TaskUpdate;
 import org.project_management.domain.entities.task.Task;
@@ -28,4 +29,5 @@ public interface TaskService {
     List<Task> findByDeadlineAtBefore(Date deadlineDate);
 
     void deleteByIdAndProjectId(UUID taskId, UUID projectId);
+    List<AssigneeDto>findAssigneesInProjectWorkspace(UUID projectId);
 }
