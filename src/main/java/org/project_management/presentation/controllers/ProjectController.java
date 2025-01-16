@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/companies/{companyId}/workspaces/{workspaceId}/projects")
+@RequestMapping("/api/v1/workspaces/{workspaceId}/projects")
 @Tag(name = "Project", description = "Project management")
 public class ProjectController {
     private final ProjectService projectService;

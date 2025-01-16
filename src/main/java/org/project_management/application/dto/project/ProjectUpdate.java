@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ProjectUpdate {
-    @NotNull
+   @NotNull
     private UUID id;
 
     @NotNull
@@ -29,7 +29,4 @@ public class ProjectUpdate {
     private Date startDate;
 
     private Date endDate;
-
-    public void setId(UUID projectId) {
-    }
 }
