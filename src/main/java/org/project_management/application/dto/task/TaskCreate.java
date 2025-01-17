@@ -31,7 +31,7 @@ public class TaskCreate {
     @NotNull
     private UUID projectId;
 
-    @NotNull
+
     private UUID assigneeId;
 
     private Date deadlineAt;

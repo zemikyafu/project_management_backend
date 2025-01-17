@@ -28,7 +28,6 @@ public class TaskUpdate {
     @NotNull
     private TaskPriority priority;
 
-    @NotNull
     private TaskStatus status;
 
     private Date deadlineAt;
