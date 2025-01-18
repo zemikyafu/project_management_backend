@@ -72,7 +72,7 @@ public class AuthController {
     }
 
 
-    @PostMapping("/onBoarding/{invitationId}")
+    @PostMapping("/on-boarding/{invitationId}")
     @Operation(
             summary = "Complete user onboarding",
             description = "Endpoint to complete the onboarding process for a user using the provided invitation ID.",

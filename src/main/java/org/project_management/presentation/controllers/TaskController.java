@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/v1/projects/{projectId}/tasks")
 @Tag(name = "Task", description = "Task management")
@@ -81,8 +80,7 @@ public class TaskController {
             @ApiResponse(responseCode = "403", description = "Forbidden access"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @GetMapping("/assignees")
-    @PreAuthorize("hasAuthority('ASSIGNEE-READ-ALL')")
+    @GetMapping("/assignees/")
     public ResponseEntity<GlobalResponse<List<AssigneeDto>>> findAssigneesInProjectWorkspace(
             @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
     ) {

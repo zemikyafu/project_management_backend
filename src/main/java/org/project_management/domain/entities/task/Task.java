@@ -29,7 +29,7 @@ public class Task {
     @Column(columnDefinition = "TEXT", name = "title", nullable = false, length = 255)
     private String title;
 
-    @Column(columnDefinition = "TEXT", name = "content", nullable = false)
+    @Column(columnDefinition = "TEXT", name = "content")
     private String content;
 
     @Enumerated(EnumType.STRING)
@@ -45,7 +45,7 @@ public class Task {
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User assignee;
 
     @Temporal(TemporalType.DATE)
