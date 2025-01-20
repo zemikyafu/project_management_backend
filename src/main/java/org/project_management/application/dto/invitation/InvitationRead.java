@@ -12,13 +12,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class InvitationResponse {
+public class InvitationRead {
     private UUID id;
-    private String  recipientEmail;
+    private String  email;
     private UUID workspaceId;
-    private String invitationName;
+    private String workspaceName;
     private UUID roleId;
     private String roleName;
     private boolean isAccepted;
-    private LocalDateTime expiredAt;
+
 }

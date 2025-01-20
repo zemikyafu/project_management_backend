@@ -8,14 +8,15 @@ public class InvitationMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static InvitationResponse toInvitationResponse(Invitation invitation) {
-        InvitationResponse invitationResponse = new InvitationResponse();
-        invitationResponse.setId(invitation.getId());
-        invitationResponse.setRecipientEmail(invitation.getEmail());
-        invitationResponse.setWorkspaceId(invitation.getWorkspace().getId());
-        invitationResponse.setRoleId(invitation.getRole().getId());
-        invitationResponse.setAccepted(invitation.isAccepted());
-        invitationResponse.setExpiredAt(invitation.getExpiredAt());
-        return invitationResponse;
+    public static InvitationRead toInvitationRead(Invitation invitation) {
+        InvitationRead invitationRead = new InvitationRead();
+        invitationRead.setId(invitation.getId());
+        invitationRead.setEmail(invitation.getEmail());
+        invitationRead.setWorkspaceId(invitation.getWorkspace().getId());
+        invitationRead.setWorkspaceName(invitation.getWorkspace().getName());
+        invitationRead.setRoleId(invitation.getRole().getId());
+        invitationRead.setRoleName(invitation.getRole().getName());
+        invitationRead.setAccepted(invitation.isAccepted());
+        return invitationRead;
     }
 }

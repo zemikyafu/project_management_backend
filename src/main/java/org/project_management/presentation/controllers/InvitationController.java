@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.project_management.application.dto.invitation.InvitationMapper;
+import org.project_management.application.dto.invitation.InvitationRead;
 import org.project_management.application.dto.invitation.InvitationRequest;
 import org.project_management.application.dto.invitation.UpdateInvitation;
 import org.project_management.application.exceptions.ResourceNotFoundException;
@@ -23,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,8 +36,8 @@ public class InvitationController {
     private final InvitationUseCaseImpl invitationUseCaseImpl;
     private final InvitationService invitationService;
 
-    @Value("${domain_url}")
-    private String domainUrl;
+    @Value("${frontend_domain_url}")
+    private String frontend_domainUrl;
 
     public InvitationController(InvitationUseCaseImpl invitationUseCaseImpl, InvitationService invitationService) {
         this.invitationUseCaseImpl = invitationUseCaseImpl;
@@ -78,7 +81,7 @@ public class InvitationController {
             @RequestParam("token") String token) {
        String invitationId= invitationUseCaseImpl.acceptInvitation(token);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .header(HttpHeaders.LOCATION, domainUrl + "/api/v1/onBoarding/" + invitationId)
+                .header(HttpHeaders.LOCATION, frontend_domainUrl + "/onBoarding/" + invitationId)
                 .build();
     }
 
@@ -112,9 +115,13 @@ public class InvitationController {
     })
     @GetMapping
     @PreAuthorize("hasAuthority('INVITATION-READ-ALL')")
-    public ResponseEntity<GlobalResponse<List<Invitation>>> findAll() {
+    public ResponseEntity<GlobalResponse<List<InvitationRead>>> findAll() {
         List<Invitation> invitations = invitationService.findAll();
-        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitations));
+        List<InvitationRead> invitationReads = new ArrayList<>();
+        for(Invitation invitation: invitations){
+            invitationReads.add(InvitationMapper.toInvitationRead(invitation));
+        }
+        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), invitationReads));
     }
 
     @Operation(summary = "Find an invitation by email and workspace ID")
