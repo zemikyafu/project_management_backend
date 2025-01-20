@@ -84,6 +84,7 @@ Below are the environment variables required for the application:
 | `SPRING_MAIL_USERNAME`       | The Email address used  to authenticate with the SMTP mail server. |
 | `SPRING_MAIL_PASSWORD`       | The Password  used  to authenticate with the SMTP mail server.     |
 | `DOMAIN_URL`                 | The base URL of the application domain.                            |
+| `FRONTEND_DOMAIN_URL`        | The base URL of the frontend application.                          |
 | `PORT`                       | Web service port, defaults to 10000                                |
 
 
