@@ -1,5 +1,6 @@
 package org.project_management.application.services.User;
 
+import org.project_management.application.dto.user.UpdateUserStatusRequest;
 import org.project_management.domain.entities.user.User;
 
 import java.util.List;
@@ -12,8 +13,9 @@ public interface UserService {
     User updateUser(User user);
 
     User updateNameOrEmail(User user);
-
+    User updateStatus(UpdateUserStatusRequest request);
     void deleteUser(UUID id);
 
     List<User> findAll();
+    List<User> findCompanyUsers(UUID id);
 }

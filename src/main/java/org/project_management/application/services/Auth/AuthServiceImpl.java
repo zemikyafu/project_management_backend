@@ -25,10 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -73,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
                 String companyId = ownerCompany.get().getId().toString();
                 Map<String, Object> extraClaims = new HashMap<>();
                 extraClaims.put("companyId", companyId);
+                extraClaims.put("roles", List.of("company-owner"));
                 token = jwtHelper.generateToken(extraClaims, userDetails);
             } else {
                 token = jwtHelper.generateToken(userDetails);
@@ -106,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
                 Map<String, Object> extraClaims = new HashMap<>();
-                extraClaims.put("workspaceId", invitation.getWorkspace());
+                extraClaims.put("workspaceId", invitation.getWorkspace().getId());
                 token = jwtHelper.generateToken(extraClaims, userDetails);
             } else {
                 throw new BadCredentialsException("Invalid credentials");
