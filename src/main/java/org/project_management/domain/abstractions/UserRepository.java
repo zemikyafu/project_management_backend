@@ -13,6 +13,7 @@ public interface UserRepository {
 
     User updateNameOrEmail(User user);
 
+    User updateStatus(User user);
     void deleteUser(UUID id);
 
     List<User> findAll();

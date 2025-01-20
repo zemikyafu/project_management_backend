@@ -56,7 +56,15 @@ public class UserController {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), UserMapper.toUserRead(user)));
     }
 
-    @Operation(summary = "Get all users")
+    @GetMapping("/company/{id}")
+    public ResponseEntity<GlobalResponse<List<UserRead>>>findComapanyUsers(@PathVariable UUID id) {
+        List<UserRead> userReads = List.of();
+        userService.findCompanyUsers(id).stream().map( UserMapper::toUserRead).forEach(userReads::add);
+        GlobalResponse<List<UserRead>> response = new GlobalResponse<>(HttpStatus.OK.value(), userReads);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get all users which found in owner logged in user company")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Users found"),
             @ApiResponse(responseCode = "401", description = "Unauthorized access, sign in to access this resource"),
@@ -68,6 +76,14 @@ public class UserController {
     @PreAuthorize("hasAuthority('USER-READ')")
     public ResponseEntity<GlobalResponse<List<UserRead>>> findAll() {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), userService.findAll().stream().map(UserMapper::toUserRead).toList()));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<GlobalResponse<UserRead>> updateUserStatus(@PathVariable UUID id, @Valid @RequestBody UpdateUserStatusRequest request) {
+        User user = userService.updateStatus(request);
+        UserRead userRead = new UserRead(user.getId(), user.getName(), user.getEmail(), user.getStatus());
+        GlobalResponse<UserRead> response = new GlobalResponse<>(HttpStatus.OK.value(), userRead);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Update existing user by ID")
@@ -119,7 +135,10 @@ public class UserController {
                     ))
             @Valid @RequestBody UserPartialUpdate userUpdateDto
     ) {
+        System.out.println("user id from path variable " + id);
         User user = UserMapper.toUser(userUpdateDto);
+        System.out.println(user.getEmail() + " " + user.getName());
+
         user.setId(id);
 
         User updatedUser = userService.updateNameOrEmail(user);

@@ -73,6 +73,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User updateStatus(User user) {
+        try {
+            return jpaUserRepository.save(user);
+        } catch (Exception e) {
+            throw new UnableToSaveResourceException("Unable to update user status");
+        }
+    }
+
+    @Override
     public void deleteUser(UUID id) {
         User user = jpaUserRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id.toString()));
