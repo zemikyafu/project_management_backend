@@ -16,7 +16,9 @@ public class InvitationResponse {
     private UUID id;
     private String  recipientEmail;
     private UUID workspaceId;
+    private String invitationName;
     private UUID roleId;
+    private String roleName;
     private boolean isAccepted;
     private LocalDateTime expiredAt;
 }
