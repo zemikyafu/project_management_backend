@@ -21,4 +21,6 @@ public interface RolePermissionService {
     List<RolePermission> findAll();
 
     List<RolePermission> findAllByRoleId(UUID roleId);
+    List<RolePermission> findAllByCompanyId(UUID companyId);
+
 }

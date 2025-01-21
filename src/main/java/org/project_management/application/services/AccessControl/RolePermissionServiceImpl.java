@@ -12,6 +12,7 @@ import org.project_management.domain.entities.role.RolePermission;
 import org.project_management.domain.entities.role.RolePermissionId;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -91,5 +92,15 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     @Override
     public List<RolePermission> findAllByRoleId(UUID roleId) {
         return rolePermissionRepository.findAllByRoleId(roleId);
+    }
+
+    @Override
+    public List<RolePermission> findAllByCompanyId(UUID companyId) {
+        List<Role> roles = roleRepository.findByCompanyId(companyId);
+        List <RolePermission> rolePermissions = new ArrayList<>();
+        for (Role role : roles) {
+            rolePermissions.addAll(rolePermissionRepository.findAllByRoleId(role.getId()));
+        }
+        return rolePermissions;
     }
 }
