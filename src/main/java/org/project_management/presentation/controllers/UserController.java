@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,7 +59,7 @@ public class UserController {
 
     @GetMapping("/company/{id}")
     public ResponseEntity<GlobalResponse<List<UserRead>>>findComapanyUsers(@PathVariable UUID id) {
-        List<UserRead> userReads = List.of();
+        List<UserRead> userReads = new ArrayList<>();
         userService.findCompanyUsers(id).stream().map( UserMapper::toUserRead).forEach(userReads::add);
         GlobalResponse<List<UserRead>> response = new GlobalResponse<>(HttpStatus.OK.value(), userReads);
         return ResponseEntity.ok(response);

@@ -88,16 +88,6 @@ public class ProjectController {
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + projectId));
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), project));
     }
-//    @GetMapping("/{projectId}")
-//    @PreAuthorize("hasAuthority('PROJECT-READ')")
-//    public ResponseEntity<GlobalResponse<Project>> findProjectByProjectId(
-//            @Parameter(description = "Workspace ID", required = true) @PathVariable UUID workspaceId,
-//            @Parameter(description = "Project ID", required = true) @PathVariable UUID projectId
-//    ) {
-//        Project project = projectService.findByIdAndWorkspaceId(projectId, workspaceId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + projectId));
-//        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), project));
-//    }
     @Operation(summary = "Update a specific project")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Project updated successfully"),

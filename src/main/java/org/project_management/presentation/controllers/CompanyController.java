@@ -85,11 +85,6 @@ public class CompanyController {
     public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
         return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
     }
-//    @GetMapping("/")
-//    @PreAuthorize("hasAuthority('COMPANY-READ-ALL')")
-//    public ResponseEntity<GlobalResponse<List<Company>>> findAllCompanies() {
-//        return ResponseEntity.ok(new GlobalResponse<>(HttpStatus.OK.value(), companyService.findAll()));
-//    }
     @Operation(summary = "Get existing company by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Company found"),
