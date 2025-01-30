@@ -63,19 +63,9 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteUser(id);
     }
 
-//    @Override
-//    public List<User> findAll() {return userRepository.findAll();}
-   @Override
-    public List<User> findAll() {
-        String email = securityUtils.getCurrentUserLogin();
-        User loggedInUser = authRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
-        Optional<Company> OwnerCompany = companyUserRepository.findOwnerCompanyByUserId(loggedInUser.getId());
+    @Override
+    public List<User> findAll() {return userRepository.findAll();}
 
-        if (OwnerCompany.isPresent()) {
-            return findCompanyUsers(OwnerCompany.get().getId());
-        }
-        return List.of();
-    }
     @Override
     public List<User> findCompanyUsers(UUID id) {
         List<User> users =new ArrayList<>();

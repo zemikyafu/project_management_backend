@@ -8,11 +8,9 @@ import org.project_management.application.exceptions.BadRequestException;
 import org.project_management.application.exceptions.ResourceNotFoundException;
 import org.project_management.application.exceptions.UnableToSaveResourceException;
 import org.project_management.application.exceptions.UserAlreadyExistException;
-import org.project_management.domain.abstractions.AuthRepository;
-import org.project_management.domain.abstractions.CompanyUserRepository;
-import org.project_management.domain.abstractions.InvitationRepository;
-import org.project_management.domain.abstractions.WorkspaceUserRepository;
+import org.project_management.domain.abstractions.*;
 import org.project_management.domain.entities.company.Company;
+import org.project_management.domain.entities.company.CompanyUser;
 import org.project_management.domain.entities.invitation.Invitation;
 import org.project_management.domain.entities.user.User;
 import org.project_management.domain.entities.workspace.WorkspaceUser;
@@ -37,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
     private final WorkspaceUserRepository workspaceUserRepository;
     private final InvitationRepository invitationRepository;
 
+
     public AuthServiceImpl(AuthRepository authRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtHelper jwtHelper, CompanyUserRepository companyUserRepository, WorkspaceUserRepository workspaceUserRepository, InvitationRepository invitationRepository) {
         this.authRepository = authRepository;
         this.authenticationManager = authenticationManager;
@@ -45,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
         this.companyUserRepository = companyUserRepository;
         this.workspaceUserRepository = workspaceUserRepository;
         this.invitationRepository = invitationRepository;
+
     }
 
     @Override
@@ -64,10 +64,10 @@ public class AuthServiceImpl implements AuthService {
 
         if (authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            Optional<Company> ownerCompany = companyUserRepository.findOwnerCompanyByUserId(user.getId());
+            List<Company> ownerCompanies = companyUserRepository.findOwnerCompanyByUserId(user.getId());
             String token;
-            if (ownerCompany.isPresent()) {
-                String companyId = ownerCompany.get().getId().toString();
+            if (!ownerCompanies.isEmpty()) {
+                String companyId=ownerCompanies.get(0).getId().toString();
                 Map<String, Object> extraClaims = new HashMap<>();
                 extraClaims.put("companyId", companyId);
                 extraClaims.put("roles", List.of("company-owner"));
@@ -81,7 +81,6 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException("Invalid credentials");
         }
     }
-
     @Transactional
     public OnBoardingResponse CompleteOnBoarding(OnBoardingRequest onBoardingRequest, UUID invitationId) {
         if (invitationId == null) {
@@ -97,6 +96,9 @@ public class AuthServiceImpl implements AuthService {
 
             WorkspaceUser workspaceUser = new WorkspaceUser(user, invitation.getRole(), invitation.getWorkspace());
             workspaceUserRepository.save(workspaceUser);
+
+            Company company = workspaceUser.getWorkspace().getCompany();
+            companyUserRepository.save(new CompanyUser(user,company, false));
 
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(invitation.getEmail(), onBoardingRequest.getPassword()));
             String token = null;
@@ -120,3 +122,5 @@ public class AuthServiceImpl implements AuthService {
 
     }
 }
+
+
