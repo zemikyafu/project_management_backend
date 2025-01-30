@@ -24,5 +24,5 @@ public interface CompanyUserRepository {
 
     List<CompanyUser> findAllByCompanyId(UUID companyId);
     List<CompanyUser> findAllByUserId(UUID userId);
-    Optional<Company> findOwnerCompanyByUserId(UUID userId);
+    List<Company> findOwnerCompanyByUserId(UUID userId);
 }

@@ -77,7 +77,7 @@ public class CompanyUserRepositoryImpl implements CompanyUserRepository {
     }
 
     @Override
-    public Optional<Company> findOwnerCompanyByUserId(UUID userId) {
+    public List<Company> findOwnerCompanyByUserId(UUID userId) {
         return jpaCompanyUserRepository.findOwnerCompanyByUserId(userId);
     }
 }
