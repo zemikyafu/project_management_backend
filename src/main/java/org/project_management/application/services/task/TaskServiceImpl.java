@@ -114,6 +114,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    @Transactional
     public void deleteByIdAndProjectId(UUID taskId, UUID projectId) {
         taskRepository.deleteByIdAndProjectId(taskId,projectId);
     }
